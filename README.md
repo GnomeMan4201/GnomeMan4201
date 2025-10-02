@@ -1,22 +1,5 @@
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/1759437918484.jpg" width="100%">
 
-## Toolchain Overview
-
-```mermaid
-graph TB
-    A[OWN<br/>External Reconnaissance] --> B[LANimals<br/>Internal Network Mapping]
-    B --> C[Blackglass Suite<br/>Covert Operations]
-    B --> D[badBANANA<br/>AI/ML Security Testing]
-    C --> D
-    C --> E[Secure Exfiltration]
-    D --> F[Model Exploitation]
-    
-    style A fill:#ff6b6b
-    style B fill:#4ecdc4
-    style C fill:#45b7d1
-    style D fill:#96ceb4
-```
-
 Research Focus
 
 · Offensive Security Tooling
