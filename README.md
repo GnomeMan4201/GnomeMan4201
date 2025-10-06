@@ -18,7 +18,6 @@ Visit my CoderLegion profile:
 <a href="https://coderlegion.com/user/GnomeMan4201">https://coderlegion.com/user/GnomeMan4201</a>
 </details>
 
-Research Focus
 
 · Offensive Security Tooling
 · Adversarial Machine Learning
