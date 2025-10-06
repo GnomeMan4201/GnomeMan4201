@@ -1,5 +1,23 @@
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/1759437918484.jpg" width="100%">
 
+<!-- Dev.to Dropdown -->
+<details>
+<summary>Dev.to Blog</summary>
+<br>
+Check out my technical articles and tutorials on Dev.to:
+<br>
+<a href="https://dev.to/gnomeman4201">https://dev.to/gnomeman4201</a>
+</details>
+
+<!-- CoderLegion Dropdown -->
+<details>
+<summary>CoderLegion Profile</summary>
+<br>
+Visit my CoderLegion profile:
+<br>
+<a href="https://coderlegion.com/user/GnomeMan4201">https://coderlegion.com/user/GnomeMan4201</a>
+</details>
+
 Research Focus
 
 · Offensive Security Tooling
@@ -69,24 +87,6 @@ Scenario 3: Defensive Research
 ```
 badBANANA (Identify ML Vulnerabilities) → LANimals (Test Network Detection) → OWN (Validate External Exposure) → Blackglass (Secure Reporting)
 ```
-<!-- Dev.to Dropdown -->
-<details>
-<summary>Dev.to Blog</summary>
-<br>
-Check out my technical articles and tutorials on Dev.to:
-<br>
-<a href="https://dev.to/gnomeman4201">https://dev.to/gnomeman4201</a>
-</details>
-
-<!-- CoderLegion Dropdown -->
-<details>
-<summary>CoderLegion Profile</summary>
-<br>
-Visit my CoderLegion profile:
-<br>
-<a href="https://coderlegion.com/user/GnomeMan4201">https://coderlegion.com/user/GnomeMan4201</a>
-</details>
-
 ## Technical Methodology
 
 All research projects follow responsible disclosure principles and are intended for:
