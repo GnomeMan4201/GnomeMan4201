@@ -116,17 +116,3 @@ For research collaboration, responsible disclosure, or professional inquiries:
 ---
 
 > Every repository here is independently developed as part of my self-taught journey in cybersecurity.  
-> My GitHub is my credential.
-
----
-
-# Repository Insights
-
-![Profile Views](https://komarev.com/ghpvc/?username=GnomeMan4201&color=gray&style=flat)
-![Followers](https://img.shields.io/github/followers/GnomeMan4201?label=Followers&style=flat)
-![Stars](https://img.shields.io/github/stars/GnomeMan4201?label=Repository%20Stars&style=flat)
-![Languages](https://img.shields.io/github/languages/count/GnomeMan4201/bad_BANANA?label=Languages%20Used&style=flat)
-![Last Commit](https://img.shields.io/github/last-commit/GnomeMan4201/bad_BANANA?label=Last%20Commit&style=flat)
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=GnomeMan4201&layout=compact&theme=default&hide_border=true)
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=GnomeMan4201&show_icons=true&theme=default&hide_border=true)
