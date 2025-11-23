@@ -8,6 +8,63 @@ Specialized in **offensive security tooling**, **network reconnaissance**, and *
 
 > No degree. No certifications. Just tools that work.
 
+---
+
+# Skills & Technology Stack
+
+## Languages
+<p>
+  <img src="https://img.shields.io/badge/Bash-121011?logo=gnu-bash&logoColor=white&style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/C-A8B9CC?logo=c&logoColor=white&style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge"/>
+</p>
+
+---
+
+## Frameworks & Libraries
+<p>
+  <img src="https://img.shields.io/badge/BeautifulSoup-4B8BBE?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Requests-005571?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Scapy-00BFFF?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"/>
+</p>
+
+---
+
+## Tools & Platforms
+<p>
+  <img src="https://img.shields.io/badge/Kali_Linux-557C94?style=for-the-badge&logo=kalilinux&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Termux-2C2C2C?style=for-the-badge&logo=termux&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=white&style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white&style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Nmap-004B87?style=for-the-badge&logo=nmap&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Metasploit-000000?style=for-the-badge&logo=metasploit&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Wireshark-1679A7?style=for-the-badge&logo=wireshark&logoColor=white"/>
+  <img src="https://img.shields.io/badge/QEMU-FF6600?style=for-the-badge&logo=qemu&logoColor=white"/>
+</p>
+
+---
+
+## Offensive & Research Tooling I Develop
+<p>
+  <img src="https://img.shields.io/badge/LANimals-000000?style=for-the-badge&logo=linux&logoColor=white"/>
+  <img src="https://img.shields.io/badge/OWN-363636?style=for-the-badge&logo=python&logoColor=white"/>
+  <img src="https://img.shields.io/badge/bad_BANANA-FFA500?style=for-the-badge&logo=c&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Blackglass_Suite-6A0DAD?style=for-the-badge&logo=linux&logoColor=white"/>
+</p>
+
+---
+
+## GitHub Stats
+<p>
+  <img src="https://github-readme-stats.vercel.app/api?username=GnomeMan4201&show_icons=true&theme=dark&hide_border=true" height="180px"/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=GnomeMan4201&layout=compact&theme=dark&hide_border=true" height="180px"/>
+</p>
+
+---
+
 **Profiles:**  
 [Dev.to](https://dev.to/gnomeman4201) • [CoderLegion](https://coderlegion.com/user/GnomeMan4201)
 
