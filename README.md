@@ -1,12 +1,7 @@
-[<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/1759437918484.jpg" width="100%">](https://github.com/GnomeMan4201)
-
----
 
 # About Me
 Self-taught **Security Researcher & Tool Developer** with over 5 years of experience building and breaking systems.  
 Specialized in **offensive security tooling**, **network reconnaissance**, and **adversarial machine learning**—developing tools that prove capability through execution, not credentials.
-
-> No degree. No certifications. Just tools that work.
 
 ---
 
