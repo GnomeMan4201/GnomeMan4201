@@ -1,7 +1,6 @@
 
 # About Me
-Self-taught **Security Researcher & Tool Developer** with over 5 years of experience building and breaking systems.  
-Specialized in **offensive security tooling**, **network reconnaissance**, and **adversarial machine learning**—developing tools that prove capability through execution, not credentials.
+Self-taught **Security Researcher & Tool Developer** with over 5 years of experience building and breaking systems.  Specialized in **offensive security tooling**, **network reconnaissance**, and **adversarial machine learning**
 
 ---
 
