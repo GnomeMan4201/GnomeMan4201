@@ -1,169 +1,37 @@
+# GnomeMan4201
 
-# About Me
-Self-taught **Security Researcher & Tool Developer**   Specialized in **offensive security tooling**, **network reconnaissance**, and **adversarial machine learning**
+Self-taught security researcher and tool developer. No credentials, no institutional backing. Everything here was built from scratch — maintenance worker by day, building offensive tooling and research infrastructure at night.
 
----
-
-# Skills & Technology Stack
-
-## Languages
-<p>
-  <img src="https://img.shields.io/badge/Bash-121011?logo=gnu-bash&logoColor=white&style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white&style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/C-A8B9CC?logo=c&logoColor=white&style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge"/>
-</p>
+Work spans network intelligence, adversary simulation, payload engineering, LLM-assisted security tooling, and community authenticity research. All tools are built for authorized research and controlled lab environments.
 
 ---
 
-## Frameworks & Libraries
-<p>
-  <img src="https://img.shields.io/badge/BeautifulSoup-4B8BBE?style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Requests-005571?style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Scapy-00BFFF?style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white"/>
-</p>
+## Projects
+
+| Project | What it is |
+|---|---|
+| [Lune](https://github.com/GnomeMan4201/Lune) | Modular adversary simulation platform — 60 modules, LLM mutation engine, encrypted C2, adaptive deception pipeline |
+| [LANimals](https://github.com/GnomeMan4201/LANimals) | Local network intelligence — real-time LAN monitoring, rogue detection, force-directed graph UI |
+| [zer0DAYSlater](https://github.com/GnomeMan4201/zer0DAYSlater) | Post-exploitation framework — multi-channel C2, process cloaking, LLM operator interface |
+| [OWN](https://github.com/GnomeMan4201/OWN) | Autonomous offensive framework — adaptive mutation loop, AI-driven campaign controller |
+| [Blackglass Suite](https://github.com/GnomeMan4201/Blackglass_Suite) | Offline payload forge — QR delivery, PowerShell staging, stealth persistence |
+| [Decoy-Hunter](https://github.com/GnomeMan4201/Decoy-Hunter) | Bypasses "all ports open" deception to find real attack surfaces |
+| [devto-bot-audit](https://github.com/GnomeMan4201/devto-bot-audit) | Automated bot detection and community authenticity analysis for DEV.to |
+| [devto-analytics-pro](https://github.com/GnomeMan4201/devto-analytics-pro) | Article performance analytics for DEV.to writers |
+| [reflexive-identity](https://github.com/GnomeMan4201/reflexive-identity) | Zero-trust AI agent framework with self-authentication and autonomous privilege revocation |
 
 ---
 
-## Tools & Platforms
-<p>
-  <img src="https://img.shields.io/badge/Kali_Linux-557C94?style=for-the-badge&logo=kalilinux&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Termux-2C2C2C?style=for-the-badge&logo=termux&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white&style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Debian-A81D33?logo=debian&logoColor=white&style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Git-F05032?logo=git&logoColor=white&style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Nmap-004B87?style=for-the-badge&logo=nmap&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Metasploit-000000?style=for-the-badge&logo=metasploit&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Wireshark-1679A7?style=for-the-badge&logo=wireshark&logoColor=white"/>
-  <img src="https://img.shields.io/badge/QEMU-FF6600?style=for-the-badge&logo=qemu&logoColor=white"/>
-</p>
+## Stack
+
+Python — Bash — C — JavaScript — FastAPI — Flask — SQLite — Ollama — nmap — Scapy
 
 ---
 
-## Offensive & Research Tooling I Develop
-<p>
-  <img src="https://img.shields.io/badge/LANimals-000000?style=for-the-badge&logo=linux&logoColor=white"/>
-  <img src="https://img.shields.io/badge/OWN-363636?style=for-the-badge&logo=python&logoColor=white"/>
-  <img src="https://img.shields.io/badge/bad_BANANA-FFA500?style=for-the-badge&logo=c&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Blackglass_Suite-6A0DAD?style=for-the-badge&logo=linux&logoColor=white"/>
-</p>
+## Writing
+
+[dev.to/gnomeman4201](https://dev.to/gnomeman4201)
 
 ---
 
-## GitHub Stats
-<p>
-  <img src="https://github-readme-stats.vercel.app/api?username=GnomeMan4201&show_icons=true&theme=dark&hide_border=true" height="180px"/>
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=GnomeMan4201&layout=compact&theme=dark&hide_border=true" height="180px"/>
-</p>
-
----
-
-**Profiles:**  
-[Dev.to](https://dev.to/gnomeman4201) • [CoderLegion](https://coderlegion.com/user/GnomeMan4201)
-
----
-
-# Areas of Focus
-- Offensive Security Tooling  
-- Adversarial Machine Learning  
-- Network Security & Penetration Testing  
-- Automated Red Team Infrastructure  
-
----
-
-# Core Projects
-
-### [OWN](https://github.com/GnomeMan4201/OWN)
-**Advanced Network Reconnaissance Platform**
-
-- Discovers exposed endpoints, APIs, and services  
-- Maps external attack surfaces with version detection  
-- Identifies technology stacks and potential entry points  
-
----
-
-### [LANimals](https://github.com/GnomeMan4201/LANimals)
-**Real-time Network Intelligence Suite**
-
-- Live network visualization and device fingerprinting  
-- Service enumeration and traffic pattern analysis  
-- Adversary simulation and countermeasure detection  
-
----
-
-### [Blackglass Suite](https://github.com/GnomeMan4201/Blackglass_Suite)
-**Covert Operations Platform**
-
-- Secure communication channel establishment  
-- Payload mutation and evasion automation  
-- Anonymous research environment management  
-
----
-
-### [bad_BANANA](https://github.com/GnomeMan4201/bad_BANANA)
-**Adversarial ML Research Framework**
-
-- Model vulnerability assessment and exploitation  
-- Poisoning and evasion attack simulations  
-- Defensive AI hardening validation  
-
----
-
-# Real-World Use Scenarios
-
-**Scenario 1: Comprehensive Security Assessment**
-
-1. OWN → Maps exposed infrastructure at target.com
-
-
-2. LANimals → Profiles internal network after initial access
-
-
-3. Blackglass → Establishes covert communication
-
-
-4. bad_BANANA → Evaluates AI/ML defenses for weaknesses
-
-
-
-**Scenario 2: Red Team Operation**
-
-OWN (External Mapping) → Finds vulnerable API endpoint ↓ LANimals (Lateral Movement) → Discovers internal ML model server ↓ bad_BANANA (AI Exploitation) → Compromises model integrity ↓ Blackglass (Stealth Exfiltration) → Securely extracts model data
-
-**Scenario 3: Defensive Research**
-
-bad_BANANA → Identify ML vulnerabilities
-LANimals → Test network detection
-OWN → Validate external exposure
-Blackglass → Securely report and mitigate
-
----
-
-# Technical Methodology
-
-All research projects follow responsible disclosure principles and are intended for:
-
-- Security education and awareness  
-- Defensive security enhancement  
-- Authorized penetration testing  
-- Academic security research  
-
-**Security Compliance**
-- Responsible disclosure protocols enforced  
-- Educational use emphasis in all tooling  
-- Compliance with applicable security regulations  
-- Continuous vulnerability assessment  
-
----
-
-# Contact
-
-For research collaboration, responsible disclosure, or professional inquiries:
-
-- GitHub Issues → Project-specific security channels  
-- Repository Discussions → Professional communication hub  
-
----
-
-> Every repository here is independently developed as part of my self-taught journey in cybersecurity.  
+*All tools are for authorized research and controlled environments only.*
