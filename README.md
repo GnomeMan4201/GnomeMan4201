@@ -1,6 +1,6 @@
 # GnomeMan4201
 
-Self-taught security researcher and tool developer. No credentials, no institutional backing. Everything here was built from scratch — maintenance worker by day, building offensive tooling and research infrastructure at night.
+Self-taught security researcher and tool developer.  no institutional backing. Everything here was built from scratch 
 
 Work spans network intelligence, adversary simulation, payload engineering, LLM-assisted security tooling, and community authenticity research. All tools are built for authorized research and controlled lab environments.
 
