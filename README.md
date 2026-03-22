@@ -36,6 +36,14 @@ self-taught: networking · security tooling · adversarial AI
 
 ---
 
+## `$ cat ./BANANA_TREE`
+
+> The full ecosystem map — how every tool connects, the adversarial training loop, and the philosophy behind it all.
+
+[![BANANA_TREE](https://img.shields.io/badge/→%20BANANA__TREE%20ecosystem-0A0A08?style=for-the-badge&labelColor=8B1A1A)](https://github.com/GnomeMan4201/BANANA_TREE)
+
+---
+
 ## `$ cat /etc/skills`
 
 <div align="center">
