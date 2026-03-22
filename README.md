@@ -137,20 +137,6 @@ status:  active development
 
 </div>
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  badBANANA Issue 01 // Living Systems                       │
-│                                                             │
-│  A security research zine published under the              │
-│  LANimals collective identity.                             │
-│                                                             │
-│  Topics: adversarial AI · prompt-space security ·          │
-│  network deception · living off the land · red team ops    │
-│                                                             │
-│  Format: monospace · cream / black / maroon                │
-│  Release: DEF CON                                          │
-└─────────────────────────────────────────────────────────────┘
-```
 
 ---
 
