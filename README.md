@@ -32,7 +32,6 @@ collective: LANimals // zine: badBANANA // handle: gnomeman4201
 self-taught: networking · security tooling · adversarial AI
 ```
 
-> *"let the work speak first. identity follows."*
 
 ---
 
