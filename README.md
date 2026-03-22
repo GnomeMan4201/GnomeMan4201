@@ -216,6 +216,6 @@ identity follows.
 [![GitHub followers](https://img.shields.io/github/followers/GnomeMan4201?style=flat-square&labelColor=0A0A08&color=5C1010&label=followers)](https://github.com/GnomeMan4201?tab=followers)
 [![GitHub stars](https://img.shields.io/github/stars/GnomeMan4201?style=flat-square&labelColor=0A0A08&color=5C1010&label=stars)](https://github.com/GnomeMan4201)
 
-*© badBANANA collective // LANimals*
+*© bad_BANANA*
 
 </div>
