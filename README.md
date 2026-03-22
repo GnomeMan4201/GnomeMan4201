@@ -7,7 +7,7 @@
 ██║   ██║██║╚██╗██║██║   ██║██║╚██╔╝██║██╔══╝  ██║╚██╔╝██║██╔══██║██║╚██╗██║╚════██║██╔═══╝ ██║   ██║ ██║
 ╚██████╔╝██║ ╚████║╚██████╔╝██║ ╚═╝ ██║███████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║     ██║███████╗╚██████╔╝ ██║
  ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝     ╚═╝╚══════╝ ╚═════╝  ╚═╝
-                                                    // bad_BANANA collective — gnomeman4201
+                                                    // LANimals collective — gnomeman4201
 ```
 
 <div align="center">
@@ -32,6 +32,7 @@ collective: LANimals // zine: badBANANA // handle: gnomeman4201
 self-taught: networking · security tooling · adversarial AI
 ```
 
+> *"let the work speak first. identity follows."*
 
 ---
 
@@ -119,6 +120,14 @@ status:  active development
 ---
 
 ## `$ cat ./zine/badBANANA_issue01.txt`
+
+<div align="center">
+
+[![badBANANA Issue 01 — Living Systems](https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/badbanana_cover.png)](https://github.com/GnomeMan4201/bad_BANANA/releases/download/issue-01/badBANANA_Issue01_Living_Systems.pdf)
+
+*↑ click to read // badBANANA Issue 01 — Living Systems*
+
+</div>
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -216,6 +225,6 @@ identity follows.
 [![GitHub followers](https://img.shields.io/github/followers/GnomeMan4201?style=flat-square&labelColor=0A0A08&color=5C1010&label=followers)](https://github.com/GnomeMan4201?tab=followers)
 [![GitHub stars](https://img.shields.io/github/stars/GnomeMan4201?style=flat-square&labelColor=0A0A08&color=5C1010&label=stars)](https://github.com/GnomeMan4201)
 
-*© bad_BANANA*
+*© badBANANA collective // LANimals*
 
 </div>
