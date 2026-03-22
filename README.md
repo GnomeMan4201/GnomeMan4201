@@ -7,13 +7,13 @@
 ██║   ██║██║╚██╗██║██║   ██║██║╚██╔╝██║██╔══╝  ██║╚██╔╝██║██╔══██║██║╚██╗██║╚════██║██╔═══╝ ██║   ██║ ██║
 ╚██████╔╝██║ ╚████║╚██████╔╝██║ ╚═╝ ██║███████╗██║ ╚═╝ ██║██║  ██║██║ ╚████║     ██║███████╗╚██████╔╝ ██║
  ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝     ╚═╝╚══════╝ ╚═════╝  ╚═╝
-                                                    // LANimals collective — bad_banana
+                                                    // LANimals collective — gnomeman4201
 ```
 
 <div align="center">
 
 [![Grade](https://img.shields.io/badge/GITHUB%20GRADE-B%2B-8B1A1A?style=for-the-badge&labelColor=0A0A08&color=8B1A1A)](https://github.com/GnomeMan4201)
-[![Operator](https://img.shields.io/badge/OPERATOR-bad__banana-B52222?style=for-the-badge&labelColor=0A0A08)](https://dev.to/bad_banana)
+[![Operator](https://img.shields.io/badge/OPERATOR-gnomeman4201-B52222?style=for-the-badge&labelColor=0A0A08)](https://dev.to/gnomeman4201)
 [![Focus](https://img.shields.io/badge/FOCUS-SECURITY%20·%20OSINT%20·%20DECEPTION-5C1010?style=for-the-badge&labelColor=0A0A08)](https://github.com/GnomeMan4201)
 [![Status](https://img.shields.io/badge/STATUS-ACTIVE-3DAA3D?style=for-the-badge&labelColor=0A0A08)](https://github.com/GnomeMan4201)
 
@@ -28,7 +28,7 @@ security researcher and tool developer
 6+ years hands-on experience building and breaking systems
 building in public under controlled anonymity
 day job: infrastructure // nights: everything else
-collective: LANimals // zine: badBANANA // handle: bad_banana
+collective: LANimals // zine: badBANANA // handle: gnomeman4201
 self-taught: networking · security tooling · adversarial AI
 ```
 
@@ -140,7 +140,7 @@ status:  active development
 
 ## `$ tail -f ./writing/dev.to`
 
-> Writing as **[bad_banana](https://dev.to/bad_banana)** on DEV.to
+> Writing as **[gnomeman4201](https://dev.to/gnomeman4201)** on DEV.to
 
 ```
 · Operating in Prompt Space: Red Teaming the Control Plane of an LLM
@@ -149,7 +149,7 @@ status:  active development
 · devto-analytics-pro — presence tracking for the terminal-minded
 ```
 
-[![DEV.to](https://img.shields.io/badge/dev.to-bad__banana-0A0A08?style=flat-square&logo=devdotto&logoColor=B52222&labelColor=0A0A08)](https://dev.to/bad_banana)
+[![DEV.to](https://img.shields.io/badge/dev.to-gnomeman4201-0A0A08?style=flat-square&logo=devdotto&logoColor=B52222&labelColor=0A0A08)](https://dev.to/gnomeman4201)
 
 ---
 
@@ -193,7 +193,7 @@ CEILING: A-  (gap: community signal · public visibility)
 ```
          GnomeMan4201@github
          ──────────────────
-OS:      Pop!_OS // bad_banana
+OS:      Pop!_OS // gnomeman4201
 Role:    Building Maintenance Tech (day) / Security Dev (night)
 Stack:   Python · Shell · FastAPI · SQLite
 Repos:   14 public  (12 pushed within 48h)
@@ -201,7 +201,7 @@ Stars:   18 earned
 Age:     4.2 years on platform
 Org:     LANimals collective
 Zine:    badBANANA Issue 01 // DEF CON
-Handle:  bad_banana · GnomeMan4201
+Handle:  gnomeman4201
 Grade:   B+  (↑ from C-)
 ```
 
