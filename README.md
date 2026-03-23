@@ -62,7 +62,7 @@ self-taught: networking · security tooling · adversarial AI
 ```
 DOMAIN                  DEPTH        NOTES
 ─────────────────────────────────────────────────────────────────
-Adversarial Simulation  █████████░   Lune — 57-module tradecraft lib
+Adversarial Simulation  █████████░   Lune — 64-module tradecraft lib
 Network Deception       ████████░░   LANimals — adaptive honeypot engine
 OSINT / Intel           ████████░░   OpenSight — entity graphs, bundles
 Python / FastAPI        ████████░░   production local-first backends
@@ -79,7 +79,7 @@ Threat Detection        ██████░░░░   risk scoring, behaviora
 ### 🔴 Lune
 > **Modular Adversary Simulation & Live Deception Framework**
 
-57-module tradecraft library. LLM-powered mutation engine. Pre-built operation chains. Encrypted C2 infrastructure (AES-128-CBC + HMAC-SHA256). Unified persona system. Hardened agent with encrypted beacon/report cycle. Built for operators who need real deception capability — not demos.
+64-module tradecraft library. LLM-powered mutation engine. Pre-built operation chains. Encrypted C2 infrastructure (AES-128-CBC + HMAC-SHA256). Unified persona system. Hardened agent with encrypted beacon/report cycle. Built for operators who need real deception capability — not demos.
 
 ```
 stack:   Python · MIT licensed · CI passing
@@ -115,7 +115,7 @@ stack:   Python · FastAPI · SQLAlchemy · Canvas API · SQLite
 status:  active development
 ```
 
-[![OpenSight](https://img.shields.io/badge/→%20OpenSight-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/bad_BANANA)
+[![OpenSight](https://img.shields.io/badge/→%20OpenSight-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/OpenSight)
 
 ---
 
@@ -166,7 +166,7 @@ METRIC                   SCORE    WEIGHT    WEIGHTED
 Commit Consistency        97/100   ×0.25     24.3
   12/14 repos pushed within 48h — near perfect
 Project Depth             94/100   ×0.20     18.8
-  Lune: 57-module tradecraft lib, hardened C2, CI/CD
+  Lune: 64-module tradecraft lib, hardened C2, CI/CD
   LANimals: production deception platform
   OpenSight: full OSINT pipeline
 Community Signal          73/100   ×0.20     14.6
