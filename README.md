@@ -119,6 +119,20 @@ status:  active development
 
 ---
 
+### 🔴 PHANTOM
+> **Deception Intelligence Layer for Decoy-Hunter**
+
+Honeypot platform fingerprinting (Cowrie, Kippo, OpenCanary, Thinkst, HoneyD, Dionaea), deception topology mapping, and counter-playbook generation. Extends Decoy-Hunter with actionable intelligence.
+
+````
+stack:   Python · regex signatures · LANimals integration
+status:  active development
+```
+
+[![PHANTOM](https://img.shields.io/badge/→%20PHANTOM-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/PHANTOM)
+
+---
+
 ### 🔴 zer0DAYSlater &nbsp;·&nbsp; 🔴 Blackglass Suite &nbsp;·&nbsp; 🔴 Decoy-Hunter
 
 [![zer0DAYSlater](https://img.shields.io/badge/→%20zer0DAYSlater-0A0A08?style=flat-square&labelColor=5C1010&color=0A0A08)](https://github.com/GnomeMan4201/zer0DAYSlater)
