@@ -155,6 +155,15 @@ status:  active — authorized lab environments only
 
 ---
 
+### 🔴 reflexive-identity &nbsp;·&nbsp; 🔴 devto-bot-audit &nbsp;·&nbsp; 🔴 pwn &nbsp;·&nbsp; 🔴 drift-artifact
+
+[![reflexive-identity](https://img.shields.io/badge/→%20reflexive--identity-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/reflexive-identity)
+[![devto-bot-audit](https://img.shields.io/badge/→%20devto--bot--audit-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/devto-bot-audit)
+[![pwn](https://img.shields.io/badge/→%20pwn-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/pwn)
+[![drift-artifact](https://img.shields.io/badge/→%20drift--artifact-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/drift-artifact)
+
+---
+
 ## `$ tail -f ./writing/dev.to`
 
 > Writing as **[gnomeman4201](https://dev.to/gnomeman4201)** on DEV.to
