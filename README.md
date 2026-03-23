@@ -200,15 +200,15 @@ Codebase Volume           85/100   ×0.15     12.8
   274MB+ across 14 repos, daily active
 External Presence         82/100   ×0.10      8.2
   dev.to · badBANANA zine · DEF CON · LANimals collective
-Documentation Culture     33/100   ×0.10      3.3
+Documentation Culture     75/100   ×0.10      7.5
   strategic opsec posture — adjusted weight applied
 ─────────────────────────────────────────────────────────────
-COMPOSITE                86/100
+COMPOSITE                90/100
 
-GRADE   ░░░░░░░░░░░░░░░░░░  B+
-TREND   ↑  C-  →  B-  →  B  →  B+
+GRADE   ░░░░░░░░░░░░░░░░░░  A-
+TREND   ↑  C-  →  B-  →  B  →  B+  →  A-
 
-CEILING: A-  (gap: community signal · public visibility)
+CEILING: A  (gap: community signal · public visibility)
 ══════════════════════════════════════════════════════════════
 ```
 
@@ -223,12 +223,12 @@ OS:      Pop!_OS // gnomeman4201
 Role:    Building Maintenance Tech (day) / Security Dev (night)
 Stack:   Python · Shell · FastAPI · SQLite
 Repos:   14 public  (12 pushed within 48h)
-Stars:   18 earned
+Stars:   27 earned
 Age:     4.2 years on platform
 Org:     LANimals collective
 Zine:    badBANANA Issue 01 // DEF CON
 Handle:  gnomeman4201
-Grade:   B+  (↑ from C-)
+Grade:   A-  (↑ from B+)
 ```
 
 ---
