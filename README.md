@@ -127,6 +127,21 @@ status:  active development
 
 ---
 
+### 🔴 bad_BANANA
+
+> **Field-Ready Mobile Offensive Toolkit**
+
+No-root offensive toolkit for Android (Termux) and Linux. Multi-stage dropper chain, covert exfil over DNS/HTTPS/WebSocket, Chromium session extraction, EDR-aware launcher. Operates entirely from a mobile device.
+```
+role:    mobile simulation layer — extends the environment off-network
+stack:   Python · Shell · Termux
+status:  active — authorized lab environments only
+```
+
+[![bad_BANANA](https://img.shields.io/badge/→%20bad__BANANA-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/bad_BANANA)
+
+---
+
 ## `$ cat ./zine/badBANANA_issue01.txt`
 
 <div align="center">
