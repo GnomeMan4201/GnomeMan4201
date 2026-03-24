@@ -124,7 +124,7 @@ status:  active development
 
 Honeypot platform fingerprinting (Cowrie, Kippo, OpenCanary, Thinkst, HoneyD, Dionaea), deception topology mapping, and counter-playbook generation. Extends Decoy-Hunter with actionable intelligence.
 
-````
+```
 stack:   Python · regex signatures · LANimals integration
 status:  active development
 ```
