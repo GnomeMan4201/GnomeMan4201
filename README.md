@@ -194,23 +194,24 @@ status:  active — authorized lab environments only
 
 ## `$ cat ./signals.txt`
 
+```
 VERIFIED SIGNALS // GnomeMan4201
-══════════════════════════════════════════════════════════════
+==============================================================
 GitHub Stars             30        across 16 public repos
 GitHub Forks              3        zer0DAYSlater x2
 Followers                93        organic
 Contributions           616        last 12 months
-──────────────────────────────────────────────────────────────
+--------------------------------------------------------------
 Dev.to Articles          27        gnomeman4201
 Dev.to Views          3,948        total reads
 Bot Audit Finding       43%        bots detected in DEV ecosystem
-──────────────────────────────────────────────────────────────
-Lune Tests               92        passing · CI green
-OpenSight Tests          52        passing · CI green
-PHANTOM Tests            20        passing · 0 external deps
-──────────────────────────────────────────────────────────────
+--------------------------------------------------------------
+Lune Tests               92        passing -- CI green
+OpenSight Tests          52        passing -- CI green
+PHANTOM Tests            20        passing -- 0 external deps
+--------------------------------------------------------------
 every number above is verifiable.
-══════════════════════════════════════════════════════════════
+==============================================================
 
 ```
 
