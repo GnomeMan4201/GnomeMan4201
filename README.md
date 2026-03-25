@@ -193,7 +193,7 @@ status:  active — authorized lab environments only
 
 ---
 
-## `$ ./grade --calculate --include-lune`
+## `$ cat ./signals.txt`
 
 ```
 GITHUB GRADE REPORT // GnomeMan4201
@@ -234,15 +234,11 @@ CEILING: A  (gap: community signal · public visibility)
          GnomeMan4201@github
          ──────────────────
 OS:      Pop!_OS // gnomeman4201
-Role:    Building Maintenance Tech (day) / Security Dev (night)
 Stack:   Python · Shell · FastAPI · SQLite
-Repos:   16 public  (16 pushed within 48h)
-Stars:   27 earned
 Age:     4.2 years on platform
 Org:     LANimals collective
 Zine:    badBANANA Issue 01 // DEF CON
 Handle:  gnomeman4201
-Grade:   A  (↑ from A-)
 ```
 
 ---
