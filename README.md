@@ -12,7 +12,6 @@
 
 <div align="center">
 
-[![Grade](https://img.shields.io/badge/GITHUB%20GRADE-B%2B-8B1A1A?style=for-the-badge&labelColor=0A0A08&color=8B1A1A)](https://github.com/GnomeMan4201)
 [![Operator](https://img.shields.io/badge/OPERATOR-gnomeman4201-B52222?style=for-the-badge&labelColor=0A0A08)](https://dev.to/gnomeman4201)
 [![Focus](https://img.shields.io/badge/FOCUS-SECURITY%20·%20OSINT%20·%20DECEPTION-5C1010?style=for-the-badge&labelColor=0A0A08)](https://github.com/GnomeMan4201)
 [![Status](https://img.shields.io/badge/STATUS-ACTIVE-3DAA3D?style=for-the-badge&labelColor=0A0A08)](https://github.com/GnomeMan4201)
