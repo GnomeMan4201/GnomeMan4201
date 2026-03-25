@@ -212,10 +212,7 @@ PHANTOM Tests            20        passing · 0 external deps
 ──────────────────────────────────────────────────────────────
 every number above is verifiable.
 ══════════════════════════════════════════════════════════════
-TREND   ↑  C-  →  B-  →  B  →  B+  →  A-  →  A
 
-CEILING: A  (gap: community signal · public visibility)
-══════════════════════════════════════════════════════════════
 ```
 
 ---
