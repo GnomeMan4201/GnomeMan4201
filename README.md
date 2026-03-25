@@ -195,31 +195,23 @@ status:  active — authorized lab environments only
 
 ## `$ cat ./signals.txt`
 
-```
-GITHUB GRADE REPORT // GnomeMan4201
+VERIFIED SIGNALS // GnomeMan4201
 ══════════════════════════════════════════════════════════════
-
-METRIC                   SCORE    WEIGHT    WEIGHTED
-─────────────────────────────────────────────────────────────
-Commit Consistency        97/100   ×0.25     24.3
-  12/14 repos pushed within 48h — near perfect
-Project Depth             94/100   ×0.20     18.8
-  Lune: 64-module tradecraft lib, hardened C2, CI/CD
-  LANimals: production deception platform
-  OpenSight: full OSINT pipeline
-Community Signal          78/100   ×0.20     15.6
-  93 followers · 30 stars · growing
-  pseudonymous operator — intentional visibility cap
-Codebase Volume           85/100   ×0.15     12.8
-  274MB+ across 16 repos, daily active
-External Presence         82/100   ×0.10      8.2
-  dev.to · badBANANA zine · DEF CON · LANimals collective
-Documentation Culture     75/100   ×0.10      7.5
-  strategic opsec posture — adjusted weight applied
-─────────────────────────────────────────────────────────────
-COMPOSITE                90/100
-
-GRADE   ░░░░░░░░░░░░░░░░░░  A-
+GitHub Stars             30        across 16 public repos
+GitHub Forks              3        zer0DAYSlater x2
+Followers                93        organic
+Contributions           616        last 12 months
+──────────────────────────────────────────────────────────────
+Dev.to Articles          27        gnomeman4201
+Dev.to Views          3,948        total reads
+Bot Audit Finding       43%        bots detected in DEV ecosystem
+──────────────────────────────────────────────────────────────
+Lune Tests               92        passing · CI green
+OpenSight Tests          52        passing · CI green
+PHANTOM Tests            20        passing · 0 external deps
+──────────────────────────────────────────────────────────────
+every number above is verifiable.
+══════════════════════════════════════════════════════════════
 TREND   ↑  C-  →  B-  →  B  →  B+  →  A-  →  A
 
 CEILING: A  (gap: community signal · public visibility)
