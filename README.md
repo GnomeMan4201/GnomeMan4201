@@ -207,11 +207,11 @@ Project Depth             94/100   ×0.20     18.8
   Lune: 64-module tradecraft lib, hardened C2, CI/CD
   LANimals: production deception platform
   OpenSight: full OSINT pipeline
-Community Signal          73/100   ×0.20     14.6
-  88 followers · 18 stars · growing
+Community Signal          78/100   ×0.20     15.6
+  93 followers · 30 stars · growing
   pseudonymous operator — intentional visibility cap
 Codebase Volume           85/100   ×0.15     12.8
-  274MB+ across 14 repos, daily active
+  274MB+ across 16 repos, daily active
 External Presence         82/100   ×0.10      8.2
   dev.to · badBANANA zine · DEF CON · LANimals collective
 Documentation Culture     75/100   ×0.10      7.5
@@ -220,7 +220,7 @@ Documentation Culture     75/100   ×0.10      7.5
 COMPOSITE                90/100
 
 GRADE   ░░░░░░░░░░░░░░░░░░  A-
-TREND   ↑  C-  →  B-  →  B  →  B+  →  A-
+TREND   ↑  C-  →  B-  →  B  →  B+  →  A-  →  A
 
 CEILING: A  (gap: community signal · public visibility)
 ══════════════════════════════════════════════════════════════
@@ -236,13 +236,13 @@ CEILING: A  (gap: community signal · public visibility)
 OS:      Pop!_OS // gnomeman4201
 Role:    Building Maintenance Tech (day) / Security Dev (night)
 Stack:   Python · Shell · FastAPI · SQLite
-Repos:   14 public  (12 pushed within 48h)
+Repos:   16 public  (16 pushed within 48h)
 Stars:   27 earned
 Age:     4.2 years on platform
 Org:     LANimals collective
 Zine:    badBANANA Issue 01 // DEF CON
 Handle:  gnomeman4201
-Grade:   A-  (↑ from B+)
+Grade:   A  (↑ from A-)
 ```
 
 ---
