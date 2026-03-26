@@ -230,21 +230,6 @@ Zine:    badBANANA Issue 01 // DEF CON
 Handle:  gnomeman4201
 ```
 
----
-
-<div align="center">
-
-```
----
-
----
-
-<div align="center">
-  <img src="assets/bad_banana_end.png" alt="bad_BANANA end of file" width="500" />
-```
-
----
-
 <div align="center">
   <img src="assets/bad_banana_end.png" alt="bad_BANANA end of file" width="500" />
 </div>
