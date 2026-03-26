@@ -230,22 +230,10 @@ Zine:    badBANANA Issue 01 // DEF CON
 Handle:  gnomeman4201
 ```
 
----
-
-<div align="center">
-
-```
----
-
----
-
-```
-
----
-
 <div align="center">
   <img src="assets/bad_banana_end.png" alt="bad_BANANA end of file" width="500" />
 </div>
+
 
 
 [![GitHub followers](https://img.shields.io/github/followers/GnomeMan4201?style=flat-square&labelColor=0A0A08&color=5C1010&label=followers)](https://github.com/GnomeMan4201?tab=followers)
