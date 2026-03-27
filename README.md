@@ -140,6 +140,7 @@ status:  active development
 [![zer0DAYSlater](https://img.shields.io/badge/→%20zer0DAYSlater-0A0A08?style=flat-square&labelColor=5C1010&color=0A0A08)](https://github.com/GnomeMan4201/zer0DAYSlater)
 [![Blackglass](https://img.shields.io/badge/→%20Blackglass__Suite-0A0A08?style=flat-square&labelColor=5C1010&color=0A0A08)](https://github.com/GnomeMan4201/Blackglass_Suite)
 [![Decoy-Hunter](https://img.shields.io/badge/→%20Decoy--Hunter-0A0A08?style=flat-square&labelColor=5C1010&color=0A0A08)](https://github.com/GnomeMan4201/Decoy-Hunter)
+[![chain](https://img.shields.io/badge/→%20chain-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/chain)
 
 ---
 
