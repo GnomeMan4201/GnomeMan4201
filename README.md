@@ -314,8 +314,8 @@ preferred:    GitHub issues / security advisories
 writing:      dev.to/gnomeman4201
 collective:   LANimals — github.com/GnomeMan4201
 ──────────────────────────────────────────────────────────────────
-PGP:          publish your fingerprint here once generated
-              gpg --gen-key && gpg --fingerprint
+PGP:          
+
               add pubkey to: github.com/GnomeMan4201.gpg
 ──────────────────────────────────────────────────────────────────
 note: identity is managed deliberately.
