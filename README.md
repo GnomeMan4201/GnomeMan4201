@@ -227,10 +227,10 @@ status:  active — authorized lab environments only
 ```
 VERIFIED SIGNALS // GnomeMan4201
 ==============================================================
-GitHub Stars             31        across 20 public repos
+GitHub Stars                33        across 19 public repos
 GitHub Forks              3        zer0DAYSlater x2
-Followers                93        organic
-Contributions           616        last 12 months
+Followers                   76        organic
+Contributions              679        last 12 months
 --------------------------------------------------------------
 Dev.to Articles          28        gnomeman4201
 Dev.to Views          3,948        total reads
@@ -242,7 +242,7 @@ PHANTOM Tests            20        passing -- 0 external deps
 aliasOS release       v1.0.0        296 aliases · 7 tabs · live demo
 --------------------------------------------------------------
 every number above is verifiable.
-last updated: 2026-03-31T00:00:00Z
+last updated: 2026-04-01T15:31:15Z
 ==============================================================
 
 ```
