@@ -27,7 +27,7 @@ security researcher and tool developer
 6+ years hands-on experience building and breaking systems
 building in public under controlled anonymity
 day job: other // nights: everything else
-collective: LANimals // handle: gnomeman4201
+collective: LANimals // zine: badBANANA // handle: gnomeman4201
 self-taught: networking · security tooling · adversarial AI
 ```
 <div align="center">
@@ -156,21 +156,6 @@ status:  active — authorized lab environments only
 ```
 
 [![bad_BANANA](https://img.shields.io/badge/→%20bad__BANANA-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/bad_BANANA)
-
----
-
-## `$ cat ./zine/badBANANA_issue01.txt`
-
-<div align="center">
-
-[![badBANANA Issue 01 — Living Systems](https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/badbanana_cover.png)](https://github.com/GnomeMan4201/bad_BANANA/releases/download/issue-01/badBANANA_Issue01_Living_Systems.pdf)
-
-*↑ click to read // badBANANA Issue 01 — Living Systems*
-
-</div>
-
-
----
 
 ### 🔴 reflexive-identity &nbsp;·&nbsp; 🔴 devto-bot-audit &nbsp;·&nbsp; 🔴 pwn &nbsp;·&nbsp; 🔴 drift-artifact
 
