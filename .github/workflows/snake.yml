@@ -10,9 +10,12 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: Platane/snk@v3
+        id: snake-gif
         with:
           github_user_name: GnomeMan4201
           outputs: |
@@ -20,9 +23,11 @@ jobs:
             dist/github-snake-dark.svg?palette=github-dark
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - uses: crazy-max/ghaction-github-pages@v3
+      - name: push to output branch
+        uses: crazy-max/ghaction-github-pages@v3
         with:
           target_branch: output
           build_dir: dist
+          commit_message: "chore: update snake [skip ci]"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
