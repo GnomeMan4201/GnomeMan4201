@@ -1,4 +1,10 @@
 <!-- GnomeMan4201 // badBANANA collective -->
+<div align="center">
+
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=13&duration=3000&pause=1000&color=B52222&background=0A0A0800&center=true&vCenter=true&multiline=true&repeat=true&width=860&height=100&lines=GnomeMan4201+%2F%2F+LANimals+collective;security+researcher+%E2%80%94+tool+developer+%E2%80%94+operator;observe+%E2%86%92+simulate+%E2%86%92+execute+%E2%86%92+adapt)](https://git.io/typing-svg)
+
+</div>
+
 
 ```
  ██████╗ ███╗   ██╗ ██████╗ ███╗   ███╗███████╗███╗   ███╗ █████╗ ███╗   ██╗██╗  ██╗██████╗  ██████╗  ██╗
@@ -19,6 +25,13 @@
 </div>
 
 ---
+
+
+<div align="center">
+
+![GitHub Streak](https://streak-stats.demolab.com?user=GnomeMan4201&theme=dark&background=0A0A08&border=5C1010&stroke=5C1010&ring=B52222&fire=B52222&currStreakNum=FFFFFF&sideNums=FFFFFF&currStreakLabel=888888&sideLabels=888888&dates=555555&hide_border=false)
+
+</div>
 
 ## `$ whoami`
 
@@ -108,6 +121,11 @@ Threat Detection        ██████░░░░   risk scoring, behaviora
 
 ## `$ ls -la ./projects/`
 
+> each tool exists because the previous one exposed a gap.
+> the ecosystem builds on itself. nothing here is speculative.
+
+
+
 ### 🔴 Lune
 > **Modular Adversary Simulation & Live Deception Framework**
 
@@ -189,6 +207,7 @@ status:  active — authorized lab environments only
 
 ### 🟢 aliasOS &nbsp;·&nbsp; 🔴 reflexive-identity &nbsp;·&nbsp; 🔴 devto-bot-audit &nbsp;·&nbsp; 🔴 pwn &nbsp;·&nbsp; 🔴 drift-artifact
 
+[![[REDACTED]](https://img.shields.io/badge/→%20%5BREDACTED%5D-0A0A08?style=flat-square&labelColor=111111&color=0A0A08)](https://github.com/GnomeMan4201)
 [![aliasOS](https://img.shields.io/badge/→%20aliasOS-0A0A08?style=flat-square&labelColor=1a4a3a&color=0A0A08)](https://github.com/GnomeMan4201/aliasOS)
 [![reflexive-identity](https://img.shields.io/badge/→%20reflexive--identity-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/reflexive-identity)
 [![devto-bot-audit](https://img.shields.io/badge/→%20devto--bot--audit-0A0A08?style=flat-square&labelColor=8B1A1A&color=0A0A08)](https://github.com/GnomeMan4201/devto-bot-audit)
@@ -249,6 +268,22 @@ last updated: 2026-04-01T15:31:15Z
 
 ---
 
+
+## `$ systemctl status --all`
+
+<div align="center">
+
+| repo | build | lang |
+|------|-------|------|
+| [aliasOS](https://github.com/GnomeMan4201/aliasOS) | [![CI](https://github.com/GnomeMan4201/aliasOS/actions/workflows/ci.yml/badge.svg)](https://github.com/GnomeMan4201/aliasOS/actions) | ![Python](https://img.shields.io/badge/-python-0A0A08?style=flat-square&logo=python&logoColor=B52222) |
+| [drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator) | [![CI](https://github.com/GnomeMan4201/drift_orchestrator/actions/workflows/ci.yml/badge.svg)](https://github.com/GnomeMan4201/drift_orchestrator/actions) | ![Python](https://img.shields.io/badge/-python-0A0A08?style=flat-square&logo=python&logoColor=B52222) |
+| [chain](https://github.com/GnomeMan4201/chain) | [![CI](https://github.com/GnomeMan4201/chain/actions/workflows/ci.yml/badge.svg)](https://github.com/GnomeMan4201/chain/actions) | ![Python](https://img.shields.io/badge/-python-0A0A08?style=flat-square&logo=python&logoColor=B52222) |
+| [Lune](https://github.com/GnomeMan4201/Lune) | [![CI](https://github.com/GnomeMan4201/Lune/actions/workflows/ci.yml/badge.svg)](https://github.com/GnomeMan4201/Lune/actions) | ![Python](https://img.shields.io/badge/-python-0A0A08?style=flat-square&logo=python&logoColor=B52222) |
+| [LANimals](https://github.com/GnomeMan4201/LANimals) | [![CI](https://github.com/GnomeMan4201/LANimals/actions/workflows/ci.yml/badge.svg)](https://github.com/GnomeMan4201/LANimals/actions) | ![Python](https://img.shields.io/badge/-python-0A0A08?style=flat-square&logo=python&logoColor=B52222) |
+| [OpenSight](https://github.com/GnomeMan4201/OpenSight) | [![CI](https://github.com/GnomeMan4201/OpenSight/actions/workflows/ci.yml/badge.svg)](https://github.com/GnomeMan4201/OpenSight/actions) | ![Python](https://img.shields.io/badge/-python-0A0A08?style=flat-square&logo=python&logoColor=B52222) |
+
+</div>
+
 ## `$ neofetch --minimal`
 
 ```
@@ -270,6 +305,13 @@ Handle:  gnomeman4201
 
 [![GitHub followers](https://img.shields.io/github/followers/GnomeMan4201?style=flat-square&labelColor=0A0A08&color=5C1010&label=followers)](https://github.com/GnomeMan4201?tab=followers)
 [![GitHub stars](https://img.shields.io/github/stars/GnomeMan4201?style=flat-square&labelColor=0A0A08&color=5C1010&label=stars)](https://github.com/GnomeMan4201)
+
+
+<div align="center">
+
+[![visitors](https://visitor-badge.laobi.icu/badge?page_id=GnomeMan4201.GnomeMan4201&left_color=0A0A08&right_color=8B1A1A&left_text=profile%20views)](https://github.com/GnomeMan4201)
+
+</div>
 
 *© badBANANA collective // LANimals*
 
