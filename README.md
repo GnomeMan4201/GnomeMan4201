@@ -41,7 +41,6 @@
 
 ---
 
-## `$ cat ./BANANA_TREE`
 ## `$ cat ./BANANA_TREE/architecture.txt`
 
 ```
