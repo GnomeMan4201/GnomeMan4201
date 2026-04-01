@@ -313,8 +313,7 @@ preferred:    GitHub issues / security advisories
 writing:      dev.to/gnomeman4201
 collective:   LANimals — github.com/GnomeMan4201
 ──────────────────────────────────────────────────────────────────
-PGP:          
-
+PGP:          324C 4301 54C2 3C8E 3956 1B10 0CFD 6761 AA75 4969
               add pubkey to: github.com/GnomeMan4201.gpg
 ──────────────────────────────────────────────────────────────────
 note: identity is managed deliberately.
