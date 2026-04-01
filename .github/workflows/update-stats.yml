@@ -10,7 +10,9 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
-      - name: fetch and update stats
+
+      - name: fetch stats
+        id: stats
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -18,18 +20,41 @@ jobs:
           FOLLOWERS=$(gh api users/GnomeMan4201 --jq '.followers')
           REPOS=$(gh api users/GnomeMan4201 --jq '.public_repos')
           CONTRIBUTIONS=$(gh api graphql -f query='query{user(login:"GnomeMan4201"){contributionsCollection{contributionCalendar{totalContributions}}}}' --jq '.data.user.contributionsCollection.contributionCalendar.totalContributions')
-          UPDATED=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          python3 - << PYEOF
+          echo "stars=$STARS" >> $GITHUB_OUTPUT
+          echo "followers=$FOLLOWERS" >> $GITHUB_OUTPUT
+          echo "repos=$REPOS" >> $GITHUB_OUTPUT
+          echo "contributions=$CONTRIBUTIONS" >> $GITHUB_OUTPUT
+          echo "updated=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+
+      - name: update readme
+        env:
+          STARS: ${{ steps.stats.outputs.stars }}
+          FOLLOWERS: ${{ steps.stats.outputs.followers }}
+          REPOS: ${{ steps.stats.outputs.repos }}
+          CONTRIBUTIONS: ${{ steps.stats.outputs.contributions }}
+          UPDATED: ${{ steps.stats.outputs.updated }}
+        run: |
+          python3 - << 'PYEOF'
           import re, os
           from pathlib import Path
           txt = Path("README.md").read_text()
-          txt = re.sub(r"GitHub Stars\s+\d+\s+across \d+ public repos", f"GitHub Stars          {os.environ['STARS']:>8}        across {os.environ['REPOS']} public repos", txt)
-          txt = re.sub(r"Followers\s+\d+\s+organic", f"Followers             {os.environ['FOLLOWERS']:>8}        organic", txt)
-          txt = re.sub(r"Contributions\s+\d+\s+last 12 months", f"Contributions         {os.environ['CONTRIBUTIONS']:>8}        last 12 months", txt)
-          txt = re.sub(r"last updated: [\d\-T:Z]+", f"last updated: {os.environ['UPDATED']}", txt)
+          stars = os.environ.get("STARS", "?")
+          followers = os.environ.get("FOLLOWERS", "?")
+          repos = os.environ.get("REPOS", "?")
+          contributions = os.environ.get("CONTRIBUTIONS", "?")
+          updated = os.environ.get("UPDATED", "unknown")
+          txt = re.sub(r"GitHub Stars\s+\d+\s+across \d+ public repos",
+                       f"GitHub Stars          {stars:>8}        across {repos} public repos", txt)
+          txt = re.sub(r"Followers\s+\d+\s+organic",
+                       f"Followers             {followers:>8}        organic", txt)
+          txt = re.sub(r"Contributions\s+\d+\s+last 12 months",
+                       f"Contributions         {contributions:>8}        last 12 months", txt)
+          txt = re.sub(r"last updated: [\d\-T:Z]+",
+                       f"last updated: {updated}", txt)
           Path("README.md").write_text(txt)
-          print("stats updated")
+          print(f"updated: stars={stars} followers={followers} repos={repos}")
           PYEOF
+
       - name: commit
         run: |
           git config user.email "action@github.com"
