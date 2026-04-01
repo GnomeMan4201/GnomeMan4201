@@ -27,7 +27,7 @@ security researcher and tool developer
 6+ years hands-on experience building and breaking systems
 building in public under controlled anonymity
 day job: other // nights: everything else
-collective: LANimals // zine: badBANANA // handle: gnomeman4201
+collective: LANimals // handle: gnomeman4201
 self-taught: networking · security tooling · adversarial AI
 ```
 <div align="center">
