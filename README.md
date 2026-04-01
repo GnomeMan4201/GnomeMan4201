@@ -190,6 +190,7 @@ status:  active — authorized lab environments only
 · LANimals — building deception infrastructure for local networks
 · The Name Did the Talking  [WeCoded 2026]
 · devto-analytics-pro — presence tracking for the terminal-minded
+· aliasOS — managing 300 operator shell aliases with a Textual TUI
 ```
 
 [![DEV.to](https://img.shields.io/badge/dev.to-gnomeman4201-0A0A08?style=flat-square&logo=devdotto&logoColor=B52222&labelColor=0A0A08)](https://dev.to/gnomeman4201)
@@ -201,18 +202,19 @@ status:  active — authorized lab environments only
 ```
 VERIFIED SIGNALS // GnomeMan4201
 ==============================================================
-GitHub Stars             30        across 16 public repos
+GitHub Stars             31        across 20 public repos
 GitHub Forks              3        zer0DAYSlater x2
 Followers                93        organic
 Contributions           616        last 12 months
 --------------------------------------------------------------
-Dev.to Articles          27        gnomeman4201
+Dev.to Articles          28        gnomeman4201
 Dev.to Views          3,948        total reads
 Bot Audit Finding       43%        bots detected in DEV ecosystem
 --------------------------------------------------------------
 Lune Tests               92        passing -- CI green
 OpenSight Tests          52        passing -- CI green
 PHANTOM Tests            20        passing -- 0 external deps
+aliasOS release       v1.0.0        296 aliases · 7 tabs · live demo
 --------------------------------------------------------------
 every number above is verifiable.
 ==============================================================
@@ -230,7 +232,7 @@ OS:      Pop!_OS // gnomeman4201
 Stack:   Python · Shell · FastAPI · SQLite
 Age:     4.2 years on platform
 Org:     LANimals collective
-Zine:    badBANANA Issue 01 // DEF CON
+Tools:   aliasOS · drift_orchestrator · chain
 Handle:  gnomeman4201
 ```
 
