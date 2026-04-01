@@ -109,6 +109,24 @@ Threat Detection        ██████░░░░   risk scoring, behaviora
 
 ---
 
+
+## `$ cat ./methodology.txt`
+
+```
+RESEARCH APPROACH // GnomeMan4201
+──────────────────────────────────────────────────────────────────
+01  NECESSITY-DRIVEN         build because friction exists, not speculatively
+02  LOCAL-FIRST              no cloud dependencies, no external attack surface
+03  CONTROLLED ANONYMITY     identity follows work, not the other way around
+04  ADVERSARIAL TESTING      every defensive tool built by thinking offensively
+05  PUBLIC VERIFICATION      every claim above is checkable — no vaporware
+06  OPEN SOURCE CORE         infrastructure public, operations private
+──────────────────────────────────────────────────────────────────
+tooling philosophy: if you need it twice, alias it.
+                    if you need it daily, build it.
+                    if it exposes a gap, publish it.
+```
+
 ## `$ ls -la ./projects/`
 
 > each tool exists because the previous one exposed a gap.
@@ -251,6 +269,14 @@ PHANTOM Tests            20        passing -- 0 external deps
 aliasOS release       v1.0.0        296 aliases · 7 tabs · live demo
 --------------------------------------------------------------
 every number above is verifiable.
+--------------------------------------------------------------
+aliasOS installs      live          gnomeman4201.github.io/aliasOS
+drift sessions        active        runtime verified LLM analysis
+LANimals deployments  local         authorized environments only
+--------------------------------------------------------------
+methodology: necessity-driven development (NDD)
+             build when friction exceeds build cost
+==============================================================
 last updated: 2026-04-01T15:31:15Z
 ==============================================================
 
@@ -258,6 +284,43 @@ last updated: 2026-04-01T15:31:15Z
 
 ---
 
+
+
+## `$ cat ./SECURITY.md`
+
+```
+RESPONSIBLE DISCLOSURE // GnomeMan4201
+──────────────────────────────────────────────────────────────────
+scope:     all public repositories under GnomeMan4201
+contact:   encrypted contact preferred (see below)
+response:  acknowledgement within 72h
+policy:    coordinated disclosure — 90 day window before public
+reward:    credit in release notes + acknowledgement in README
+out of scope: social engineering, physical attacks, DoS
+──────────────────────────────────────────────────────────────────
+for critical findings in LANimals, Lune, or drift_orchestrator:
+contact via GitHub security advisory (private channel)
+```
+
+[![Security Policy](https://img.shields.io/badge/security-responsible%20disclosure-0A0A08?style=flat-square&labelColor=5C1010&color=0A0A08)](https://github.com/GnomeMan4201/GnomeMan4201/blob/main/SECURITY.md)
+
+
+## `$ cat ./contact.txt`
+
+```
+CONTACT // GnomeMan4201
+──────────────────────────────────────────────────────────────────
+preferred:    GitHub issues / security advisories
+writing:      dev.to/gnomeman4201
+collective:   LANimals — github.com/GnomeMan4201
+──────────────────────────────────────────────────────────────────
+PGP:          publish your fingerprint here once generated
+              gpg --gen-key && gpg --fingerprint
+              add pubkey to: github.com/GnomeMan4201.gpg
+──────────────────────────────────────────────────────────────────
+note: identity is managed deliberately.
+      the work is public. the operator is not.
+```
 
 ## `$ systemctl status --all`
 
