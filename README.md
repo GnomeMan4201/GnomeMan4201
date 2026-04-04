@@ -8,9 +8,11 @@
 
 ---
 
-Building adversarial infrastructure from the ground up. Network deception, LLM security tooling, payload mutation engines — everything here started as a problem that needed solving and no existing tool that solved it.
+Security researcher and tool developer building local-first systems for network deception, document intelligence, and LLM runtime monitoring. Stack: Python, FastAPI, SQLite, Linux.
 
-Self-taught. Local-first. No lab access, no team, no institutional backing. Just friction and the tools built to remove it.
+**Start here:** [LANimals](https://github.com/GnomeMan4201/LANimals) · [drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator) · [OpenSight](https://github.com/GnomeMan4201/OpenSight)
+
+Self-taught. No lab access, no team, no institutional backing. Everything here started as friction — and became a tool.
 
 Part of the **badBANANA collective** — a one-person operation that treats security research as a craft, not a career move.
 
@@ -43,8 +45,8 @@ Nothing here is speculative. Every tool in the map is operational.
 | tool | what it does |
 |------|-------------|
 | [LANimals](https://github.com/GnomeMan4201/LANimals) | Local network deception platform. Discovers hosts, scores behavioral risk, deploys honeypot traps, assigns adversarial personalities to targets, force-directed graph UI. |
-| [Lune](https://github.com/GnomeMan4201/Lune) | 64-module adversary simulation framework. Encrypted C2, LLM mutation engine, unified persona system, pre-built operation chains. |
-| [zer0DAYSlater](https://github.com/GnomeMan4201/zer0DAYSlater) | Post-exploitation framework. LLM operator, session drift monitoring, entropy capsule, mTLS mesh with ephemeral NaCl keypairs. |
+| [Lune](https://github.com/GnomeMan4201/Lune) | 64-module adversary simulation framework for controlled research environments. Encrypted C2, LLM mutation engine, unified persona system. |
+| [zer0DAYSlater](https://github.com/GnomeMan4201/zer0DAYSlater) | Post-exploitation research framework. LLM-driven operator, session drift monitoring, entropy capsule, mTLS mesh with ephemeral NaCl keypairs. Authorized lab environments only. |
 | [drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator) | Runtime drift control for LLM sessions. SQLite flight recording, semantic embeddings, composite density scoring, hysteresis policy engine. |
 | [OpenSight](https://github.com/GnomeMan4201/OpenSight) | Document intelligence and OSINT platform. Entity extraction, typed knowledge graph, investigation bundles, demonstrated on FBI corpus. |
 | [SHENRON](https://github.com/GnomeMan4201/shenron) | Polymorphic payload framework. 49-layer mutation engine recovered and rebuilt from scratch. |
