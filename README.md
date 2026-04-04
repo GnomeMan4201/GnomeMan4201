@@ -1,63 +1,57 @@
-<!-- GnomeMan4201 -->
+<!-- GnomeMan4201 // badBANANA collective -->
 
-# GnomeMan4201
+<div align="center">
 
-Security researcher and tool developer. Building adversarial infrastructure, network deception systems, and LLM security tooling from first principles.
+*the work speaks first. identity follows.*
 
-Self-taught. Necessity-driven. Everything here exists because something else exposed a gap.
+</div>
 
 ---
 
-## Ecosystem
+Building adversarial infrastructure from the ground up. Network deception, LLM security tooling, payload mutation engines — everything here started as a problem that needed solving and no existing tool that solved it.
+
+Self-taught. Local-first. No lab access, no team, no institutional backing. Just friction and the tools built to remove it.
+
+Part of the **badBANANA collective** — a one-person operation that treats security research as a craft, not a career move.
+
+---
+
+## The Ecosystem
+
+The BANANA_TREE is an adversarial training loop. Every tool feeds the next.
 
 ```
-BANANA_TREE // adversarial intelligence
-
   OBSERVE                      SIMULATE
   LANimals ─ network deception  Lune ─ 64-module tradecraft
   OpenSight ─ OSINT / graphs    PHANTOM ─ honeypot detection
+  TERRAIN ─ local intelligence  SHENRON ─ payload mutation
 
   EXECUTE                      ADAPT
   zer0DAYSlater ─ post-exploit  drift_orchestrator ─ LLM drift
-  SHENRON ─ payload mutation    chain ─ mutation lineage
-  LANIMORPH ─ adaptive morph    aliasOS ─ operator shell
+  LANIMORPH ─ adaptive morph    chain ─ mutation lineage
+  OWN ─ execution layer         aliasOS ─ operator shell
 
-  observe → simulate → execute → adapt
+  observe → simulate → execute → adapt → observe
 ```
+
+Nothing here is speculative. Every tool in the map is operational.
 
 ---
 
-## Projects
+## What Got Built
 
-| repo | description | status |
-|------|-------------|--------|
-| [LANimals](https://github.com/GnomeMan4201/LANimals) | Local network deception and intelligence platform. Honeypot engine, behavioral risk scoring, force-directed graph UI, personality-driven payload system. | active |
-| [Lune](https://github.com/GnomeMan4201/Lune) | 64-module adversary simulation framework. Encrypted C2, LLM mutation engine, unified persona system. | active |
-| [zer0DAYSlater](https://github.com/GnomeMan4201/zer0DAYSlater) | Post-exploitation framework with LLM operator, session drift monitoring, entropy capsule, mTLS mesh. | active |
-| [OpenSight](https://github.com/GnomeMan4201/OpenSight) | Document intelligence and OSINT platform. Entity extraction, typed knowledge graph, investigation bundles. | active |
-| [drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator) | Runtime drift control and hallucination verification for LLM sessions. SQLite flight recording, semantic embeddings, hysteresis policy engine. | active |
-| [PHANTOM](https://github.com/GnomeMan4201/PHANTOM) | Honeypot fingerprinting and deception topology mapping. Extends Decoy-Hunter. | active |
-| [SHENRON](https://github.com/GnomeMan4201/shenron) | Adaptive polymorphic payload framework. 49-layer mutation engine. | active |
-| [LANIMORPH](https://github.com/GnomeMan4201/lanimorph) | LAN-aware morphing payload system. Subnet mutation, personality assignment, mesh vault. | active |
-| [chain](https://github.com/GnomeMan4201/chain) | Mutation engine and lineage tracker. DNA-style payload evolution with XP system. | active |
-| [aliasOS](https://github.com/GnomeMan4201/aliasOS) | Textual TUI for managing operator shell aliases. Browse, CRUD, health check, history mining. | active |
-
----
-
-## Stack
-
-```
-DOMAIN                  DEPTH        NOTES
-─────────────────────────────────────────────────────────────────
-Adversarial Simulation  █████████░   Lune — 64-module tradecraft lib
-Network Deception       ████████░░   LANimals — adaptive honeypot engine
-OSINT / Intel           ████████░░   OpenSight — entity graphs, bundles
-Python / FastAPI        ████████░░   production local-first backends
-Adversarial AI / LLM    ███████░░░   drift detection, mutation engines
-C2 Infrastructure       ███████░░░   AES-128-CBC, hardened beacon cycle
-Payload Engineering     ███████░░░   SHENRON, LANIMORPH, chain
-Threat Detection        ██████░░░░   risk scoring, behavioral analytics
-```
+| tool | what it does |
+|------|-------------|
+| [LANimals](https://github.com/GnomeMan4201/LANimals) | Local network deception platform. Discovers hosts, scores behavioral risk, deploys honeypot traps, assigns adversarial personalities to targets, force-directed graph UI. |
+| [Lune](https://github.com/GnomeMan4201/Lune) | 64-module adversary simulation framework. Encrypted C2, LLM mutation engine, unified persona system, pre-built operation chains. |
+| [zer0DAYSlater](https://github.com/GnomeMan4201/zer0DAYSlater) | Post-exploitation framework. LLM operator, session drift monitoring, entropy capsule, mTLS mesh with ephemeral NaCl keypairs. |
+| [drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator) | Runtime drift control for LLM sessions. SQLite flight recording, semantic embeddings, composite density scoring, hysteresis policy engine. |
+| [OpenSight](https://github.com/GnomeMan4201/OpenSight) | Document intelligence and OSINT platform. Entity extraction, typed knowledge graph, investigation bundles, demonstrated on FBI corpus. |
+| [SHENRON](https://github.com/GnomeMan4201/shenron) | Polymorphic payload framework. 49-layer mutation engine recovered and rebuilt from scratch. |
+| [LANIMORPH](https://github.com/GnomeMan4201/lanimorph) | LAN-aware morphing payload system. Per-subnet XOR mutation, personality-driven selection, sealed mesh exports. |
+| [PHANTOM](https://github.com/GnomeMan4201/PHANTOM) | Honeypot fingerprinting layer. Identifies Cowrie, Kippo, OpenCanary, Thinkst and 4 others. Extends Decoy-Hunter. |
+| [chain](https://github.com/GnomeMan4201/chain) | Mutation engine and lineage tracker. DNA-style payload evolution with XP system and replay. |
+| [aliasOS](https://github.com/GnomeMan4201/aliasOS) | Textual TUI for managing 296 operator shell aliases. Browse, CRUD, health check, history mining, gap analysis. |
 
 ---
 
@@ -66,7 +60,7 @@ Threat Detection        ██████░░░░   risk scoring, behaviora
 ```
 VERIFIED // GnomeMan4201
 ──────────────────────────────────────────────────────────────────
-GitHub Stars              34        across 19 public repos
+GitHub Stars              34        across 20 public repos
 GitHub Forks               3        zer0DAYSlater ×2
 Followers                 76        organic
 Contributions            752        last 12 months
@@ -104,18 +98,19 @@ methodology: necessity-driven development
 
 ## Writing
 
-[dev.to/gnomeman4201](https://dev.to/gnomeman4201) — 28 articles on adversarial tooling, LLM security, network deception, and platform analysis.
+[dev.to/gnomeman4201](https://dev.to/gnomeman4201) — 28 articles. Adversarial tooling, LLM security, network deception, platform analysis, and the philosophy behind building in the open under a pseudonym.
 
 ---
 
 ## Contact
-
-```
 preferred:  GitHub issues / security advisories
 writing:    dev.to/gnomeman4201
 PGP:        324C 4301 54C2 3C8E 3956 1B10 0CFD 6761 AA75 4969
-            github.com/GnomeMan4201.gpg
+github.com/GnomeMan4201.gpg
+---
 
-identity is managed deliberately.
-the work is public. the operator is not.
-```
+<div align="center">
+
+<img src="assets/bad_banana_end.png" width="460" alt="end of file" />
+
+</div>
