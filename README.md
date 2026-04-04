@@ -9,15 +9,22 @@ Self-taught. Necessity-driven. Everything here exists because something else exp
 ---
 
 ## Ecosystem
+
+```
 BANANA_TREE // adversarial intelligence
-OBSERVE                      SIMULATE
-LANimals ─ network deception  Lune ─ 64-module tradecraft
-OpenSight ─ OSINT / graphs    PHANTOM ─ honeypot detection
-EXECUTE                      ADAPT
-zer0DAYSlater ─ post-exploit  drift_orchestrator ─ LLM drift
-SHENRON ─ payload mutation    chain ─ mutation lineage
-LANIMORPH ─ adaptive morph    aliasOS ─ operator shell
-observe → simulate → execute → adapt
+
+  OBSERVE                      SIMULATE
+  LANimals ─ network deception  Lune ─ 64-module tradecraft
+  OpenSight ─ OSINT / graphs    PHANTOM ─ honeypot detection
+
+  EXECUTE                      ADAPT
+  zer0DAYSlater ─ post-exploit  drift_orchestrator ─ LLM drift
+  SHENRON ─ payload mutation    chain ─ mutation lineage
+  LANIMORPH ─ adaptive morph    aliasOS ─ operator shell
+
+  observe → simulate → execute → adapt
+```
+
 ---
 
 ## Projects
@@ -38,6 +45,8 @@ observe → simulate → execute → adapt
 ---
 
 ## Stack
+
+```
 DOMAIN                  DEPTH        NOTES
 ─────────────────────────────────────────────────────────────────
 Adversarial Simulation  █████████░   Lune — 64-module tradecraft lib
@@ -48,9 +57,13 @@ Adversarial AI / LLM    ███████░░░   drift detection, mutati
 C2 Infrastructure       ███████░░░   AES-128-CBC, hardened beacon cycle
 Payload Engineering     ███████░░░   SHENRON, LANIMORPH, chain
 Threat Detection        ██████░░░░   risk scoring, behavioral analytics
+```
+
 ---
 
 ## Signals
+
+```
 VERIFIED // GnomeMan4201
 ──────────────────────────────────────────────────────────────────
 GitHub Stars              34        across 19 public repos
@@ -68,9 +81,11 @@ aliasOS                v1.0.0        296 aliases · live demo
 every number above is verifiable.
 ──────────────────────────────────────────────────────────────────
 methodology: necessity-driven development
-build when friction exceeds build cost
-publish when the work can stand alone
+             build when friction exceeds build cost
+             publish when the work can stand alone
 ──────────────────────────────────────────────────────────────────
+```
+
 ---
 
 ## Build Status
@@ -94,9 +109,13 @@ publish when the work can stand alone
 ---
 
 ## Contact
+
+```
 preferred:  GitHub issues / security advisories
 writing:    dev.to/gnomeman4201
 PGP:        324C 4301 54C2 3C8E 3956 1B10 0CFD 6761 AA75 4969
-github.com/GnomeMan4201.gpg
+            github.com/GnomeMan4201.gpg
+
 identity is managed deliberately.
 the work is public. the operator is not.
+```
