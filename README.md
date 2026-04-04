@@ -66,7 +66,7 @@ Followers                 76        organic
 Contributions            752        last 12 months
 ──────────────────────────────────────────────────────────────────
 Dev.to Articles           28        gnomeman4201
-Dev.to Views           3,948        total reads
+Dev.to Views           4,188        total reads
 ──────────────────────────────────────────────────────────────────
 Lune Tests                92        passing — CI green
 OpenSight Tests           52        passing — CI green
@@ -103,10 +103,14 @@ methodology: necessity-driven development
 ---
 
 ## Contact
+
+```
 preferred:  GitHub issues / security advisories
 writing:    dev.to/gnomeman4201
 PGP:        324C 4301 54C2 3C8E 3956 1B10 0CFD 6761 AA75 4969
-github.com/GnomeMan4201.gpg
+            github.com/GnomeMan4201.gpg
+```
+
 ---
 
 <div align="center">
