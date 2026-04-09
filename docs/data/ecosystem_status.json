@@ -1,0 +1,51 @@
+{
+  "updated_at": "1970-01-01T00:00:00Z",
+  "nodes": {
+    "SHENRON": {
+      "health": "ok",
+      "activity": 90,
+      "status": "active",
+      "last_event": "core runtime online",
+      "last_updated": "1970-01-01T00:00:00Z"
+    },
+    "LANimals": {
+      "health": "ok",
+      "activity": 60,
+      "status": "active",
+      "active_hosts": 0,
+      "alerts": 0,
+      "last_event": "recon channel initialized",
+      "last_updated": "1970-01-01T00:00:00Z"
+    },
+    "drift_orchestrator": {
+      "health": "ok",
+      "activity": 55,
+      "status": "active",
+      "drift_score": 0.0,
+      "last_event": "policy monitor online",
+      "last_updated": "1970-01-01T00:00:00Z"
+    },
+    "BANANA_TREE": {
+      "health": "ok",
+      "activity": 48,
+      "status": "active",
+      "alerts": 0,
+      "last_event": "ecosystem telemetry online",
+      "last_updated": "1970-01-01T00:00:00Z"
+    }
+  },
+  "edges": {
+    "LANimals->SHENRON": {
+      "active": true,
+      "throughput": 20
+    },
+    "drift_orchestrator->Autonomy &\nOrchestration": {
+      "active": true,
+      "throughput": 12
+    },
+    "BANANA_TREE->SHENRON": {
+      "active": true,
+      "throughput": 10
+    }
+  }
+}
