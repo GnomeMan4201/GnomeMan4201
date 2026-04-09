@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHENRON Ecosystem — live v2</title>
+<title>SHENRON Ecosystem — live v3</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -23,11 +23,14 @@
     --border: rgba(245,166,35,0.2);
     --warn: #ff9f43;
     --crit: #ff3b30;
+    --ok: #42d77d;
+    --text: #d4c5a0;
+    --muted: #8c7650;
   }
 
   body {
     background: var(--bg);
-    color: #d4c5a0;
+    color: var(--text);
     font-family: 'IBM Plex Mono', monospace;
     overflow: hidden;
     height: 100vh;
@@ -53,6 +56,300 @@
     height: 100%;
   }
 
+  #title {
+    position: fixed;
+    top: 24px;
+    left: 24px;
+    z-index: 30;
+  }
+
+  #title h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--amber);
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(245,166,35,0.4);
+  }
+
+  #title p {
+    font-size: 9.5px;
+    color: #4a3a20;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  #controls {
+    position: fixed;
+    top: 82px;
+    left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 30;
+  }
+
+  .control-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .status-chip, .toggle-btn {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7b633c;
+    background: rgba(10,8,14,0.92);
+    border: 1px solid rgba(245,166,35,0.12);
+    padding: 6px 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .status-chip.live {
+    color: var(--amber-pale);
+    border-color: rgba(245,166,35,0.25);
+  }
+
+  .status-chip.warn {
+    color: var(--warn);
+    border-color: rgba(255,159,67,0.25);
+  }
+
+  .toggle-btn.active {
+    color: var(--amber-pale);
+    border-color: rgba(245,166,35,0.35);
+    box-shadow: 0 0 12px rgba(245,166,35,0.14);
+  }
+
+  .toggle-btn:hover {
+    border-color: rgba(245,166,35,0.3);
+  }
+
+  #legend, #system-metrics, #info-panel, #hover-card, #provenance {
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px rgba(245,166,35,0.07), inset 0 0 20px rgba(0,0,0,0.35);
+  }
+
+  #legend {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    padding: 14px 16px;
+    min-width: 240px;
+    z-index: 20;
+  }
+
+  #legend h4, #system-metrics h4, #provenance h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 6px;
+    font-size: 10px;
+    color: #7a6a50;
+  }
+
+  .legend-hex {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+  }
+
+  .legend-line {
+    width: 22px;
+    height: 2px;
+    flex-shrink: 0;
+  }
+
+  #legend .sep, #system-metrics .sep, #provenance .sep {
+    border: none;
+    border-top: 1px solid rgba(245,166,35,0.1);
+    margin: 8px 0;
+  }
+
+  #system-metrics {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    width: 290px;
+    padding: 14px 16px;
+    z-index: 20;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .metric-box {
+    padding: 8px;
+    border: 1px solid rgba(245,166,35,0.08);
+    background: rgba(255,255,255,0.015);
+  }
+
+  .metric-box strong {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7d6540;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+
+  .metric-box span {
+    color: var(--amber-pale);
+    font-size: 11px;
+  }
+
+  #info-panel {
+    position: fixed;
+    top: 24px;
+    right: 330px;
+    width: 360px;
+    border-top: 2px solid var(--amber);
+    padding: 18px 18px 16px;
+    display: none;
+    z-index: 20;
+  }
+
+  #info-panel::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:1px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  }
+
+  #info-panel .group-label {
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--amber-dim);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  #info-panel h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--amber-pale);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  #info-desc {
+    font-size: 11px;
+    line-height: 1.7;
+    color: #a89878;
+    border-left: 2px solid rgba(245,166,35,0.25);
+    padding-left: 10px;
+  }
+
+  #info-panel .metrics,
+  #info-panel .connections,
+  #info-panel .threat-info {
+    margin-top: 12px;
+    font-size: 10.5px;
+    color: #5a5040;
+    line-height: 1.8;
+  }
+
+  #info-panel .connections span,
+  #info-panel .metrics span,
+  #info-panel .threat-info span {
+    color: #c4a060;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .detail-grid div {
+    padding: 6px 8px;
+    border: 1px solid rgba(245,166,35,0.08);
+    background: rgba(255,255,255,0.015);
+  }
+
+  .detail-grid strong {
+    display: block;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7d6540;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+
+  #hover-card {
+    position: fixed;
+    display: none;
+    pointer-events: none;
+    z-index: 40;
+    width: 220px;
+    padding: 10px 12px;
+    font-size: 10px;
+  }
+
+  #hover-card h5 {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--amber-pale);
+    margin-bottom: 6px;
+  }
+
+  #hover-card p {
+    color: #a89878;
+    line-height: 1.6;
+  }
+
+  #provenance {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 260px;
+    padding: 12px 14px;
+    z-index: 20;
+  }
+
+  #provenance p {
+    font-size: 10px;
+    color: #7a6a50;
+    line-height: 1.8;
+  }
+
+  #provenance .muted {
+    color: #5e4c30;
+  }
+
+  #hint {
+    position: fixed;
+    bottom: 170px;
+    right: 24px;
+    font-size: 9px;
+    color: #2a2010;
+    text-align: right;
+    line-height: 2;
+    letter-spacing: 1px;
+    z-index: 20;
+  }
+
   .link {
     fill: none;
     transition: stroke-opacity 0.2s, stroke-width 0.2s;
@@ -65,10 +362,18 @@
   .link.evolved      { stroke: var(--violet);    stroke-width: 1.5; stroke-opacity: 0.5; }
   .link.extends      { stroke: var(--jade);      stroke-width: 1.2; stroke-opacity: 0.45; }
   .link.recon        { stroke: var(--cyan);      stroke-width: 0.9; stroke-opacity: 0.35; stroke-dasharray: 2 5; }
+  .link.depends_on   { stroke: #6aa0ff;          stroke-width: 1.1; stroke-opacity: 0.45; stroke-dasharray: 3 5; }
+  .link.controls     { stroke: #ff6262;          stroke-width: 1.8; stroke-opacity: 0.5; }
+  .link.observes     { stroke: #ffc857;          stroke-width: 1;   stroke-opacity: 0.45; stroke-dasharray: 1 4; }
+  .link.generates    { stroke: #75f1b1;          stroke-width: 1.3; stroke-opacity: 0.45; }
 
   .link.dimmed      { stroke-opacity: 0.04 !important; }
   .link.highlighted { stroke-opacity: 0.95 !important; stroke-width: 3 !important; }
   .link.active-link { stroke-opacity: 0.95 !important; }
+
+  .link.mode-dim {
+    stroke-opacity: 0.08 !important;
+  }
 
   .node { cursor: pointer; }
   .node polygon { transition: filter 0.2s, opacity 0.2s, stroke 0.2s, stroke-width 0.2s; }
@@ -101,202 +406,29 @@
     filter: drop-shadow(0 0 10px rgba(245,166,35,0.22));
   }
 
-  #info-panel {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    width: 330px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border);
-    border-top: 2px solid var(--amber);
-    padding: 18px 18px 16px;
-    display: none;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 0 40px rgba(245,166,35,0.07), inset 0 0 20px rgba(0,0,0,0.4);
-    z-index: 20;
+  .node.threat-high polygon {
+    filter: drop-shadow(0 0 14px rgba(255,59,48,0.35));
   }
 
-  #info-panel::before {
-    content:'';
-    position:absolute;
-    top:0; left:0; right:0;
-    height:1px;
-    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  .node.threat-medium polygon {
+    filter: drop-shadow(0 0 12px rgba(255,159,67,0.25));
   }
 
-  #info-panel .group-label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--amber-dim);
-    text-transform: uppercase;
-    margin-bottom: 6px;
+  .node.stale polygon {
+    opacity: 0.45;
   }
 
-  #info-panel h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--amber-pale);
-    margin-bottom: 10px;
-    line-height: 1.3;
+  .node.experimental polygon {
+    stroke-dasharray: 3 3;
   }
 
-  #info-panel #info-desc {
-    font-size: 11px;
-    line-height: 1.7;
-    color: #a89878;
-    border-left: 2px solid rgba(245,166,35,0.25);
-    padding-left: 10px;
+  a.inline-link {
+    color: var(--cyan);
+    text-decoration: none;
   }
 
-  #info-panel .metrics,
-  #info-panel .connections {
-    margin-top: 12px;
-    font-size: 10.5px;
-    color: #5a5040;
-    line-height: 1.8;
-  }
-
-  #info-panel .connections span,
-  #info-panel .metrics span {
-    color: #c4a060;
-  }
-
-  .metric-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .metric-grid div {
-    padding: 6px 8px;
-    border: 1px solid rgba(245,166,35,0.08);
-    background: rgba(255,255,255,0.015);
-  }
-
-  .metric-grid strong {
-    display: block;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #7d6540;
-    font-weight: 400;
-    margin-bottom: 2px;
-  }
-
-  #legend {
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    background: var(--panel-bg);
-    border: 1px solid var(--border);
-    padding: 14px 16px;
-    backdrop-filter: blur(12px);
-    min-width: 220px;
-    z-index: 20;
-  }
-
-  #legend h4 {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    color: var(--amber);
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin-bottom: 6px;
-    font-size: 10px;
-    color: #7a6a50;
-  }
-
-  .legend-hex {
-    width: 13px;
-    height: 13px;
-    flex-shrink: 0;
-  }
-
-  .legend-line {
-    width: 22px;
-    height: 2px;
-    flex-shrink: 0;
-  }
-
-  #legend .sep {
-    border: none;
-    border-top: 1px solid rgba(245,166,35,0.1);
-    margin: 8px 0;
-  }
-
-  #title {
-    position: fixed;
-    top: 24px;
-    left: 24px;
-    z-index: 20;
-  }
-
-  #title h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--amber);
-    letter-spacing: 4px;
-    text-shadow: 0 0 30px rgba(245,166,35,0.4);
-  }
-
-  #title p {
-    font-size: 9.5px;
-    color: #4a3a20;
-    letter-spacing: 2px;
-    margin-top: 4px;
-  }
-
-  #status-bar {
-    position: fixed;
-    top: 82px;
-    left: 24px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    z-index: 20;
-    flex-wrap: wrap;
-  }
-
-  .status-chip {
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #7b633c;
-    background: rgba(10,8,14,0.92);
-    border: 1px solid rgba(245,166,35,0.12);
-    padding: 6px 8px;
-  }
-
-  .status-chip.live {
-    color: var(--amber-pale);
-    border-color: rgba(245,166,35,0.25);
-  }
-
-  .status-chip.warn {
-    color: var(--warn);
-    border-color: rgba(255,159,67,0.25);
-  }
-
-  #hint {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    font-size: 9px;
-    color: #2a2010;
-    text-align: right;
-    line-height: 2;
-    letter-spacing: 1px;
-    z-index: 20;
+  a.inline-link:hover {
+    text-decoration: underline;
   }
 </style>
 </head>
@@ -305,22 +437,57 @@
 
 <div id="title">
   <h1>GNOMEMAN4201</h1>
-<p>ECOSYSTEM · INTEGRATION GRAPH · LIVE v2.1</p></div>
+  <p>ECOSYSTEM · INTEGRATION GRAPH · LIVE v3.0</p>
+</div>
 
-<div id="status-bar">
-  <div class="status-chip live" id="live-state">live data: initializing</div>
-  <div class="status-chip" id="last-updated">last update: --</div>
-  <div class="status-chip" id="repo-count">repos tracked: --</div>
+<div id="controls">
+  <div class="control-row">
+    <div class="status-chip live" id="live-state">live data: initializing</div>
+    <div class="status-chip" id="last-updated">last update: --</div>
+    <div class="status-chip" id="repo-count">repos tracked: --</div>
+  </div>
+  <div class="control-row" id="mode-controls">
+    <div class="toggle-btn active" data-mode="architecture">architecture</div>
+    <div class="toggle-btn" data-mode="runtime">runtime</div>
+    <div class="toggle-btn" data-mode="data_flow">data flow</div>
+    <div class="toggle-btn" data-mode="threat">threat model</div>
+  </div>
+  <div class="control-row" id="range-controls">
+    <div class="toggle-btn" data-range="7">7d</div>
+    <div class="toggle-btn active" data-range="30">30d</div>
+    <div class="toggle-btn" data-range="90">90d</div>
+    <div class="toggle-btn" data-range="all">all</div>
+  </div>
 </div>
 
 <div id="graph-container"><svg id="graph"></svg></div>
+
+<div id="system-metrics">
+  <h4>System Metrics</h4>
+  <div class="metrics-grid">
+    <div class="metric-box"><strong>Total repos</strong><span id="metric-total-repos">--</span></div>
+    <div class="metric-box"><strong>Active nodes</strong><span id="metric-active-nodes">--</span></div>
+    <div class="metric-box"><strong>Dormant nodes</strong><span id="metric-dormant-nodes">--</span></div>
+    <div class="metric-box"><strong>Graph density</strong><span id="metric-density">--</span></div>
+    <div class="metric-box"><strong>Core centrality</strong><span id="metric-centrality">--</span></div>
+    <div class="metric-box"><strong>Activity health</strong><span id="metric-health">--</span></div>
+    <div class="metric-box"><strong>Highest risk</strong><span id="metric-risk">--</span></div>
+    <div class="metric-box"><strong>Tracked edges</strong><span id="metric-edges">--</span></div>
+  </div>
+</div>
 
 <div id="info-panel">
   <div class="group-label" id="info-group"></div>
   <h3 id="info-name"></h3>
   <div id="info-desc"></div>
   <div class="metrics" id="info-metrics"></div>
+  <div class="threat-info" id="info-threat"></div>
   <div class="connections" id="info-connections"></div>
+</div>
+
+<div id="hover-card">
+  <h5 id="hover-name"></h5>
+  <p id="hover-text"></p>
 </div>
 
 <div id="legend">
@@ -328,17 +495,20 @@
   <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#f5a623" stroke-width="1.5"/></svg> Core / SHENRON</div>
   <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#3dc87a" stroke-width="1.5"/></svg> SHENRON subsystem</div>
   <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#e84040" stroke-width="1.5"/></svg> Offense</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#38c9c9" stroke-width="1.5"/></svg> Recon &amp; network</div>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#38c9c9" stroke-width="1.5"/></svg> Recon & network</div>
   <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#9b59e8" stroke-width="1.5"/></svg> ML research</div>
   <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#c47e10" stroke-width="1" stroke-dasharray="2,2"/></svg> Monitoring / ops</div>
   <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#8892a4" stroke-width="1.5"/></svg> Platform / utility</div>
   <hr class="sep">
   <div class="legend-item"><div class="legend-line" style="background:#f5a623"></div> contains</div>
-  <div class="legend-item"><div class="legend-line" style="background:#e84040"></div> orchestrates</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#38c9c9 0,#38c9c9 6px,transparent 6px,transparent 9px)"></div> feeds</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#c47e10 0,#c47e10 2px,transparent 2px,transparent 6px)"></div> monitors</div>
+  <div class="legend-item"><div class="legend-line" style="background:#e84040"></div> orchestrates / controls</div>
+  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#38c9c9 0,#38c9c9 6px,transparent 6px,transparent 9px)"></div> feeds / data flow</div>
+  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#c47e10 0,#c47e10 2px,transparent 2px,transparent 6px)"></div> monitors / observes</div>
   <div class="legend-item"><div class="legend-line" style="background:#9b59e8"></div> evolved from</div>
-  <div class="legend-item"><div class="legend-line" style="background:#3dc87a"></div> extends</div>
+  <div class="legend-item"><div class="legend-line" style="background:#3dc87a"></div> extends / generates</div>
+  <hr class="sep">
+  <div class="legend-item">← → keyboard node navigation</div>
+  <div class="legend-item">enter = select · esc = reset</div>
 </div>
 
 <div id="hint">
@@ -348,27 +518,41 @@
   click canvas to reset
 </div>
 
+<div id="provenance">
+  <h4>Data Sources</h4>
+  <p>GitHub API-derived repo metadata</p>
+  <p>Static ecosystem mapping + runtime overlay</p>
+  <p class="muted">Frontend: GitHub Pages · refresh: 60s polling</p>
+</div>
+
 <script>
 (function(){
   const c = document.getElementById('stars');
   const ctx = c.getContext('2d');
+  let stars = [];
+
+  function reseed(){
+    stars = Array.from({ length: 320 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 0.9,
+      a: Math.random() * 0.35 + 0.05
+    }));
+  }
 
   function resize(){
     c.width = window.innerWidth;
     c.height = window.innerHeight;
+    reseed();
     draw();
   }
 
   function draw(){
     ctx.clearRect(0,0,c.width,c.height);
-    for(let i=0;i<320;i++){
-      const x = Math.random()*c.width;
-      const y = Math.random()*c.height;
-      const r = Math.random()*0.9;
-      const a = Math.random()*0.35 + 0.05;
+    for(const s of stars){
       ctx.beginPath();
-      ctx.arc(x,y,r,0,Math.PI*2);
-      ctx.fillStyle = `rgba(245,200,120,${a})`;
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(245,200,120,${s.a})`;
       ctx.fill();
     }
   }
@@ -423,18 +607,18 @@ const links = [
   {source:'PHANTOM',target:'Steganography\n& Utils',type:'feeds'},
   {source:'drift_orchestrator',target:'Autonomy &\nOrchestration',type:'feeds'},
   {source:'bad_BANANA',target:'AI Modules',type:'feeds'},
-  {source:'LANIMORPH',target:'Mutation Engine',type:'feeds'},
-  {source:'zer0DAYSlater',target:'SHENRON',type:'feeds'},
+  {source:'LANIMORPH',target:'Mutation Engine',type:'extends'},
+  {source:'zer0DAYSlater',target:'SHENRON',type:'controls'},
   {source:'LANimals',target:'SHENRON',type:'feeds'},
   {source:'OpenSight',target:'LANimals',type:'feeds'},
   {source:'LANimals',target:'LANIMORPH',type:'extends'},
   {source:'Pickle Hunter',target:'HYDRA',type:'evolved'},
   {source:'HYDRA',target:'zer0DAYSlater',type:'feeds'},
   {source:'HYDRA',target:'bad_BANANA',type:'feeds'},
-  {source:'chain',target:'OWN',type:'feeds'},
+  {source:'chain',target:'OWN',type:'depends_on'},
   {source:'BANANA_TREE',target:'SHENRON',type:'monitors'},
-  {source:'BANANA_TREE',target:'OWN',type:'monitors'},
-  {source:'BANANA_TREE',target:'LANimals',type:'monitors'},
+  {source:'BANANA_TREE',target:'OWN',type:'observes'},
+  {source:'BANANA_TREE',target:'LANimals',type:'observes'},
   {source:'pwn',target:'LUNE',type:'feeds'},
   {source:'repo_alias_forge',target:'LANimals',type:'recon'},
   {source:'DevToReconSuite',target:'OWN',type:'feeds'}
@@ -460,6 +644,13 @@ const groupNames = {
   platform:'PLATFORM / UTILITY'
 };
 
+const modeEdgeRules = {
+  architecture: new Set(['contains','extends','evolved','depends_on']),
+  runtime: new Set(['orchestrates','controls','monitors','observes']),
+  data_flow: new Set(['feeds','recon','generates']),
+  threat: new Set(['feeds','controls','depends_on','monitors','observes','recon'])
+};
+
 const repoLinks = Object.fromEntries(
   nodes.filter(n => n.repo).map(n => [n.id, `https://github.com/GnomeMan4201/${n.repo}`])
 );
@@ -467,6 +658,8 @@ const repoLinks = Object.fromEntries(
 let repoState = { updated_at: null, repos: {} };
 let liveState = { updated_at: null, nodes: {}, edges: {} };
 let selected = null;
+let currentMode = 'architecture';
+let currentRange = '30';
 
 function hexPoints(r){
   return d3.range(6).map(i => {
@@ -513,11 +706,15 @@ mergeSoft.append('feMergeNode').attr('in','SourceGraphic');
 const linkColors = {
   contains:'#f5a623',
   orchestrates:'#e84040',
+  controls:'#ff6262',
   feeds:'#38c9c9',
   monitors:'#c47e10',
+  observes:'#ffc857',
   evolved:'#9b59e8',
   extends:'#3dc87a',
-  recon:'#38c9c9'
+  recon:'#38c9c9',
+  depends_on:'#6aa0ff',
+  generates:'#75f1b1'
 };
 
 Object.entries(linkColors).forEach(([type,color]) => {
@@ -546,8 +743,8 @@ svg.call(
 const simulation = d3.forceSimulation(nodes)
   .force('link', d3.forceLink(links)
     .id(d => d.id)
-    .distance(d => d.type === 'contains' ? 95 : d.type === 'orchestrates' ? 150 : 195)
-    .strength(d => d.type === 'contains' ? 0.75 : 0.28))
+    .distance(d => getModeDistance(d.type))
+    .strength(d => getModeStrength(d.type)))
   .force('charge', d3.forceManyBody().strength(d => d.group === 'core' ? -900 : d.group === 'shenron_sub' ? -220 : -380))
   .force('center', d3.forceCenter(w / 2, h / 2))
   .force('collision', d3.forceCollide(d => getVisualRadius(d) + 20));
@@ -611,19 +808,7 @@ node.on('click', function(e, d){
   }
 
   selected = d.id;
-  const connected = new Set([d.id]);
-
-  links.forEach(l => {
-    if (l.source.id === d.id || l.target.id === d.id) {
-      connected.add(l.source.id);
-      connected.add(l.target.id);
-    }
-  });
-
-  node.classed('dimmed', n => !connected.has(n.id));
-  link.classed('dimmed', l => l.source.id !== d.id && l.target.id !== d.id);
-  link.classed('highlighted', l => l.source.id === d.id || l.target.id === d.id);
-
+  applySelectionHighlight(d.id);
   renderInfoPanel(d);
 });
 
@@ -633,11 +818,77 @@ node.on('dblclick', function(e, d){
   if (url) window.open(url, '_blank', 'noopener,noreferrer');
 });
 
+node.on('mouseenter', function(e, d){
+  renderHoverCard(d, e.clientX, e.clientY);
+});
+
+node.on('mousemove', function(e, d){
+  renderHoverCard(d, e.clientX, e.clientY);
+});
+
+node.on('mouseleave', function(){
+  document.getElementById('hover-card').style.display = 'none';
+});
+
 svg.on('click', () => {
   resetHighlight();
   selected = null;
   document.getElementById('info-panel').style.display = 'none';
 });
+
+document.getElementById('mode-controls').addEventListener('click', (e) => {
+  const btn = e.target.closest('.toggle-btn');
+  if (!btn) return;
+  currentMode = btn.dataset.mode;
+  document.querySelectorAll('#mode-controls .toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+  applyModeStyling();
+});
+
+document.getElementById('range-controls').addEventListener('click', (e) => {
+  const btn = e.target.closest('.toggle-btn');
+  if (!btn) return;
+  currentRange = btn.dataset.range;
+  document.querySelectorAll('#range-controls .toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
+  applyLiveState();
+});
+
+document.addEventListener('keydown', (e) => {
+  const idx = selected ? nodes.findIndex(n => n.id === selected) : -1;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    e.preventDefault();
+    const next = nodes[(idx + 1 + nodes.length) % nodes.length];
+    selected = next.id;
+    applySelectionHighlight(next.id);
+    renderInfoPanel(next);
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault();
+    const next = nodes[(idx - 1 + nodes.length) % nodes.length];
+    selected = next.id;
+    applySelectionHighlight(next.id);
+    renderInfoPanel(next);
+  } else if (e.key === 'Escape') {
+    selected = null;
+    resetHighlight();
+    document.getElementById('info-panel').style.display = 'none';
+  } else if (e.key === 'Enter' && selected) {
+    const url = repoLinks[selected];
+    if (url) window.open(url, '_blank', 'noopener,noreferrer');
+  }
+});
+
+function applySelectionHighlight(id){
+  const connected = new Set([id]);
+  links.forEach(l => {
+    if (l.source.id === id || l.target.id === id) {
+      connected.add(l.source.id);
+      connected.add(l.target.id);
+    }
+  });
+
+  node.classed('dimmed', n => !connected.has(n.id));
+  link.classed('dimmed', l => l.source.id !== id && l.target.id !== id);
+  link.classed('highlighted', l => l.source.id === id || l.target.id === id);
+}
 
 function resetHighlight(){
   node.classed('dimmed', false);
@@ -649,7 +900,7 @@ simulation.on('tick', () => {
     const dx = d.target.x - d.source.x;
     const dy = d.target.y - d.source.y;
     const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const curve = dist * 0.18;
+    const curve = currentMode === 'data_flow' ? dist * 0.22 : dist * 0.18;
     const mx = (d.source.x + d.target.x) / 2 - dy * curve / dist;
     const my = (d.source.y + d.target.y) / 2 + dx * curve / dist;
     const tr = getVisualRadius(d.target) + 9;
@@ -665,6 +916,20 @@ function minutesSince(iso){
   if (!iso) return null;
   const ms = Date.now() - new Date(iso).getTime();
   return Math.max(0, Math.floor(ms / 60000));
+}
+
+function rangeMinutes(){
+  if (currentRange === '7') return 7 * 24 * 60;
+  if (currentRange === '30') return 30 * 24 * 60;
+  if (currentRange === '90') return 90 * 24 * 60;
+  return Infinity;
+}
+
+function inCurrentRange(iso){
+  if (currentRange === 'all') return true;
+  const mins = minutesSince(iso);
+  if (mins === null) return false;
+  return mins <= rangeMinutes();
 }
 
 function formatRelative(iso){
@@ -700,7 +965,7 @@ function getVisualRadius(d){
   const runtime = getNodeMetrics(d.id);
   const activity = runtime?.activity || 0;
   const activityBoost = Math.min(10, activity / 14);
-  const freshnessBoost = repo?.pushed_at && minutesSince(repo.pushed_at) < 1440 ? 2 : 0;
+  const freshnessBoost = repo?.pushed_at && inCurrentRange(repo.pushed_at) ? 2 : 0;
   return d.size + activityBoost + freshnessBoost;
 }
 
@@ -708,6 +973,11 @@ function getStrokeColor(d){
   const runtime = getNodeMetrics(d.id);
   if (runtime?.health === 'critical') return '#ff3b30';
   if (runtime?.health === 'warning') return '#ff9f43';
+  if (currentMode === 'threat') {
+    const score = getThreatScore(d);
+    if (score >= 8) return '#ff3b30';
+    if (score >= 5) return '#ff9f43';
+  }
   return groupColors[d.group];
 }
 
@@ -718,8 +988,118 @@ function getStrokeWidth(d){
   return d.group === 'core' ? 2.2 : 1.2;
 }
 
+function getModeDistance(type){
+  if (currentMode === 'data_flow') {
+    if (['feeds','recon','generates','extends'].includes(type)) return 150;
+    return 210;
+  }
+  if (currentMode === 'runtime') {
+    if (['orchestrates','controls','monitors','observes'].includes(type)) return 145;
+    return 200;
+  }
+  if (currentMode === 'threat') {
+    if (['controls','depends_on','feeds'].includes(type)) return 150;
+    return 185;
+  }
+  return type === 'contains' ? 95 : type === 'orchestrates' ? 150 : 195;
+}
+
+function getModeStrength(type){
+  if (currentMode === 'data_flow') {
+    return ['feeds','recon','generates','extends'].includes(type) ? 0.48 : 0.16;
+  }
+  if (currentMode === 'runtime') {
+    return ['orchestrates','controls','monitors','observes'].includes(type) ? 0.52 : 0.14;
+  }
+  if (currentMode === 'threat') {
+    return ['controls','depends_on','feeds'].includes(type) ? 0.4 : 0.18;
+  }
+  return type === 'contains' ? 0.75 : 0.28;
+}
+
+function getThreatScore(d){
+  let score = 0;
+  const inbound = links.filter(l => l.target.id === d.id).length;
+  const outbound = links.filter(l => l.source.id === d.id).length;
+  const runtime = getNodeMetrics(d.id);
+  const repo = getRepoMetrics(d.id);
+
+  score += inbound >= 3 ? 3 : inbound;
+  score += outbound >= 3 ? 2 : outbound * 0.5;
+
+  if (d.group === 'core') score += 4;
+  if (d.group === 'offense') score += 3;
+  if (d.group === 'platform') score += 2;
+  if (runtime?.status === 'active') score += 1.5;
+  if (runtime?.health === 'warning') score += 1;
+  if (runtime?.health === 'critical') score += 2.5;
+  if (repo?.open_issues >= 3) score += 1;
+  if (repo?.pushed_at && inCurrentRange(repo.pushed_at)) score += 1;
+
+  return Math.min(10, Number(score.toFixed(1)));
+}
+
+function classifyNodeState(d){
+  const repo = getRepoMetrics(d.id);
+  const runtime = getNodeMetrics(d.id);
+  const threat = getThreatScore(d);
+
+  return {
+    active: runtime?.status === 'active',
+    stale: repo?.pushed_at ? !inCurrentRange(repo.pushed_at) : false,
+    experimental: d.group === 'offense' || d.group === 'ml',
+    threatHigh: threat >= 8,
+    threatMedium: threat >= 5 && threat < 8
+  };
+}
+
+function applyModeStyling(){
+  const allowed = modeEdgeRules[currentMode] || new Set();
+
+  link.classed('mode-dim', d => {
+    if (currentMode === 'architecture') return false;
+    return !allowed.has(d.type);
+  });
+
+  simulation.force('link').distance(d => getModeDistance(d.type)).strength(d => getModeStrength(d.type));
+  simulation.alpha(0.35).restart();
+}
+
+function computeSystemMetrics(){
+  const totalRepos = Object.keys(repoState.repos || {}).length;
+  const activeNodes = nodes.filter(n => getNodeMetrics(n.id)?.status === 'active').length;
+  const dormantNodes = nodes.length - activeNodes;
+  const density = (links.length / (nodes.length * (nodes.length - 1))).toFixed(3);
+
+  const degreeMap = new Map(nodes.map(n => [n.id, 0]));
+  links.forEach(l => {
+    degreeMap.set(l.source.id, (degreeMap.get(l.source.id) || 0) + 1);
+    degreeMap.set(l.target.id, (degreeMap.get(l.target.id) || 0) + 1);
+  });
+  const centralityNode = [...degreeMap.entries()].sort((a,b) => b[1] - a[1])[0]?.[0] || '--';
+  const avgHealth = activeNodes >= 6 ? 'strong' : activeNodes >= 3 ? 'moderate' : 'low';
+  const highestRiskNode = nodes.map(n => [n.id, getThreatScore(n)]).sort((a,b) => b[1] - a[1])[0]?.[0] || '--';
+
+  document.getElementById('metric-total-repos').textContent = totalRepos;
+  document.getElementById('metric-active-nodes').textContent = activeNodes;
+  document.getElementById('metric-dormant-nodes').textContent = dormantNodes;
+  document.getElementById('metric-density').textContent = density;
+  document.getElementById('metric-centrality').textContent = centralityNode;
+  document.getElementById('metric-health').textContent = avgHealth;
+  document.getElementById('metric-risk').textContent = highestRiskNode;
+  document.getElementById('metric-edges').textContent = links.length;
+}
+
 function applyLiveState(){
-  node.classed('active-node', d => getNodeMetrics(d.id)?.status === 'active');
+  node.each(function(d){
+    const state = classifyNodeState(d);
+    d3.select(this)
+      .classed('active-node', state.active)
+      .classed('stale', state.stale)
+      .classed('experimental', state.experimental)
+      .classed('threat-high', currentMode === 'threat' && state.threatHigh)
+      .classed('threat-medium', currentMode === 'threat' && state.threatMedium);
+  });
 
   node.select('polygon')
     .transition()
@@ -734,7 +1114,7 @@ function applyLiveState(){
       const edge = getEdgeMetrics(l.source.id, l.target.id);
       if (edge?.throughput) return Math.min(4, 1 + edge.throughput / 15);
       if (l.type === 'contains') return 2;
-      if (l.type === 'orchestrates') return 1.8;
+      if (l.type === 'orchestrates' || l.type === 'controls') return 1.8;
       return 1.2;
     });
 
@@ -749,18 +1129,22 @@ function applyLiveState(){
   document.getElementById('live-state').textContent = 'live data: active';
   document.getElementById('last-updated').textContent = `last update: ${formatRelative(liveState.updated_at || repoState.updated_at)}`;
   document.getElementById('repo-count').textContent = `repos tracked: ${Object.keys(repoState.repos || {}).length}`;
+
+  computeSystemMetrics();
+  applyModeStyling();
 }
 
 function renderInfoPanel(d){
   const panel = document.getElementById('info-panel');
   const repo = getRepoMetrics(d.id);
   const runtime = getNodeMetrics(d.id);
+  const threat = getThreatScore(d);
 
   document.getElementById('info-name').textContent = d.id.replace('\n', ' ');
   document.getElementById('info-group').textContent = '◆ ' + groupNames[d.group];
   document.getElementById('info-desc').textContent = d.desc;
 
-  let metricsHtml = '<div class="metric-grid">';
+  let metricsHtml = '<div class="detail-grid">';
   metricsHtml += `<div><strong>status</strong><span>${runtime?.status || repo?.status || 'static'}</span></div>`;
   metricsHtml += `<div><strong>health</strong><span>${runtime?.health || 'ok'}</span></div>`;
   metricsHtml += `<div><strong>activity</strong><span>${runtime?.activity ?? 0}</span></div>`;
@@ -773,34 +1157,45 @@ function renderInfoPanel(d){
     metricsHtml += `<div><strong>repo push</strong><span>${formatRelative(repo.pushed_at)}</span></div>`;
   }
 
-  if (runtime?.drift_score !== undefined) {
-    metricsHtml += `<div><strong>drift score</strong><span>${runtime.drift_score}</span></div>`;
-  }
-  if (runtime?.active_hosts !== undefined) {
-    metricsHtml += `<div><strong>active hosts</strong><span>${runtime.active_hosts}</span></div>`;
-  }
-  if (runtime?.alerts !== undefined) {
-    metricsHtml += `<div><strong>alerts</strong><span>${runtime.alerts}</span></div>`;
-  }
-  if (runtime?.last_event) {
-    metricsHtml += `<div style="grid-column:1 / -1"><strong>last event</strong><span>${runtime.last_event}</span></div>`;
-  }
-  if (repoLinks[d.id]) {
-    metricsHtml += `<div style="grid-column:1 / -1"><strong>repo</strong><span><a href="${repoLinks[d.id]}" target="_blank" rel="noopener noreferrer" style="color:#38c9c9;text-decoration:none">open repository</a></span></div>`;
-  }
-  metricsHtml += '</div>';
+  if (runtime?.drift_score !== undefined) metricsHtml += `<div><strong>drift score</strong><span>${runtime.drift_score}</span></div>`;
+  if (runtime?.active_hosts !== undefined) metricsHtml += `<div><strong>active hosts</strong><span>${runtime.active_hosts}</span></div>`;
+  if (runtime?.alerts !== undefined) metricsHtml += `<div><strong>alerts</strong><span>${runtime.alerts}</span></div>`;
+  if (runtime?.last_event) metricsHtml += `<div style="grid-column:1 / -1"><strong>last event</strong><span>${runtime.last_event}</span></div>`;
+  if (repoLinks[d.id]) metricsHtml += `<div style="grid-column:1 / -1"><strong>repo</strong><span><a class="inline-link" href="${repoLinks[d.id]}" target="_blank" rel="noopener noreferrer">open repository</a></span></div>`;
 
+  metricsHtml += '</div>';
   document.getElementById('info-metrics').innerHTML = metricsHtml;
 
-  const inLinks = links.filter(l => l.target.id === d.id);
-  const outLinks = links.filter(l => l.source.id === d.id);
+  const inbound = links.filter(l => l.target.id === d.id);
+  const outbound = links.filter(l => l.source.id === d.id);
+  const threatHtml = `
+    threat score → <span>${threat}/10</span><br>
+    choke point → <span>${inbound.length + outbound.length >= 5 ? 'yes' : 'no'}</span><br>
+    risk class → <span>${threat >= 8 ? 'high' : threat >= 5 ? 'medium' : 'low'}</span>
+  `;
+  document.getElementById('info-threat').innerHTML = threatHtml;
 
-  let t = '';
-  if (outLinks.length) t += `feeds into → <span>${outLinks.map(l => l.target.id.replace('\n', ' ')).join(', ')}</span><br>`;
-  if (inLinks.length) t += `receives ← <span>${inLinks.map(l => l.source.id.replace('\n', ' ')).join(', ')}</span>`;
-  document.getElementById('info-connections').innerHTML = t;
+  let connText = '';
+  if (outbound.length) connText += `feeds into → <span>${outbound.map(l => l.target.id.replace('\n', ' ')).join(', ')}</span><br>`;
+  if (inbound.length) connText += `receives ← <span>${inbound.map(l => l.source.id.replace('\n', ' ')).join(', ')}</span>`;
+  document.getElementById('info-connections').innerHTML = connText;
 
   panel.style.display = 'block';
+}
+
+function renderHoverCard(d, x, y){
+  const repo = getRepoMetrics(d.id);
+  const runtime = getNodeMetrics(d.id);
+  const card = document.getElementById('hover-card');
+  document.getElementById('hover-name').textContent = d.id.replace('\n', ' ');
+  document.getElementById('hover-text').innerHTML =
+    `${d.desc}<br><br>` +
+    `status: ${runtime?.status || repo?.status || 'static'}<br>` +
+    `activity: ${runtime?.activity ?? 0}<br>` +
+    `updated: ${formatRelative(runtime?.last_updated || repo?.pushed_at)}`;
+  card.style.left = `${Math.min(window.innerWidth - 240, x + 14)}px`;
+  card.style.top = `${Math.min(window.innerHeight - 140, y + 14)}px`;
+  card.style.display = 'block';
 }
 
 async function refreshGraphState(){
@@ -815,6 +1210,7 @@ async function refreshGraphState(){
 
     document.getElementById('live-state').classList.remove('warn');
     document.getElementById('live-state').classList.add('live');
+
     applyLiveState();
   } catch (err) {
     console.error('refreshGraphState failed:', err);
@@ -822,6 +1218,7 @@ async function refreshGraphState(){
     liveChip.textContent = 'live data: degraded';
     liveChip.classList.remove('live');
     liveChip.classList.add('warn');
+    computeSystemMetrics();
   }
 }
 
