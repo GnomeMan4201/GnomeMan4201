@@ -1,12 +1,12 @@
 {
-  "updated_at": "2026-04-09T04:53:25Z",
+  "updated_at": "2026-04-09T05:00:44Z",
   "nodes": {
     "SHENRON": {
       "health": "ok",
       "activity": 55,
       "status": "idle",
       "last_event": "repo telemetry refresh",
-      "last_updated": "2026-04-09T04:53:25Z"
+      "last_updated": "2026-04-09T05:00:44Z"
     },
     "LANimals": {
       "health": "warning",
@@ -15,7 +15,7 @@
       "active_hosts": 0,
       "alerts": 0,
       "last_event": "repo telemetry refresh",
-      "last_updated": "2026-04-09T04:53:25Z"
+      "last_updated": "2026-04-09T05:00:44Z"
     },
     "drift_orchestrator": {
       "health": "warning",
@@ -23,7 +23,7 @@
       "status": "warning",
       "drift_score": 0.0,
       "last_event": "repo telemetry refresh",
-      "last_updated": "2026-04-09T04:53:25Z"
+      "last_updated": "2026-04-09T05:00:44Z"
     },
     "BANANA_TREE": {
       "health": "warning",
@@ -31,7 +31,7 @@
       "status": "warning",
       "alerts": 0,
       "last_event": "ecosystem aggregate refreshed",
-      "last_updated": "2026-04-09T04:53:25Z"
+      "last_updated": "2026-04-09T05:00:44Z"
     }
   },
   "edges": {

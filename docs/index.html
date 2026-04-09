@@ -1065,20 +1065,104 @@ function applyModeStyling(){
   simulation.alpha(0.35).restart();
 }
 
-function computeSystemMetrics(){
-  const totalRepos = Object.keys(repoState.repos || {}).length;
-  const activeNodes = nodes.filter(n => getNodeMetrics(n.id)?.status === 'active').length;
-  const dormantNodes = nodes.length - activeNodes;
-  const density = (links.length / (nodes.length * (nodes.length - 1))).toFixed(3);
+function getEdgeWeight(l) {
+  const edge = getEdgeMetrics(l.source.id, l.target.id);
+  if (edge?.throughput) return edge.throughput;
 
-  const degreeMap = new Map(nodes.map(n => [n.id, 0]));
-  links.forEach(l => {
-    degreeMap.set(l.source.id, (degreeMap.get(l.source.id) || 0) + 1);
-    degreeMap.set(l.target.id, (degreeMap.get(l.target.id) || 0) + 1);
+  switch (l.type) {
+    case 'contains': return 3;
+    case 'orchestrates':
+    case 'controls': return 2.5;
+    case 'feeds':
+    case 'recon':
+    case 'generates': return 2;
+    case 'monitors':
+    case 'observes': return 1.5;
+    case 'extends':
+    case 'depends_on':
+    case 'evolved': return 1;
+    default: return 1;
+  }
+}
+
+function computeNodeCentrality(nodeId) {
+  let score = 0;
+  for (const l of links) {
+    if (l.source.id === nodeId || l.target.id === nodeId) {
+      score += getEdgeWeight(l);
+    }
+  }
+  return score;
+}
+
+function computeRepoFreshnessScore(repo) {
+  if (!repo?.pushed_at) return 0;
+  const mins = minutesSince(repo.pushed_at);
+  if (mins === null) return 0;
+  if (mins < 1440) return 3;
+  if (mins < 10080) return 2;
+  if (mins < 43200) return 1;
+  return 0;
+}
+
+function computeRuntimeActivityScore(runtime) {
+  const raw = runtime?.activity ?? 0;
+  if (raw >= 75) return 3;
+  if (raw >= 40) return 2;
+  if (raw > 0) return 1;
+  return 0;
+}
+
+function computeNodeIsActive(n) {
+  const repo = getRepoMetrics(n.id);
+  const runtime = getNodeMetrics(n.id);
+  return runtime?.status === 'active' || computeRepoFreshnessScore(repo) >= 2;
+}
+
+function computeNodeIsDormant(n) {
+  const repo = getRepoMetrics(n.id);
+  const runtime = getNodeMetrics(n.id);
+  const noRecentRepo = computeRepoFreshnessScore(repo) === 0;
+  const noRuntime = !runtime || runtime.status !== 'active';
+  return noRecentRepo && noRuntime;
+}
+
+function computeSystemMetrics() {
+  const totalRepos = Object.keys(repoState.repos || {}).length;
+  const activeNodes = nodes.filter(n => computeNodeIsActive(n)).length;
+  const dormantNodes = nodes.filter(n => computeNodeIsDormant(n)).length;
+
+  const nodeCount = nodes.length;
+  const edgeCount = links.length;
+  const density = nodeCount > 1
+    ? (edgeCount / (nodeCount * (nodeCount - 1))).toFixed(3)
+    : '0.000';
+
+  const centralityScores = nodes.map(n => ({
+    id: n.id,
+    score: computeNodeCentrality(n.id)
+  })).sort((a, b) => b.score - a.score);
+
+  const centralityNode = centralityScores[0]?.id || '--';
+
+  const healthSamples = nodes.map(n => {
+    const repo = getRepoMetrics(n.id);
+    const runtime = getNodeMetrics(n.id);
+    return computeRepoFreshnessScore(repo) + computeRuntimeActivityScore(runtime);
   });
-  const centralityNode = [...degreeMap.entries()].sort((a,b) => b[1] - a[1])[0]?.[0] || '--';
-  const avgHealth = activeNodes >= 6 ? 'strong' : activeNodes >= 3 ? 'moderate' : 'low';
-  const highestRiskNode = nodes.map(n => [n.id, getThreatScore(n)]).sort((a,b) => b[1] - a[1])[0]?.[0] || '--';
+
+  const avgHealthScore = healthSamples.length
+    ? healthSamples.reduce((a, b) => a + b, 0) / healthSamples.length
+    : 0;
+
+  let avgHealth = 'low';
+  if (avgHealthScore >= 4.5) avgHealth = 'strong';
+  else if (avgHealthScore >= 2.5) avgHealth = 'moderate';
+
+  const highestRisk = nodes.map(n => ({
+    id: n.id,
+    score: getThreatScore(n)
+  })).sort((a, b) => b.score - a.score)[0]?.id || '--';
 
   document.getElementById('metric-total-repos').textContent = totalRepos;
   document.getElementById('metric-active-nodes').textContent = activeNodes;
@@ -1086,8 +1170,8 @@ function computeSystemMetrics(){
   document.getElementById('metric-density').textContent = density;
   document.getElementById('metric-centrality').textContent = centralityNode;
   document.getElementById('metric-health').textContent = avgHealth;
-  document.getElementById('metric-risk').textContent = highestRiskNode;
-  document.getElementById('metric-edges').textContent = links.length;
+  document.getElementById('metric-risk').textContent = highestRisk;
+  document.getElementById('metric-edges').textContent = edgeCount;
 }
 
 function applyLiveState(){
