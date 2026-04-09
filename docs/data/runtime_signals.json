@@ -2,57 +2,57 @@
   "SHENRON": {
     "node": "SHENRON",
     "status": "idle",
-    "activity": 65,
-    "last_event": "pipeline execution",
+    "activity": 23,
+    "last_event": "telemetry refresh",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:41:31.844430Z"
+    "updated_at": "2026-04-09T05:51:40.494334Z"
   },
   "LANimals": {
     "node": "LANimals",
     "status": "warning",
-    "activity": 90,
-    "last_event": "telemetry refresh",
+    "activity": 74,
+    "last_event": "runtime cycle",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:41:31.844450Z"
+    "updated_at": "2026-04-09T05:51:40.494359Z"
   },
   "OpenSight": {
     "node": "OpenSight",
-    "status": "warning",
-    "activity": 35,
+    "status": "active",
+    "activity": 61,
     "last_event": "signal update",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:41:31.844457Z"
+    "updated_at": "2026-04-09T05:51:40.494372Z"
   },
   "drift_orchestrator": {
     "node": "drift_orchestrator",
-    "status": "idle",
-    "activity": 86,
-    "last_event": "signal update",
+    "status": "active",
+    "activity": 94,
+    "last_event": "runtime cycle",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:41:31.844465Z"
+    "updated_at": "2026-04-09T05:51:40.494377Z"
   },
   "zeroDAYSlater": {
     "node": "zeroDAYSlater",
     "status": "warning",
-    "activity": 70,
-    "last_event": "telemetry refresh",
+    "activity": 87,
+    "last_event": "pipeline execution",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:41:31.844472Z"
+    "updated_at": "2026-04-09T05:51:40.494381Z"
   },
   "PHANTOM": {
     "node": "PHANTOM",
-    "status": "warning",
-    "activity": 56,
-    "last_event": "telemetry refresh",
+    "status": "idle",
+    "activity": 82,
+    "last_event": "runtime cycle",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:41:31.844478Z"
+    "updated_at": "2026-04-09T05:51:40.494385Z"
   },
   "LUNE": {
     "node": "LUNE",
-    "status": "idle",
-    "activity": 35,
-    "last_event": "pipeline execution",
+    "status": "active",
+    "activity": 83,
+    "last_event": "signal update",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:41:31.844484Z"
+    "updated_at": "2026-04-09T05:51:40.494390Z"
   }
 }
