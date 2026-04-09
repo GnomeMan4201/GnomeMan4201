@@ -1,58 +1,72 @@
 {
-  "SHENRON": {
-    "node": "SHENRON",
-    "status": "idle",
-    "activity": 23,
+  "LANimals": {
+    "activity": 90,
+    "drift_score": 0.85,
     "last_event": "telemetry refresh",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:51:40.494334Z"
-  },
-  "LANimals": {
     "node": "LANimals",
+    "posture": "LOCKED",
     "status": "warning",
-    "activity": 74,
-    "last_event": "runtime cycle",
-    "last_event_recent": true,
-    "updated_at": "2026-04-09T05:51:40.494359Z"
-  },
-  "OpenSight": {
-    "node": "OpenSight",
-    "status": "active",
-    "activity": 61,
-    "last_event": "signal update",
-    "last_event_recent": true,
-    "updated_at": "2026-04-09T05:51:40.494372Z"
-  },
-  "drift_orchestrator": {
-    "node": "drift_orchestrator",
-    "status": "active",
-    "activity": 94,
-    "last_event": "runtime cycle",
-    "last_event_recent": true,
-    "updated_at": "2026-04-09T05:51:40.494377Z"
-  },
-  "zeroDAYSlater": {
-    "node": "zeroDAYSlater",
-    "status": "warning",
-    "activity": 87,
-    "last_event": "pipeline execution",
-    "last_event_recent": true,
-    "updated_at": "2026-04-09T05:51:40.494381Z"
-  },
-  "PHANTOM": {
-    "node": "PHANTOM",
-    "status": "idle",
-    "activity": 82,
-    "last_event": "runtime cycle",
-    "last_event_recent": true,
-    "updated_at": "2026-04-09T05:51:40.494385Z"
+    "updated_at": "2026-04-09T05:53:03.550817Z"
   },
   "LUNE": {
+    "activity": 35,
+    "drift_score": 0.25,
+    "last_event": "pipeline execution",
+    "last_event_recent": true,
     "node": "LUNE",
-    "status": "active",
-    "activity": 83,
+    "posture": "ROUTINE",
+    "status": "idle",
+    "updated_at": "2026-04-09T05:53:03.550817Z"
+  },
+  "OpenSight": {
+    "activity": 35,
+    "drift_score": 0.5,
     "last_event": "signal update",
     "last_event_recent": true,
-    "updated_at": "2026-04-09T05:51:40.494390Z"
+    "node": "OpenSight",
+    "posture": "CAUTIOUS",
+    "status": "warning",
+    "updated_at": "2026-04-09T05:53:03.550817Z"
+  },
+  "PHANTOM": {
+    "activity": 56,
+    "drift_score": 0.6,
+    "last_event": "telemetry refresh",
+    "last_event_recent": true,
+    "node": "PHANTOM",
+    "posture": "CAUTIOUS",
+    "status": "warning",
+    "updated_at": "2026-04-09T05:53:03.550817Z"
+  },
+  "SHENRON": {
+    "activity": 65,
+    "drift_score": 0.45,
+    "last_event": "pipeline execution",
+    "last_event_recent": true,
+    "node": "SHENRON",
+    "posture": "CAUTIOUS",
+    "status": "idle",
+    "updated_at": "2026-04-09T05:53:03.550817Z"
+  },
+  "drift_orchestrator": {
+    "activity": 86,
+    "drift_score": 0.6,
+    "last_event": "signal update",
+    "last_event_recent": true,
+    "node": "drift_orchestrator",
+    "posture": "CAUTIOUS",
+    "status": "idle",
+    "updated_at": "2026-04-09T05:53:03.550817Z"
+  },
+  "zeroDAYSlater": {
+    "activity": 70,
+    "drift_score": 0.7,
+    "last_event": "telemetry refresh",
+    "last_event_recent": true,
+    "node": "zeroDAYSlater",
+    "posture": "LOCKED",
+    "status": "warning",
+    "updated_at": "2026-04-09T05:53:03.550817Z"
   }
 }
