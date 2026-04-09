@@ -1,40 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>GnomeMan4201 Ecosystem Graph</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHENRON Ecosystem — live v2</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600&display=swap');
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg: #080b0f;
-    --fg: #c8d8e8;
-    --muted: #8899aa;
-    --line: #1a2a3a;
-    --accent: #00ff9d;
+    --bg: #07060a;
+    --amber: #f5a623;
+    --amber-dim: #c47e10;
+    --amber-pale: #ffd27a;
+    --crimson: #e84040;
+    --violet: #9b59e8;
+    --cyan: #38c9c9;
+    --jade: #3dc87a;
+    --slate: #8892a4;
+    --panel-bg: rgba(10,8,14,0.96);
+    --border: rgba(245,166,35,0.2);
     --warn: #ff9f43;
     --crit: #ff3b30;
-    --cool: #4a9eff;
-    --violet: #a855f7;
   }
 
   body {
     background: var(--bg);
-    color: var(--fg);
-    font-family: 'Share Tech Mono', monospace;
+    color: #d4c5a0;
+    font-family: 'IBM Plex Mono', monospace;
     overflow: hidden;
     height: 100vh;
     width: 100vw;
   }
 
+  canvas#stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
   #graph-container {
+    position: relative;
     width: 100vw;
     height: 100vh;
-    position: relative;
+    z-index: 1;
   }
 
   svg {
@@ -42,215 +53,233 @@
     height: 100%;
   }
 
-  .node circle {
-    cursor: pointer;
-    transition: filter 0.2s, opacity 0.2s, stroke 0.2s, stroke-width 0.2s;
-  }
-
-  .node:hover circle {
-    filter: brightness(1.4);
-  }
-
-  .node text {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    fill: var(--fg);
-    pointer-events: none;
-    text-shadow: 0 0 8px rgba(0,0,0,0.9);
-  }
-
-  .node.core text {
-    font-size: 14px;
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 600;
-    fill: var(--accent);
-  }
-
-  .node.shenron_sub text {
-    font-size: 10px;
-    fill: #88ffcc;
-  }
-
-  .node.dimmed circle { opacity: 0.1; }
-  .node.dimmed text { opacity: 0.1; }
-
-  .node.active-node circle {
-    filter: drop-shadow(0 0 10px rgba(0,255,157,0.55));
-  }
-
   .link {
-    stroke-opacity: 0.5;
     fill: none;
     transition: stroke-opacity 0.2s, stroke-width 0.2s;
   }
 
-  .link.contains { stroke: #00ff9d; stroke-width: 1.5; stroke-dasharray: none; }
-  .link.orchestrates { stroke: #ff6b35; stroke-width: 1.5; }
-  .link.feeds { stroke: #4a9eff; stroke-width: 1; stroke-dasharray: 4 2; }
-  .link.monitors { stroke: #ff9f43; stroke-width: 1; stroke-dasharray: 2 3; }
-  .link.evolved { stroke: #a855f7; stroke-width: 1.5; }
-  .link.extends { stroke: #06b6d4; stroke-width: 1; }
-  .link.recon { stroke: #4a9eff; stroke-width: 0.8; stroke-dasharray: 2 4; }
+  .link.contains     { stroke: var(--amber);     stroke-width: 2;   stroke-opacity: 0.55; }
+  .link.orchestrates { stroke: var(--crimson);   stroke-width: 1.8; stroke-opacity: 0.55; }
+  .link.feeds        { stroke: var(--cyan);      stroke-width: 1.2; stroke-opacity: 0.45; stroke-dasharray: 6 3; }
+  .link.monitors     { stroke: var(--amber-dim); stroke-width: 1;   stroke-opacity: 0.45; stroke-dasharray: 2 4; }
+  .link.evolved      { stroke: var(--violet);    stroke-width: 1.5; stroke-opacity: 0.5; }
+  .link.extends      { stroke: var(--jade);      stroke-width: 1.2; stroke-opacity: 0.45; }
+  .link.recon        { stroke: var(--cyan);      stroke-width: 0.9; stroke-opacity: 0.35; stroke-dasharray: 2 5; }
 
-  .link.dimmed { stroke-opacity: 0.05; }
-  .link.highlighted { stroke-opacity: 0.95; stroke-width: 2.5; }
+  .link.dimmed      { stroke-opacity: 0.04 !important; }
+  .link.highlighted { stroke-opacity: 0.95 !important; stroke-width: 3 !important; }
   .link.active-link { stroke-opacity: 0.95 !important; }
+
+  .node { cursor: pointer; }
+  .node polygon { transition: filter 0.2s, opacity 0.2s, stroke 0.2s, stroke-width 0.2s; }
+  .node:hover polygon { filter: brightness(1.6); }
+
+  .node text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    fill: #c4b08a;
+    pointer-events: none;
+    text-shadow: 0 0 10px #000;
+  }
+
+  .node.core text {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    fill: var(--amber-pale);
+  }
+
+  .node.shenron_sub text {
+    fill: #b8e8cc;
+    font-size: 9.5px;
+  }
+
+  .node.dimmed polygon { opacity: 0.07; }
+  .node.dimmed text { opacity: 0.07; }
+
+  .node.active-node polygon {
+    filter: drop-shadow(0 0 10px rgba(245,166,35,0.22));
+  }
 
   #info-panel {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 320px;
-    background: rgba(8, 11, 15, 0.96);
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--accent);
-    padding: 16px;
-    font-size: 12px;
-    line-height: 1.6;
+    top: 24px;
+    right: 24px;
+    width: 330px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--amber);
+    padding: 18px 18px 16px;
     display: none;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px rgba(245,166,35,0.07), inset 0 0 20px rgba(0,0,0,0.4);
     z-index: 20;
   }
 
-  #info-panel h3 {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 8px;
+  #info-panel::before {
+    content:'';
+    position:absolute;
+    top:0; left:0; right:0;
+    height:1px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
   }
 
   #info-panel .group-label {
-    font-size: 10px;
-    color: var(--cool);
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--amber-dim);
     text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
-  #info-panel .connections,
-  #info-panel .metrics {
-    margin-top: 10px;
-    color: var(--muted);
+  #info-panel h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--amber-pale);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  #info-panel #info-desc {
     font-size: 11px;
+    line-height: 1.7;
+    color: #a89878;
+    border-left: 2px solid rgba(245,166,35,0.25);
+    padding-left: 10px;
+  }
+
+  #info-panel .metrics,
+  #info-panel .connections {
+    margin-top: 12px;
+    font-size: 10.5px;
+    color: #5a5040;
+    line-height: 1.8;
   }
 
   #info-panel .connections span,
   #info-panel .metrics span {
-    color: var(--fg);
+    color: #c4a060;
   }
 
   .metric-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px 10px;
+    gap: 8px;
     margin-top: 8px;
   }
 
   .metric-grid div {
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.04);
     padding: 6px 8px;
+    border: 1px solid rgba(245,166,35,0.08);
+    background: rgba(255,255,255,0.015);
   }
 
   .metric-grid strong {
     display: block;
-    color: var(--muted);
-    font-size: 10px;
-    margin-bottom: 2px;
-    font-weight: normal;
-    text-transform: uppercase;
+    font-size: 9px;
     letter-spacing: 1px;
-  }
-
-  .metric-grid span {
-    color: var(--fg);
+    text-transform: uppercase;
+    color: #7d6540;
+    font-weight: 400;
+    margin-bottom: 2px;
   }
 
   #legend {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
-    background: rgba(8, 11, 15, 0.9);
-    border: 1px solid var(--line);
-    padding: 14px;
-    font-size: 11px;
+    bottom: 24px;
+    left: 24px;
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    backdrop-filter: blur(12px);
+    min-width: 220px;
     z-index: 20;
   }
 
   #legend h4 {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    color: var(--cool);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 2px;
     margin-bottom: 10px;
-    letter-spacing: 1px;
+    text-transform: uppercase;
   }
 
   .legend-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 5px;
-    color: var(--muted);
+    gap: 9px;
+    margin-bottom: 6px;
+    font-size: 10px;
+    color: #7a6a50;
   }
 
-  .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
+  .legend-hex {
+    width: 13px;
+    height: 13px;
     flex-shrink: 0;
   }
 
   .legend-line {
-    width: 24px;
+    width: 22px;
     height: 2px;
     flex-shrink: 0;
   }
 
+  #legend .sep {
+    border: none;
+    border-top: 1px solid rgba(245,166,35,0.1);
+    margin: 8px 0;
+  }
+
   #title {
     position: fixed;
-    top: 20px;
-    left: 20px;
-    font-family: 'Rajdhani', sans-serif;
+    top: 24px;
+    left: 24px;
     z-index: 20;
   }
 
   #title h1 {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--amber);
+    letter-spacing: 4px;
+    text-shadow: 0 0 30px rgba(245,166,35,0.4);
   }
 
   #title p {
-    font-size: 11px;
-    color: #4a6a8a;
-    margin-top: 3px;
-    font-family: 'Share Tech Mono', monospace;
+    font-size: 9.5px;
+    color: #4a3a20;
+    letter-spacing: 2px;
+    margin-top: 4px;
   }
 
   #status-bar {
     position: fixed;
-    top: 72px;
-    left: 20px;
+    top: 82px;
+    left: 24px;
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
     z-index: 20;
-    font-size: 10px;
-    color: #6f86a0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    flex-wrap: wrap;
   }
 
   .status-chip {
-    padding: 5px 8px;
-    border: 1px solid var(--line);
-    background: rgba(8,11,15,0.86);
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7b633c;
+    background: rgba(10,8,14,0.92);
+    border: 1px solid rgba(245,166,35,0.12);
+    padding: 6px 8px;
   }
 
   .status-chip.live {
-    color: var(--accent);
-    border-color: rgba(0,255,157,0.25);
+    color: var(--amber-pale);
+    border-color: rgba(245,166,35,0.25);
   }
 
   .status-chip.warn {
@@ -260,37 +289,23 @@
 
   #hint {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-size: 10px;
-    color: #2a4a6a;
+    bottom: 24px;
+    right: 24px;
+    font-size: 9px;
+    color: #2a2010;
     text-align: right;
-    line-height: 1.8;
+    line-height: 2;
+    letter-spacing: 1px;
     z-index: 20;
-  }
-
-  .scanline {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.03) 2px,
-      rgba(0,0,0,0.03) 4px
-    );
-    pointer-events: none;
-    z-index: 999;
   }
 </style>
 </head>
 <body>
-<div class="scanline"></div>
+<canvas id="stars"></canvas>
 
 <div id="title">
-  <h1>GNOMEMAN4201 ECOSYSTEM</h1>
-  <p>// inter-tool integration graph — live mode</p>
+  <h1>GNOMEMAN4201</h1>
+  <p>ECOSYSTEM · INTEGRATION GRAPH · LIVE v2.0</p>
 </div>
 
 <div id="status-bar">
@@ -299,9 +314,7 @@
   <div class="status-chip" id="repo-count">repos tracked: --</div>
 </div>
 
-<div id="graph-container">
-  <svg id="graph"></svg>
-</div>
+<div id="graph-container"><svg id="graph"></svg></div>
 
 <div id="info-panel">
   <div class="group-label" id="info-group"></div>
@@ -312,173 +325,240 @@
 </div>
 
 <div id="legend">
-  <h4>// LEGEND</h4>
-  <div class="legend-item"><div class="legend-dot" style="background:#00ff9d"></div> Core / SHENRON</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#88ffcc;opacity:0.7"></div> SHENRON subsystem</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#ff6b35"></div> Offense framework</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#4a9eff"></div> Recon & network</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div> ML research</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#ff9f43"></div> Monitoring / ops</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#8899aa"></div> Platform / utility</div>
-  <br>
-  <div class="legend-item"><div class="legend-line" style="background:#00ff9d"></div> contains</div>
-  <div class="legend-item"><div class="legend-line" style="background:#ff6b35"></div> orchestrates</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#4a9eff 0,#4a9eff 4px,transparent 4px,transparent 6px)"></div> feeds</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#ff9f43 0,#ff9f43 2px,transparent 2px,transparent 5px)"></div> monitors</div>
-  <div class="legend-item"><div class="legend-line" style="background:#a855f7"></div> evolved from</div>
+  <h4>Legend</h4>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#f5a623" stroke-width="1.5"/></svg> Core / SHENRON</div>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#3dc87a" stroke-width="1.5"/></svg> SHENRON subsystem</div>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#e84040" stroke-width="1.5"/></svg> Offense</div>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#38c9c9" stroke-width="1.5"/></svg> Recon &amp; network</div>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#9b59e8" stroke-width="1.5"/></svg> ML research</div>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#c47e10" stroke-width="1" stroke-dasharray="2,2"/></svg> Monitoring / ops</div>
+  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#8892a4" stroke-width="1.5"/></svg> Platform / utility</div>
+  <hr class="sep">
+  <div class="legend-item"><div class="legend-line" style="background:#f5a623"></div> contains</div>
+  <div class="legend-item"><div class="legend-line" style="background:#e84040"></div> orchestrates</div>
+  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#38c9c9 0,#38c9c9 6px,transparent 6px,transparent 9px)"></div> feeds</div>
+  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#c47e10 0,#c47e10 2px,transparent 2px,transparent 6px)"></div> monitors</div>
+  <div class="legend-item"><div class="legend-line" style="background:#9b59e8"></div> evolved from</div>
+  <div class="legend-item"><div class="legend-line" style="background:#3dc87a"></div> extends</div>
 </div>
 
 <div id="hint">
-  drag nodes to reposition<br>
-  click node to highlight connections<br>
+  drag nodes · scroll to zoom<br>
+  click node to inspect<br>
   double-click node to open repo<br>
-  click background to reset
+  click canvas to reset
 </div>
 
 <script>
+(function(){
+  const c = document.getElementById('stars');
+  const ctx = c.getContext('2d');
+
+  function resize(){
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    draw();
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    for(let i=0;i<320;i++){
+      const x = Math.random()*c.width;
+      const y = Math.random()*c.height;
+      const r = Math.random()*0.9;
+      const a = Math.random()*0.35 + 0.05;
+      ctx.beginPath();
+      ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(245,200,120,${a})`;
+      ctx.fill();
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+})();
+
 const nodes = [
-  { id: 'SHENRON', group: 'core', size: 22, repo: 'shenron', desc: 'Adaptive persistent offense framework. Central engine of the offense stack.' },
-  { id: 'AI Modules', group: 'shenron_sub', size: 11, desc: 'Autonomous decision-making layer within SHENRON.' },
-  { id: 'Autonomy &\nOrchestration', group: 'shenron_sub', size: 11, desc: 'Internal orchestration brain — coordinates module execution and adaptive behavior.' },
-  { id: 'Evasion &\nStealth', group: 'shenron_sub', size: 11, desc: 'Detection avoidance, AV evasion, behavioral camouflage.' },
-  { id: 'Mutation Engine', group: 'shenron_sub', size: 11, desc: 'Payload and behavior mutation — polymorphic capabilities.' },
-  { id: 'C2', group: 'shenron_sub', size: 11, desc: 'Communication and command-and-control channel management.' },
-  { id: 'Persistence &\nPropagation', group: 'shenron_sub', size: 11, desc: 'Survival mechanisms and lateral movement capabilities.' },
-  { id: 'Steganography\n& Utils', group: 'shenron_sub', size: 10, desc: 'Covert data encoding and utility tooling.' },
-  { id: 'OWN', group: 'offense', size: 13, repo: 'OWN', desc: 'Offensive Workflow Navigator — primary interface into SHENRON.' },
-  { id: 'Blackglass', group: 'offense', size: 12, repo: 'Blackglass', desc: 'AI-powered payload mutation and covert ops suite.' },
-  { id: 'LUNE', group: 'offense', size: 12, repo: 'Lune', desc: 'Adversary simulation framework — models threat actor behavior.' },
-  { id: 'zer0DAYSlater', group: 'offense', size: 11, repo: 'zer0DAYSlater', desc: 'Adversarial simulation framework — exploit development and post-exploitation research.' },
-  { id: 'PHANTOM', group: 'offense', size: 11, repo: 'PHANTOM', desc: 'Stealth-focused tool — interfaces with C2 and steganography subsystems.' },
-  { id: 'pwn', group: 'offense', size: 10, repo: 'pwn', desc: 'Penetration testing platform — entry-point tooling feeding into LUNE simulation.' },
-  { id: 'LANimals', group: 'recon', size: 14, repo: 'LANimals', desc: 'Network reconnaissance platform. Primary recon data source for SHENRON.' },
-  { id: 'LANIMORPH', group: 'recon', size: 11, repo: 'lanimorph', desc: 'Behavioral personality mutation layer extending LANimals.' },
-  { id: 'OpenSight', group: 'recon', size: 10, repo: 'OpenSight', desc: 'Intelligence and observation platform.' },
-  { id: 'drift_orchestrator', group: 'platform', size: 11, repo: 'drift_orchestrator', desc: 'Policy engine and monitoring orchestrator.' },
-  { id: 'chain', group: 'platform', size: 10, repo: 'chain', desc: 'Chaining and sequencing primitive.' },
-  { id: 'aliasOS', group: 'platform', size: 9, repo: 'aliasOS', desc: 'Shell alias and identity management layer.' },
-  { id: 'BANANA_TREE', group: 'monitor', size: 13, desc: 'Self-healing AI-Ops dashboard — monitors the full ecosystem.' },
-  { id: 'HYDRA', group: 'ml', size: 13, repo: 'HYDRA', desc: 'Static analysis framework for ML framework vulnerability discovery.' },
-  { id: 'Pickle Hunter', group: 'ml', size: 10, repo: 'Pickle-Hunter', desc: 'Original ML deserialization scanner. Evolved into HYDRA.' },
-  { id: 'bad_BANANA', group: 'ml', size: 11, repo: 'bad_BANANA', desc: 'Adversarial ML toolkit — attacks ML model pipelines.' },
-  { id: 'DevToReconSuite', group: 'platform', size: 9, repo: 'DevToReconSuite', desc: 'Input validation vulnerability discovery tooling built from DEV.to API recon findings.' },
-  { id: 'repo_alias_forge', group: 'platform', size: 9, repo: 'repo_alias_forge', desc: 'GitHub repo discovery, sync, and shell command generation utility.' }
+  {id:'SHENRON',group:'core',size:22,repo:'shenron',desc:'Apex autonomous agent — unified orchestration core integrating all subsystems, offense, recon, ML, and ops.'},
+  {id:'AI Modules',group:'shenron_sub',size:14,desc:'Pluggable AI inference layers within SHENRON.'},
+  {id:'Autonomy &\nOrchestration',group:'shenron_sub',size:14,desc:'Decision loop and task scheduling engine.'},
+  {id:'Evasion &\nStealth',group:'shenron_sub',size:13,desc:'Anti-detection and obfuscation subsystem.'},
+  {id:'Mutation Engine',group:'shenron_sub',size:13,desc:'Polymorphic payload and behavior mutation layer.'},
+  {id:'C2',group:'shenron_sub',size:12,desc:'Command and control communication channel.'},
+  {id:'Persistence &\nPropagation',group:'shenron_sub',size:12,desc:'Survivability and lateral movement module.'},
+  {id:'Steganography\n& Utils',group:'shenron_sub',size:11,desc:'Hidden data channel and utility belt.'},
+  {id:'OWN',group:'core',size:17,repo:'OWN',desc:'Workflow autonomy orchestrator — high-level task runner interfacing SHENRON and platform tools.'},
+  {id:'Blackglass',group:'offense',size:12,repo:'Blackglass',desc:'Evasion-focused framework. Feeds Mutation Engine and Evasion subsystem.'},
+  {id:'LUNE',group:'offense',size:12,repo:'Lune',desc:'Simulation and deception engine. Interfaces with C2 and Persistence.'},
+  {id:'zer0DAYSlater',group:'offense',size:11,repo:'zer0DAYSlater',desc:'Adversarial simulation — vulnerability and exploit development pipeline.'},
+  {id:'PHANTOM',group:'offense',size:11,repo:'PHANTOM',desc:'Stealth-focused — interfaces with C2 and steganography subsystems.'},
+  {id:'pwn',group:'offense',size:10,repo:'pwn',desc:'Penetration testing platform — entry-point tooling feeding LUNE simulation.'},
+  {id:'LANimals',group:'recon',size:14,repo:'LANimals',desc:'Network reconnaissance platform. Primary recon data source for SHENRON.'},
+  {id:'LANIMORPH',group:'recon',size:11,repo:'lanimorph',desc:'Behavioral mutation layer extending LANimals.'},
+  {id:'OpenSight',group:'recon',size:10,repo:'OpenSight',desc:'Intelligence and observation platform. Upstream data feed into LANimals.'},
+  {id:'drift_orchestrator',group:'platform',size:11,repo:'drift_orchestrator',desc:'Policy engine and monitoring orchestrator. Interfaces with SHENRON autonomy layer.'},
+  {id:'chain',group:'platform',size:10,repo:'chain',desc:'Chaining and sequencing primitive. Feeds OWN workflow orchestration.'},
+  {id:'aliasOS',group:'platform',size:9,repo:'aliasOS',desc:'Shell alias and identity management layer. Utility across the full stack.'},
+  {id:'BANANA_TREE',group:'monitor',size:13,desc:'Self-healing AI-Ops dashboard — monitors the full ecosystem.'},
+  {id:'HYDRA',group:'ml',size:13,repo:'HYDRA',desc:'Static analysis framework — VENOM Hunter, DepChain Hunter, RepoScan Hunter.'},
+  {id:'Pickle Hunter',group:'ml',size:10,repo:'Pickle-Hunter',desc:'Original ML deserialization scanner. Evolved into HYDRA.'},
+  {id:'bad_BANANA',group:'ml',size:11,repo:'bad_BANANA',desc:'Adversarial ML toolkit — attacks ML model pipelines. Feeds SHENRON AI module layer.'},
+  {id:'DevToReconSuite',group:'platform',size:9,repo:'DevToReconSuite',desc:'Input validation vulnerability discovery tooling from DEV.to API recon.'},
+  {id:'repo_alias_forge',group:'platform',size:9,repo:'repo_alias_forge',desc:'GitHub repo discovery, sync, and shell command generation. Recon utility.'}
 ];
 
 const links = [
-  { source: 'SHENRON', target: 'AI Modules', type: 'contains' },
-  { source: 'SHENRON', target: 'Autonomy &\nOrchestration', type: 'contains' },
-  { source: 'SHENRON', target: 'Evasion &\nStealth', type: 'contains' },
-  { source: 'SHENRON', target: 'Mutation Engine', type: 'contains' },
-  { source: 'SHENRON', target: 'C2', type: 'contains' },
-  { source: 'SHENRON', target: 'Persistence &\nPropagation', type: 'contains' },
-  { source: 'SHENRON', target: 'Steganography\n& Utils', type: 'contains' },
-  { source: 'OWN', target: 'Autonomy &\nOrchestration', type: 'orchestrates' },
-  { source: 'Blackglass', target: 'Evasion &\nStealth', type: 'feeds' },
-  { source: 'Blackglass', target: 'Mutation Engine', type: 'feeds' },
-  { source: 'LUNE', target: 'C2', type: 'feeds' },
-  { source: 'LUNE', target: 'Persistence &\nPropagation', type: 'feeds' },
-  { source: 'PHANTOM', target: 'C2', type: 'feeds' },
-  { source: 'PHANTOM', target: 'Steganography\n& Utils', type: 'feeds' },
-  { source: 'drift_orchestrator', target: 'Autonomy &\nOrchestration', type: 'feeds' },
-  { source: 'bad_BANANA', target: 'AI Modules', type: 'feeds' },
-  { source: 'LANIMORPH', target: 'Mutation Engine', type: 'feeds' },
-  { source: 'zer0DAYSlater', target: 'SHENRON', type: 'feeds' },
-  { source: 'LANimals', target: 'SHENRON', type: 'feeds' },
-  { source: 'OpenSight', target: 'LANimals', type: 'feeds' },
-  { source: 'LANimals', target: 'LANIMORPH', type: 'extends' },
-  { source: 'Pickle Hunter', target: 'HYDRA', type: 'evolved' },
-  { source: 'HYDRA', target: 'zer0DAYSlater', type: 'feeds' },
-  { source: 'HYDRA', target: 'bad_BANANA', type: 'feeds' },
-  { source: 'chain', target: 'OWN', type: 'feeds' },
-  { source: 'BANANA_TREE', target: 'SHENRON', type: 'monitors' },
-  { source: 'BANANA_TREE', target: 'OWN', type: 'monitors' },
-  { source: 'BANANA_TREE', target: 'LANimals', type: 'monitors' },
-  { source: 'pwn', target: 'LUNE', type: 'feeds' },
-  { source: 'repo_alias_forge', target: 'LANimals', type: 'recon' },
-  { source: 'DevToReconSuite', target: 'OWN', type: 'feeds' }
+  {source:'SHENRON',target:'AI Modules',type:'contains'},
+  {source:'SHENRON',target:'Autonomy &\nOrchestration',type:'contains'},
+  {source:'SHENRON',target:'Evasion &\nStealth',type:'contains'},
+  {source:'SHENRON',target:'Mutation Engine',type:'contains'},
+  {source:'SHENRON',target:'C2',type:'contains'},
+  {source:'SHENRON',target:'Persistence &\nPropagation',type:'contains'},
+  {source:'SHENRON',target:'Steganography\n& Utils',type:'contains'},
+  {source:'OWN',target:'Autonomy &\nOrchestration',type:'orchestrates'},
+  {source:'Blackglass',target:'Evasion &\nStealth',type:'feeds'},
+  {source:'Blackglass',target:'Mutation Engine',type:'feeds'},
+  {source:'LUNE',target:'C2',type:'feeds'},
+  {source:'LUNE',target:'Persistence &\nPropagation',type:'feeds'},
+  {source:'PHANTOM',target:'C2',type:'feeds'},
+  {source:'PHANTOM',target:'Steganography\n& Utils',type:'feeds'},
+  {source:'drift_orchestrator',target:'Autonomy &\nOrchestration',type:'feeds'},
+  {source:'bad_BANANA',target:'AI Modules',type:'feeds'},
+  {source:'LANIMORPH',target:'Mutation Engine',type:'feeds'},
+  {source:'zer0DAYSlater',target:'SHENRON',type:'feeds'},
+  {source:'LANimals',target:'SHENRON',type:'feeds'},
+  {source:'OpenSight',target:'LANimals',type:'feeds'},
+  {source:'LANimals',target:'LANIMORPH',type:'extends'},
+  {source:'Pickle Hunter',target:'HYDRA',type:'evolved'},
+  {source:'HYDRA',target:'zer0DAYSlater',type:'feeds'},
+  {source:'HYDRA',target:'bad_BANANA',type:'feeds'},
+  {source:'chain',target:'OWN',type:'feeds'},
+  {source:'BANANA_TREE',target:'SHENRON',type:'monitors'},
+  {source:'BANANA_TREE',target:'OWN',type:'monitors'},
+  {source:'BANANA_TREE',target:'LANimals',type:'monitors'},
+  {source:'pwn',target:'LUNE',type:'feeds'},
+  {source:'repo_alias_forge',target:'LANimals',type:'recon'},
+  {source:'DevToReconSuite',target:'OWN',type:'feeds'}
 ];
 
 const groupColors = {
-  core: '#00ff9d',
-  shenron_sub: '#1aff9d',
-  offense: '#ff6b35',
-  recon: '#4a9eff',
-  ml: '#a855f7',
-  monitor: '#ff9f43',
-  platform: '#64748b'
+  core:'#f5a623',
+  shenron_sub:'#3dc87a',
+  offense:'#e84040',
+  recon:'#38c9c9',
+  ml:'#9b59e8',
+  monitor:'#c47e10',
+  platform:'#8892a4'
 };
 
 const groupNames = {
-  core: 'CORE',
-  shenron_sub: 'SHENRON SUBSYSTEM',
-  offense: 'OFFENSE FRAMEWORK',
-  recon: 'RECON & NETWORK',
-  ml: 'ML RESEARCH',
-  monitor: 'MONITORING / OPS',
-  platform: 'PLATFORM / UTILITY'
+  core:'CORE',
+  shenron_sub:'SHENRON SUBSYSTEM',
+  offense:'OFFENSE FRAMEWORK',
+  recon:'RECON & NETWORK',
+  ml:'ML RESEARCH',
+  monitor:'MONITORING / OPS',
+  platform:'PLATFORM / UTILITY'
 };
 
 const repoLinks = Object.fromEntries(
-  nodes
-    .filter(n => n.repo)
-    .map(n => [n.id, `https://github.com/GnomeMan4201/${n.repo}`])
+  nodes.filter(n => n.repo).map(n => [n.id, `https://github.com/GnomeMan4201/${n.repo}`])
 );
 
 let repoState = { updated_at: null, repos: {} };
 let liveState = { updated_at: null, nodes: {}, edges: {} };
 let selected = null;
 
+function hexPoints(r){
+  return d3.range(6).map(i => {
+    const a = (Math.PI / 3) * i - Math.PI / 6;
+    return [r * Math.cos(a), r * Math.sin(a)].join(',');
+  }).join(' ');
+}
+
 const w = window.innerWidth;
 const h = window.innerHeight;
 
-const svg = d3.select('#graph')
-  .attr('viewBox', `0 0 ${w} ${h}`);
-
+const svg = d3.select('#graph').attr('viewBox', `0 0 ${w} ${h}`);
 const defs = svg.append('defs');
 
-const pattern = defs.append('pattern')
-  .attr('id', 'grid')
-  .attr('width', 40)
-  .attr('height', 40)
-  .attr('patternUnits', 'userSpaceOnUse');
+const glowCore = defs.append('filter')
+  .attr('id','glow-core')
+  .attr('x','-60%').attr('y','-60%')
+  .attr('width','220%').attr('height','220%');
 
-pattern.append('path')
-  .attr('d', 'M 40 0 L 0 0 0 40')
-  .attr('fill', 'none')
-  .attr('stroke', '#0d1620')
-  .attr('stroke-width', 0.5);
+glowCore.append('feGaussianBlur')
+  .attr('in','SourceGraphic')
+  .attr('stdDeviation',6)
+  .attr('result','blur');
 
-svg.append('rect')
-  .attr('width', w)
-  .attr('height', h)
-  .attr('fill', 'url(#grid)');
+const mergeCore = glowCore.append('feMerge');
+mergeCore.append('feMergeNode').attr('in','blur');
+mergeCore.append('feMergeNode').attr('in','blur');
+mergeCore.append('feMergeNode').attr('in','SourceGraphic');
 
-const filter = defs.append('filter').attr('id', 'glow');
-filter.append('feGaussianBlur').attr('stdDeviation', 4).attr('result', 'blur');
-const feMerge = filter.append('feMerge');
-feMerge.append('feMergeNode').attr('in', 'blur');
-feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+const glowSoft = defs.append('filter')
+  .attr('id','glow-soft')
+  .attr('x','-40%').attr('y','-40%')
+  .attr('width','180%').attr('height','180%');
+
+glowSoft.append('feGaussianBlur')
+  .attr('in','SourceGraphic')
+  .attr('stdDeviation',3)
+  .attr('result','blur');
+
+const mergeSoft = glowSoft.append('feMerge');
+mergeSoft.append('feMergeNode').attr('in','blur');
+mergeSoft.append('feMergeNode').attr('in','SourceGraphic');
+
+const linkColors = {
+  contains:'#f5a623',
+  orchestrates:'#e84040',
+  feeds:'#38c9c9',
+  monitors:'#c47e10',
+  evolved:'#9b59e8',
+  extends:'#3dc87a',
+  recon:'#38c9c9'
+};
+
+Object.entries(linkColors).forEach(([type,color]) => {
+  defs.append('marker')
+    .attr('id', `arrow-${type}`)
+    .attr('viewBox', '0 -4 8 8')
+    .attr('refX', 8)
+    .attr('refY', 0)
+    .attr('markerWidth', 5)
+    .attr('markerHeight', 5)
+    .attr('orient', 'auto')
+    .append('path')
+    .attr('d', 'M0,-4L8,0L0,4')
+    .attr('fill', color)
+    .attr('opacity', 0.7);
+});
 
 const g = svg.append('g');
 
-svg.call(d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => g.attr('transform', e.transform)));
+svg.call(
+  d3.zoom()
+    .scaleExtent([0.25, 4])
+    .on('zoom', e => g.attr('transform', e.transform))
+);
 
 const simulation = d3.forceSimulation(nodes)
-  .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
-    if (d.type === 'contains') return 90;
-    if (d.type === 'orchestrates') return 140;
-    return 180;
-  }).strength(d => d.type === 'contains' ? 0.8 : 0.3))
-  .force('charge', d3.forceManyBody().strength(d => d.group === 'core' ? -800 : d.group === 'shenron_sub' ? -220 : -350))
+  .force('link', d3.forceLink(links)
+    .id(d => d.id)
+    .distance(d => d.type === 'contains' ? 95 : d.type === 'orchestrates' ? 150 : 195)
+    .strength(d => d.type === 'contains' ? 0.75 : 0.28))
+  .force('charge', d3.forceManyBody().strength(d => d.group === 'core' ? -900 : d.group === 'shenron_sub' ? -220 : -380))
   .force('center', d3.forceCenter(w / 2, h / 2))
-  .force('collision', d3.forceCollide(d => d.size + 18));
+  .force('collision', d3.forceCollide(d => getVisualRadius(d) + 20));
 
 const link = g.append('g')
-  .selectAll('line')
+  .selectAll('path')
   .data(links)
-  .join('line')
-  .attr('class', d => `link ${d.type}`);
+  .join('path')
+  .attr('class', d => `link ${d.type}`)
+  .attr('marker-end', d => `url(#arrow-${d.type})`);
 
 const node = g.append('g')
   .selectAll('g')
@@ -502,33 +582,26 @@ const node = g.append('g')
     })
   );
 
-node.append('circle')
-  .attr('r', d => d.size)
-  .attr('fill', d => groupColors[d.group] + (d.group === 'shenron_sub' ? '22' : '18'))
+node.append('polygon')
+  .attr('points', d => hexPoints(d.size))
+  .attr('fill', d => groupColors[d.group] + (d.group === 'shenron_sub' ? '14' : '10'))
   .attr('stroke', d => groupColors[d.group])
-  .attr('stroke-width', d => d.group === 'core' ? 2 : 1)
-  .attr('filter', d => d.group === 'core' ? 'url(#glow)' : null);
+  .attr('stroke-width', d => d.group === 'core' ? 2.2 : 1.2)
+  .attr('filter', d => d.group === 'core' ? 'url(#glow-core)' : d.group === 'shenron_sub' ? 'url(#glow-soft)' : null);
 
-node.each(function(d) {
+node.each(function(d){
   const el = d3.select(this);
   const lines = d.id.split('\n');
-  const offset = d.size + 6;
-  if (lines.length === 1) {
+  const offset = d.size + 7;
+  lines.forEach((line, i) => {
     el.append('text')
-      .attr('dy', offset + 10)
+      .attr('dy', offset + 10 + i * 12)
       .attr('text-anchor', 'middle')
-      .text(d.id);
-  } else {
-    lines.forEach((line, i) => {
-      el.append('text')
-        .attr('dy', offset + 10 + i * 13)
-        .attr('text-anchor', 'middle')
-        .text(line);
-    });
-  }
+      .text(line);
+  });
 });
 
-node.on('click', function(e, d) {
+node.on('click', function(e, d){
   e.stopPropagation();
 
   if (selected === d.id) {
@@ -555,7 +628,7 @@ node.on('click', function(e, d) {
   renderInfoPanel(d);
 });
 
-node.on('dblclick', function(e, d) {
+node.on('dblclick', function(e, d){
   e.stopPropagation();
   const url = repoLinks[d.id];
   if (url) window.open(url, '_blank', 'noopener,noreferrer');
@@ -567,36 +640,35 @@ svg.on('click', () => {
   document.getElementById('info-panel').style.display = 'none';
 });
 
-function resetHighlight() {
+function resetHighlight(){
   node.classed('dimmed', false);
   link.classed('dimmed', false).classed('highlighted', false);
 }
 
 simulation.on('tick', () => {
-  link
-    .attr('x1', d => d.source.x)
-    .attr('y1', d => d.source.y)
-    .attr('x2', d => d.target.x)
-    .attr('y2', d => d.target.y);
+  link.attr('d', d => {
+    const dx = d.target.x - d.source.x;
+    const dy = d.target.y - d.source.y;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const curve = dist * 0.18;
+    const mx = (d.source.x + d.target.x) / 2 - dy * curve / dist;
+    const my = (d.source.y + d.target.y) / 2 + dx * curve / dist;
+    const tr = getVisualRadius(d.target) + 9;
+    const ex = d.target.x - (dx / dist) * tr;
+    const ey = d.target.y - (dy / dist) * tr;
+    return `M${d.source.x},${d.source.y} Q${mx},${my} ${ex},${ey}`;
+  });
 
   node.attr('transform', d => `translate(${d.x},${d.y})`);
 });
 
-function pulse() {
-  const shenronNode = node.filter(d => d.id === 'SHENRON');
-  shenronNode.select('circle')
-    .transition().duration(1200).attr('r', 26)
-    .transition().duration(1200).attr('r', getVisualRadius({ id: 'SHENRON', size: 22 }))
-    .on('end', pulse);
-}
-
-function minutesSince(iso) {
+function minutesSince(iso){
   if (!iso) return null;
   const ms = Date.now() - new Date(iso).getTime();
   return Math.max(0, Math.floor(ms / 60000));
 }
 
-function formatRelative(iso) {
+function formatRelative(iso){
   if (!iso) return '--';
   const mins = minutesSince(iso);
   if (mins < 1) return 'just now';
@@ -605,26 +677,26 @@ function formatRelative(iso) {
   return `${Math.floor(mins / 1440)}d ago`;
 }
 
-function fetchJson(path) {
+function fetchJson(path){
   return fetch(`${path}?t=${Date.now()}`, { cache: 'no-store' }).then(res => {
     if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
     return res.json();
   });
 }
 
-function getRepoMetrics(id) {
+function getRepoMetrics(id){
   return repoState.repos?.[id] || null;
 }
 
-function getNodeMetrics(id) {
+function getNodeMetrics(id){
   return liveState.nodes?.[id] || null;
 }
 
-function getEdgeMetrics(sourceId, targetId) {
+function getEdgeMetrics(sourceId, targetId){
   return liveState.edges?.[`${sourceId}->${targetId}`] || null;
 }
 
-function getVisualRadius(d) {
+function getVisualRadius(d){
   const repo = getRepoMetrics(d.id);
   const runtime = getNodeMetrics(d.id);
   const activity = runtime?.activity || 0;
@@ -633,38 +705,42 @@ function getVisualRadius(d) {
   return d.size + activityBoost + freshnessBoost;
 }
 
-function getStrokeColor(d) {
+function getStrokeColor(d){
   const runtime = getNodeMetrics(d.id);
   if (runtime?.health === 'critical') return '#ff3b30';
   if (runtime?.health === 'warning') return '#ff9f43';
   return groupColors[d.group];
 }
 
-function applyLiveState() {
-  node
-    .classed('active-node', d => getNodeMetrics(d.id)?.status === 'active');
+function getStrokeWidth(d){
+  const runtime = getNodeMetrics(d.id);
+  if (runtime?.status === 'active') return d.group === 'core' ? 3 : 2;
+  if (runtime?.status === 'warning') return d.group === 'core' ? 2.6 : 1.8;
+  return d.group === 'core' ? 2.2 : 1.2;
+}
 
-  node.select('circle')
+function applyLiveState(){
+  node.classed('active-node', d => getNodeMetrics(d.id)?.status === 'active');
+
+  node.select('polygon')
     .transition()
     .duration(300)
-    .attr('r', d => d.id === 'SHENRON' ? Math.max(22, getVisualRadius(d)) : getVisualRadius(d))
+    .attr('points', d => hexPoints(d.id === 'SHENRON' ? Math.max(22, getVisualRadius(d)) : getVisualRadius(d)))
     .attr('stroke', d => getStrokeColor(d))
-    .attr('stroke-width', d => {
-      const runtime = getNodeMetrics(d.id);
-      if (runtime?.status === 'active') return 2.5;
-      if (runtime?.status === 'warning') return 2;
-      return d.group === 'core' ? 2 : 1;
-    });
+    .attr('stroke-width', d => getStrokeWidth(d));
 
   link
     .classed('active-link', l => !!getEdgeMetrics(l.source.id, l.target.id)?.active)
     .attr('stroke-width', l => {
       const edge = getEdgeMetrics(l.source.id, l.target.id);
       if (edge?.throughput) return Math.min(4, 1 + edge.throughput / 15);
-      if (l.type === 'contains') return 1.5;
-      if (l.type === 'orchestrates') return 1.5;
-      return 1;
+      if (l.type === 'contains') return 2;
+      if (l.type === 'orchestrates') return 1.8;
+      return 1.2;
     });
+
+  simulation.force('collision', d3.forceCollide(d => getVisualRadius(d) + 20));
+  simulation.alpha(0.2).restart();
 
   if (selected) {
     const selectedNode = nodes.find(n => n.id === selected);
@@ -676,17 +752,14 @@ function applyLiveState() {
   document.getElementById('repo-count').textContent = `repos tracked: ${Object.keys(repoState.repos || {}).length}`;
 }
 
-function renderInfoPanel(d) {
+function renderInfoPanel(d){
   const panel = document.getElementById('info-panel');
   const repo = getRepoMetrics(d.id);
   const runtime = getNodeMetrics(d.id);
 
   document.getElementById('info-name').textContent = d.id.replace('\n', ' ');
-  document.getElementById('info-group').textContent = '// ' + groupNames[d.group];
+  document.getElementById('info-group').textContent = '◆ ' + groupNames[d.group];
   document.getElementById('info-desc').textContent = d.desc;
-
-  const inLinks = links.filter(l => l.target.id === d.id);
-  const outLinks = links.filter(l => l.source.id === d.id);
 
   let metricsHtml = '<div class="metric-grid">';
   metricsHtml += `<div><strong>status</strong><span>${runtime?.status || repo?.status || 'static'}</span></div>`;
@@ -714,21 +787,24 @@ function renderInfoPanel(d) {
     metricsHtml += `<div style="grid-column:1 / -1"><strong>last event</strong><span>${runtime.last_event}</span></div>`;
   }
   if (repoLinks[d.id]) {
-    metricsHtml += `<div style="grid-column:1 / -1"><strong>repo</strong><span><a href="${repoLinks[d.id]}" target="_blank" rel="noopener noreferrer" style="color:#4a9eff;text-decoration:none">open repository</a></span></div>`;
+    metricsHtml += `<div style="grid-column:1 / -1"><strong>repo</strong><span><a href="${repoLinks[d.id]}" target="_blank" rel="noopener noreferrer" style="color:#38c9c9;text-decoration:none">open repository</a></span></div>`;
   }
   metricsHtml += '</div>';
 
   document.getElementById('info-metrics').innerHTML = metricsHtml;
 
-  let connText = '';
-  if (outLinks.length) connText += `feeds into: <span>${outLinks.map(l => l.target.id.replace('\n', ' ')).join(', ')}</span><br>`;
-  if (inLinks.length) connText += `receives from: <span>${inLinks.map(l => l.source.id.replace('\n', ' ')).join(', ')}</span>`;
-  document.getElementById('info-connections').innerHTML = connText;
+  const inLinks = links.filter(l => l.target.id === d.id);
+  const outLinks = links.filter(l => l.source.id === d.id);
+
+  let t = '';
+  if (outLinks.length) t += `feeds into → <span>${outLinks.map(l => l.target.id.replace('\n', ' ')).join(', ')}</span><br>`;
+  if (inLinks.length) t += `receives ← <span>${inLinks.map(l => l.source.id.replace('\n', ' ')).join(', ')}</span>`;
+  document.getElementById('info-connections').innerHTML = t;
 
   panel.style.display = 'block';
 }
 
-async function refreshGraphState() {
+async function refreshGraphState(){
   try {
     const [repos, ecosystem] = await Promise.all([
       fetchJson('./data/repos.json'),
@@ -738,6 +814,8 @@ async function refreshGraphState() {
     repoState = repos || { updated_at: null, repos: {} };
     liveState = ecosystem || { updated_at: null, nodes: {}, edges: {} };
 
+    document.getElementById('live-state').classList.remove('warn');
+    document.getElementById('live-state').classList.add('live');
     applyLiveState();
   } catch (err) {
     console.error('refreshGraphState failed:', err);
@@ -746,6 +824,16 @@ async function refreshGraphState() {
     liveChip.classList.remove('live');
     liveChip.classList.add('warn');
   }
+}
+
+function pulse(){
+  const shenronNode = node.filter(d => d.id === 'SHENRON');
+  shenronNode.select('polygon')
+    .transition().duration(1400)
+    .attr('points', hexPoints(Math.max(26, getVisualRadius({ id:'SHENRON', size:22 }))))
+    .transition().duration(1400)
+    .attr('points', hexPoints(Math.max(22, getVisualRadius({ id:'SHENRON', size:22 }))))
+    .on('end', pulse);
 }
 
 refreshGraphState();
