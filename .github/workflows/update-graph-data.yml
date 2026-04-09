@@ -1,16 +1,12 @@
 name: update-graph-data
 
-permissions:
-  contents: write
-
-
 on:
-
-permissions:
-  contents: write
   workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
+
+permissions:
+  contents: write
 
 jobs:
   update:
@@ -38,5 +34,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add docs/data/*.json || true
-          git commit -m "update runtime signals" || echo "no changes"
+          git diff --cached --quiet || git commit -m "update runtime signals"
           git push
