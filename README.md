@@ -2,7 +2,13 @@
 
 <div align="center">
 
+<div align="center">
+
 *the work speaks first. identity follows.*
+
+[![Ecosystem Graph](https://img.shields.io/badge/SHENRON-Ecosystem_Graph-00ff9d?style=for-the-badge)](https://gnomeman4201.github.io/GnomeMan4201/)
+
+</div>
 
 </div>
 
