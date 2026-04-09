@@ -5,6 +5,9 @@ permissions:
 
 
 on:
+
+permissions:
+  contents: write
   workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
