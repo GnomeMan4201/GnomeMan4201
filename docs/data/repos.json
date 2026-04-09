@@ -1,0 +1,33 @@
+{
+  "updated_at": "1970-01-01T00:00:00Z",
+  "repos": {
+    "LANimals": {
+      "stars": 0,
+      "forks": 0,
+      "open_issues": 0,
+      "pushed_at": null,
+      "status": "idle"
+    },
+    "drift_orchestrator": {
+      "stars": 0,
+      "forks": 0,
+      "open_issues": 0,
+      "pushed_at": null,
+      "status": "idle"
+    },
+    "OpenSight": {
+      "stars": 0,
+      "forks": 0,
+      "open_issues": 0,
+      "pushed_at": null,
+      "status": "idle"
+    },
+    "SHENRON": {
+      "stars": 0,
+      "forks": 0,
+      "open_issues": 0,
+      "pushed_at": null,
+      "status": "idle"
+    }
+  }
+}
