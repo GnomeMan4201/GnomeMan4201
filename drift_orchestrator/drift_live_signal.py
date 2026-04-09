@@ -7,6 +7,30 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, AsyncIterator, Awaitable, Callable
 
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from orchestrator.execute_with_policy import execute
+
+
+    result = execute("drift_orchestrator", "drift_live_signal")
+    if not result["executed"]:
+        raise SystemExit(result["reason"])
+
+    mode = result["mode"]
+    allow_network = mode["allow_network"]
+    allow_writeback = mode["allow_writeback"]
+    max_steps = mode["max_steps"]
+
+    if not allow_network:
+        print("network disabled by control plane")
+        return
+
+
 
 class PolicyAction(str, Enum):
     CONTINUE = "CONTINUE"
