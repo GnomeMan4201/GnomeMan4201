@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>SHENRON Ecosystem · Runtime Control Plane</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    :root{
+      --bg:#04050a;
+      --panel:#09090f;
+      --panel2:#0f0d12;
+      --gold:#ffb11a;
+      --gold-d:#7e5410;
+      --cyan:#17d9ff;
+      --green:#2fe39a;
+      --amber:#ffb11a;
+      --red:#ff4b4b;
+      --text:#f6d58a;
+      --muted:#9f7d3a;
+      --line:#3e2a0f;
+      --white:#e8eef6;
+    }
+
+    * { box-sizing:border-box; }
+
+    html, body {
+      margin:0;
+      min-height:100%;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,177,26,0.10), transparent 18%),
+        radial-gradient(circle at 80% 22%, rgba(23,217,255,0.08), transparent 16%),
+        radial-gradient(circle at 65% 80%, rgba(47,227,154,0.05), transparent 18%),
+        linear-gradient(180deg, #07070d 0%, #030308 100%);
+      color:var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.18;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.9) 0.6px, transparent 0.8px);
+      background-size: 120px 120px;
+      background-position: 20px 40px;
+    }
+
+    .app{
+      display:grid;
+      grid-template-columns: minmax(0, 1fr) 290px;
+      gap:14px;
+      padding:16px;
+      height:100vh;
+    }
+
+    .main-panel, .side-panel{
+      background:rgba(5,6,10,0.88);
+      border:1px solid var(--line);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,177,26,0.06),
+        0 0 25px rgba(0,0,0,0.30);
+      position:relative;
+    }
+
+    .main-panel{
+      padding:16px 16px 12px;
+      overflow:hidden;
+    }
+
+    .brand{
+      font-size:2.2rem;
+      font-weight:900;
+      letter-spacing:.18em;
+      color:var(--gold);
+      text-shadow:0 0 14px rgba(255,177,26,0.18);
+      margin-bottom:4px;
+    }
+
+    .subtitle{
+      font-size:.92rem;
+      letter-spacing:.24em;
+      color:var(--muted);
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
+
+    .chipbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:14px;
+    }
+
+    .chip{
+      border:1px solid var(--line);
+      color:var(--text);
+      background:rgba(17,11,5,0.55);
+      padding:8px 11px;
+      font-size:.88rem;
+      letter-spacing:.06em;
+      min-height:36px;
+      display:flex;
+      align-items:center;
+    }
+
+    #graph{
+      height:calc(100vh - 165px);
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,177,26,0.05), transparent 16%),
+        radial-gradient(circle at 83% 24%, rgba(23,217,255,0.05), transparent 18%),
+        radial-gradient(circle at center, rgba(255,177,26,0.025), transparent 28%),
+        linear-gradient(180deg, #03040a 0%, #020308 100%);
+      position:relative;
+    }
+
+    #graph::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      box-shadow: inset 0 0 70px rgba(0,0,0,.42);
+    }
+
+    .overlay-note{
+      position:absolute;
+      right:26px;
+      bottom:18px;
+      color:#8a6b30;
+      font-size:.84rem;
+      opacity:.9;
+      line-height:1.55;
+      text-align:right;
+      pointer-events:none;
+      z-index:3;
+    }
+
+    .side-panel{
+      padding:14px;
+      overflow:auto;
+    }
+
+    .side-title{
+      font-size:1.05rem;
+      letter-spacing:.22em;
+      color:var(--text);
+      text-transform:uppercase;
+      margin-bottom:12px;
+    }
+
+    .metrics{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    .metric{
+      border:1px solid var(--line);
+      background:rgba(14,9,15,0.72);
+      padding:10px;
+      min-height:72px;
+    }
+
+    .metric .k{
+      color:var(--muted);
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      margin-bottom:8px;
+    }
+
+    .metric .v{
+      color:var(--text);
+      font-size:1.05rem;
+      line-height:1.3;
+    }
+
+    .section{
+      border-top:1px solid var(--line);
+      padding-top:12px;
+      margin-top:12px;
+    }
+
+    .legend-line, .detail-line{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.65;
+    }
+
+    .legend-line b, .detail-line b{
+      color:var(--text);
+      font-weight:700;
+    }
+
+    .selected{
+      min-height:180px;
+      border:1px solid var(--line);
+      background:rgba(12,9,14,0.72);
+      padding:10px;
+      margin-top:10px;
+    }
+
+    .selected .name{
+      color:var(--gold);
+      font-size:1.05rem;
+      margin-bottom:8px;
+      letter-spacing:.08em;
+    }
+
+    .footer-note{
+      color:#7f6330;
+      font-size:.82rem;
+      margin-top:12px;
+      line-height:1.6;
+    }
+
+    @media (max-width: 1100px){
+      .app{ grid-template-columns:1fr; height:auto; min-height:100vh; overflow:auto; }
+      #graph{ height:68vh; }
+      body{ overflow:auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="main-panel">
+      <div class="brand">GNOMEMAN4201</div>
+      <div class="subtitle">Ecosystem · Integration Graph · Live Control Plane</div>
+
+      <div class="chipbar">
+        <div class="chip" id="liveChip">LIVE DATA: LOADING</div>
+        <div class="chip" id="updateChip">LAST UPDATE: --</div>
+        <div class="chip" id="nodesChip">NODES TRACKED: --</div>
+        <div class="chip">SOURCE: docs/data/runtime_signals.json</div>
+      </div>
+
+      <div id="graph"></div>
+
+      <div class="overlay-note">
+        drag nodes · scroll to zoom<br/>
+        click node to inspect<br/>
+        live posture overlay enabled
+      </div>
+    </section>
+
+    <aside class="side-panel">
+      <div class="side-title">System Metrics</div>
+
+      <div class="metrics">
+        <div class="metric"><div class="k">Total Nodes</div><div class="v" id="m_total">--</div></div>
+        <div class="metric"><div class="k">Warning Nodes</div><div class="v" id="m_warn">--</div></div>
+        <div class="metric"><div class="k">Locked Nodes</div><div class="v" id="m_locked">--</div></div>
+        <div class="metric"><div class="k">Cautious Nodes</div><div class="v" id="m_cautious">--</div></div>
+        <div class="metric"><div class="k">Routine Nodes</div><div class="v" id="m_routine">--</div></div>
+        <div class="metric"><div class="k">Avg Drift</div><div class="v" id="m_avgdrift">--</div></div>
+        <div class="metric"><div class="k">Highest Drift</div><div class="v" id="m_highest">--</div></div>
+        <div class="metric"><div class="k">Activity Health</div><div class="v" id="m_health">--</div></div>
+      </div>
+
+      <div class="section">
+        <div class="legend-line"><b>Color by posture</b></div>
+        <div class="legend-line">ROUTINE → green</div>
+        <div class="legend-line">CAUTIOUS → amber</div>
+        <div class="legend-line">LOCKED → red</div>
+      </div>
+
+      <div class="section">
+        <div class="legend-line"><b>Visual language</b></div>
+        <div class="legend-line">gold center = SHENRON core</div>
+        <div class="legend-line">node size = activity</div>
+        <div class="legend-line">glow = posture intensity</div>
+        <div class="legend-line">dashed cyan = telemetry / data flow</div>
+      </div>
+
+      <div class="section">
+        <div class="legend-line"><b>Selected Node</b></div>
+        <div class="selected" id="selectedCard">
+          <div class="detail-line">Click a node to inspect live posture, drift, and activity.</div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Restored SHENRON-centered visual hierarchy with live control-plane overlays.
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    let network = null;
+    let currentData = {};
+
+    const STATIC_LAYOUT = {
+      "SHENRON": { x: -190, y: -100, cluster: "core" },
+      "drift_orchestrator": { x: 140, y: -30, cluster: "core" },
+      "zeroDAYSlater": { x: 420, y: -90, cluster: "offense" },
+      "LANimals": { x: 640, y: 80, cluster: "offense" },
+      "PHANTOM": { x: 20, y: 130, cluster: "analysis" },
+      "OpenSight": { x: 130, y: 310, cluster: "analysis" },
+      "LUNE": { x: 470, y: 280, cluster: "research" }
+    };
+
+    const EDGE_MAP = [
+      ["SHENRON", "drift_orchestrator", "controls"],
+      ["SHENRON", "zeroDAYSlater", "feeds"],
+      ["SHENRON", "LANimals", "feeds"],
+      ["SHENRON", "PHANTOM", "feeds"],
+      ["SHENRON", "OpenSight", "feeds"],
+      ["SHENRON", "LUNE", "feeds"],
+      ["drift_orchestrator", "zeroDAYSlater", "monitors"]
+    ];
+
+    function postureColor(posture) {
+      if (posture === "LOCKED") return "#ff4b4b";
+      if (posture === "CAUTIOUS") return "#ffb11a";
+      return "#2fe39a";
+    }
+
+    function clusterFill(name) {
+      const cluster = STATIC_LAYOUT[name]?.cluster || "misc";
+      if (cluster === "core") return "#ffb11a";
+      if (cluster === "offense") return "#ff8c2a";
+      if (cluster === "analysis") return "#ffd166";
+      if (cluster === "research") return "#2fe39a";
+      return "#9ca3af";
+    }
+
+    function activityValue(activity) {
+      return Math.max(16, Math.round(activity / 2));
+    }
+
+    function fmtAgo(iso) {
+      const then = new Date(iso).getTime();
+      const now = Date.now();
+      const sec = Math.max(0, Math.floor((now - then) / 1000));
+      if (sec < 60) return sec + "s ago";
+      const min = Math.floor(sec / 60);
+      if (min < 60) return min + "m ago";
+      const hr = Math.floor(min / 60);
+      return hr + "h ago";
+    }
+
+    function glowShadow(posture) {
+      if (posture === "LOCKED") return "0 0 20px rgba(255,75,75,0.42)";
+      if (posture === "CAUTIOUS") return "0 0 18px rgba(255,177,26,0.35)";
+      return "0 0 16px rgba(47,227,154,0.32)";
+    }
+
+    function nodeTitle(name, v) {
+      return [
+        name,
+        `status: ${v.status}`,
+        `activity: ${v.activity}`,
+        `drift: ${v.drift_score}`,
+        `posture: ${v.posture}`,
+        `last_event: ${v.last_event}`,
+        `updated_at: ${v.updated_at}`
+      ].join("\n");
+    }
+
+    function buildGraph(data) {
+      currentData = data;
+      const nodes = [];
+      const ids = {};
+      let idCounter = 1;
+
+      const orderedNames = ["SHENRON", ...Object.keys(data).filter(n => n !== "SHENRON")];
+
+      for (const name of orderedNames) {
+        const v = data[name];
+        if (!v) continue;
+
+        const id = idCounter++;
+        ids[name] = id;
+
+        const pos = STATIC_LAYOUT[name] || { x: 0, y: 0, cluster: "misc" };
+        const isCore = name === "SHENRON";
+
+        const baseFill = isCore ? "#ffb11a" : clusterFill(name);
+        const ringColor = postureColor(v.posture);
+        const size = isCore ? 44 : activityValue(v.activity);
+
+        nodes.push({
+          id,
+          label: name,
+          x: pos.x,
+          y: pos.y,
+          fixed: true,
+          shape: "hexagon",
+          value: size,
+          title: nodeTitle(name, v),
+          font: {
+            color: isCore ? "#ffe4a8" : "#ecf4ff",
+            face: "monospace",
+            size: isCore ? 24 : 16,
+            bold: isCore
+          },
+          color: {
+            background: baseFill,
+            border: ringColor,
+            highlight: { background: baseFill, border: "#ffffff" },
+            hover: { background: baseFill, border: "#ffffff" }
+          },
+          borderWidth: isCore ? 4 : 3,
+          shadow: {
+            enabled: true,
+            color: ringColor,
+            size: isCore ? 26 : 18,
+            x: 0,
+            y: 0
+          },
+          margin: isCore ? 18 : 12
+        });
+      }
+
+      const edges = EDGE_MAP
+        .filter(([from, to]) => ids[from] && ids[to])
+        .map(([from, to, kind]) => {
+          let color = "#17d9ff";
+          let dashes = true;
+          let width = 1.8;
+          let arrows = "to";
+
+          if (kind === "controls") {
+            color = "#ffb11a";
+            dashes = false;
+            width = 2.4;
+          } else if (kind === "monitors") {
+            color = "#ffd166";
+            dashes = [2, 8];
+            width = 1.4;
+          }
+
+          return {
+            from: ids[from],
+            to: ids[to],
+            color: { color, highlight: color, hover: color },
+            dashes,
+            width,
+            arrows,
+            smooth: { type: "curvedCW", roundness: 0.16 }
+          };
+        });
+
+      return { nodes, edges };
+    }
+
+    function setMetrics(data) {
+      const entries = Object.entries(data);
+      const total = entries.length;
+      const warnings = entries.filter(([,v]) => v.status === "warning").length;
+      const locked = entries.filter(([,v]) => v.posture === "LOCKED").length;
+      const cautious = entries.filter(([,v]) => v.posture === "CAUTIOUS").length;
+      const routine = entries.filter(([,v]) => v.posture === "ROUTINE").length;
+
+      const drifts = entries.map(([,v]) => Number(v.drift_score || 0));
+      const avgDrift = drifts.length
+        ? (drifts.reduce((a,b) => a + b, 0) / drifts.length).toFixed(2)
+        : "0.00";
+
+      let highest = "--";
+      if (entries.length) {
+        const top = [...entries].sort((a,b) => (b[1].drift_score || 0) - (a[1].drift_score || 0))[0];
+        highest = `${top[0]} (${top[1].drift_score})`;
+      }
+
+      const avgActivity = entries.length
+        ? Math.round(entries.reduce((a,[,v]) => a + Number(v.activity || 0), 0) / entries.length)
+        : 0;
+
+      document.getElementById("m_total").textContent = String(total);
+      document.getElementById("m_warn").textContent = String(warnings);
+      document.getElementById("m_locked").textContent = String(locked);
+      document.getElementById("m_cautious").textContent = String(cautious);
+      document.getElementById("m_routine").textContent = String(routine);
+      document.getElementById("m_avgdrift").textContent = String(avgDrift);
+      document.getElementById("m_highest").textContent = highest;
+      document.getElementById("m_health").textContent =
+        avgActivity >= 75 ? "high" : avgActivity >= 45 ? "moderate" : "low";
+
+      document.getElementById("nodesChip").textContent = `NODES TRACKED: ${total}`;
+
+      const newest = [...entries]
+        .map(([,v]) => v.updated_at)
+        .filter(Boolean)
+        .sort()
+        .reverse()[0];
+
+      if (newest) {
+        document.getElementById("updateChip").textContent = `LAST UPDATE: ${fmtAgo(newest)}`;
+      }
+
+      document.getElementById("liveChip").textContent = "LIVE DATA: ACTIVE";
+    }
+
+    function renderSelected(name) {
+      const el = document.getElementById("selectedCard");
+      const v = currentData[name];
+      if (!v) {
+        el.innerHTML = `<div class="detail-line">No node selected.</div>`;
+        return;
+      }
+
+      const posture = v.posture || "UNKNOWN";
+      const border = postureColor(posture);
+
+      el.style.boxShadow = `inset 0 0 0 1px ${border}33`;
+
+      el.innerHTML = `
+        <div class="name">${name}</div>
+        <div class="detail-line"><b>Status:</b> ${v.status}</div>
+        <div class="detail-line"><b>Posture:</b> ${v.posture}</div>
+        <div class="detail-line"><b>Drift:</b> ${v.drift_score}</div>
+        <div class="detail-line"><b>Activity:</b> ${v.activity}</div>
+        <div class="detail-line"><b>Last event:</b> ${v.last_event}</div>
+        <div class="detail-line"><b>Updated:</b> ${v.updated_at}</div>
+      `;
+    }
+
+    async function load() {
+      const res = await fetch("./data/runtime_signals.json?ts=" + Date.now());
+      const data = await res.json();
+
+      const graphData = buildGraph(data);
+      setMetrics(data);
+
+      const container = document.getElementById("graph");
+      const options = {
+        autoResize: true,
+        physics: false,
+        interaction: {
+          hover: true,
+          navigationButtons: true,
+          keyboard: true,
+          dragNodes: true,
+          dragView: true,
+          zoomView: true
+        },
+        edges: {
+          smooth: { enabled: true, type: "curvedCW", roundness: 0.15 }
+        },
+        nodes: {
+          chosen: true
+        }
+      };
+
+      if (!network) {
+        network = new vis.Network(container, graphData, options);
+
+        network.on("click", function(params) {
+          if (!params.nodes.length) return;
+          const nodeId = params.nodes[0];
+          const selected = Object.entries(graphData.nodes.get ? {} : {});
+        });
+
+        network.on("selectNode", function(params) {
+          const nodeId = params.nodes[0];
+          const node = graphData.nodes.find(n => n.id === nodeId);
+          if (node) renderSelected(node.label);
+        });
+
+        network.once("afterDrawing", function() {
+          renderSelected("SHENRON");
+        });
+      } else {
+        const selectedIds = network.getSelectedNodes();
+        network.setData(graphData);
+        if (selectedIds.length) {
+          const node = graphData.nodes.find(n => n.id === selectedIds[0]);
+          if (node) renderSelected(node.label);
+        } else {
+          renderSelected("SHENRON");
+        }
+      }
+    }
+
+    load().catch(err => {
+      document.getElementById("liveChip").textContent = "LIVE DATA: ERROR";
+      console.error(err);
+    });
+
+    setInterval(() => {
+      load().catch(console.error);
+    }, 5000);
+  </script>
+</body>
+</html>
