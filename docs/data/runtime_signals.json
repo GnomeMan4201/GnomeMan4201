@@ -1,72 +1,86 @@
 {
   "LANimals": {
+    "_recovery_streak": 1,
+    "_target_pressure": 0.49,
     "activity": 90,
-    "drift_score": 0.85,
+    "drift_score": 0.77,
     "last_event": "telemetry refresh",
     "last_event_recent": true,
     "node": "LANimals",
     "posture": "LOCKED",
     "status": "warning",
-    "updated_at": "2026-04-09T05:53:03.550817Z"
+    "updated_at": "2026-04-09T06:35:50.651070Z"
   },
   "LUNE": {
+    "_recovery_streak": 1,
+    "_target_pressure": 0.18,
     "activity": 35,
-    "drift_score": 0.25,
+    "drift_score": 0.16,
     "last_event": "pipeline execution",
     "last_event_recent": true,
     "node": "LUNE",
     "posture": "ROUTINE",
     "status": "idle",
-    "updated_at": "2026-04-09T05:53:03.550817Z"
+    "updated_at": "2026-04-09T06:35:50.651070Z"
   },
   "OpenSight": {
+    "_recovery_streak": 1,
+    "_target_pressure": 0.32,
     "activity": 35,
-    "drift_score": 0.5,
+    "drift_score": 0.42,
     "last_event": "signal update",
     "last_event_recent": true,
     "node": "OpenSight",
     "posture": "CAUTIOUS",
     "status": "warning",
-    "updated_at": "2026-04-09T05:53:03.550817Z"
+    "updated_at": "2026-04-09T06:35:50.651070Z"
   },
   "PHANTOM": {
+    "_recovery_streak": 1,
+    "_target_pressure": 0.37,
     "activity": 56,
-    "drift_score": 0.6,
+    "drift_score": 0.51,
     "last_event": "telemetry refresh",
     "last_event_recent": true,
     "node": "PHANTOM",
     "posture": "CAUTIOUS",
     "status": "warning",
-    "updated_at": "2026-04-09T05:53:03.550817Z"
+    "updated_at": "2026-04-09T06:35:50.651070Z"
   },
   "SHENRON": {
+    "_recovery_streak": 1,
+    "_target_pressure": 0.29,
     "activity": 65,
-    "drift_score": 0.45,
+    "drift_score": 0.34,
     "last_event": "pipeline execution",
     "last_event_recent": true,
     "node": "SHENRON",
     "posture": "CAUTIOUS",
     "status": "idle",
-    "updated_at": "2026-04-09T05:53:03.550817Z"
+    "updated_at": "2026-04-09T06:35:50.651070Z"
   },
   "drift_orchestrator": {
+    "_recovery_streak": 1,
+    "_target_pressure": 0.35,
     "activity": 86,
-    "drift_score": 0.6,
+    "drift_score": 0.5,
     "last_event": "signal update",
     "last_event_recent": true,
     "node": "drift_orchestrator",
     "posture": "CAUTIOUS",
     "status": "idle",
-    "updated_at": "2026-04-09T05:53:03.550817Z"
+    "updated_at": "2026-04-09T06:35:50.651070Z"
   },
   "zeroDAYSlater": {
+    "_recovery_streak": 1,
+    "_target_pressure": 0.43,
     "activity": 70,
-    "drift_score": 0.7,
+    "drift_score": 0.59,
     "last_event": "telemetry refresh",
     "last_event_recent": true,
     "node": "zeroDAYSlater",
-    "posture": "LOCKED",
+    "posture": "CAUTIOUS",
     "status": "warning",
-    "updated_at": "2026-04-09T05:53:03.550817Z"
+    "updated_at": "2026-04-09T06:35:50.651070Z"
   }
 }
