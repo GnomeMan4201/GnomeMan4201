@@ -26,6 +26,36 @@ def run_read_only_status(mode: dict[str, object]) -> dict[str, object]:
     }
 
 
+
+def run_plan_preview(mode: dict[str, object]) -> dict[str, object]:
+    # simulate a planner that respects control-plane constraints
+    steps_allowed = int(mode.get("max_steps", 0))
+    allow_network = bool(mode.get("allow_network", False))
+    allow_writeback = bool(mode.get("allow_writeback", False))
+
+    steps = []
+    for i in range(steps_allowed):
+        steps.append({
+            "step": i + 1,
+            "action": "analyze_local_state",
+            "uses_network": False,
+            "writes": False,
+        })
+
+    return {
+        "node": NODE,
+        "task": "plan_preview",
+        "executed": True,
+        "mode": mode,
+        "steps_allowed": steps_allowed,
+        "steps_executed": len(steps),
+        "network_allowed": allow_network,
+        "writeback_allowed": allow_writeback,
+        "plan": steps,
+        "status": "executed_under_policy",
+    }
+
+
 def run_read_runtime_signals(mode: dict[str, object]) -> dict[str, object]:
     path = ROOT / "docs" / "data" / "runtime_signals.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
@@ -82,6 +112,8 @@ def main() -> None:
 
     if task == "show_policy":
         output = run_read_only_status(mode)
+    elif task == "plan_preview":
+        output = run_plan_preview(mode)
     elif task == "read_runtime_signals":
         output = run_read_runtime_signals(mode)
     elif task == "refresh_runtime_signals":
