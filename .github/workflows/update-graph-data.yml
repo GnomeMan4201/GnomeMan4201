@@ -8,11 +8,23 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Ensure data dir
+        run: mkdir -p docs/data
+
       - name: Generate runtime signals
-        run: python3 .github/scripts/generate_runtime_signals.py
+        run: python .github/scripts/generate_runtime_signals.py
+
+      - name: Verify output
+        run: cat docs/data/runtime_signals.json
 
       - name: Commit data updates
         run: |
