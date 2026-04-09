@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GnomeMan4201 Ecosystem Graph</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #080b0f;
+    color: #c8d8e8;
+    font-family: 'Share Tech Mono', monospace;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #graph-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .node circle {
+    cursor: pointer;
+    transition: filter 0.2s;
+  }
+
+  .node:hover circle {
+    filter: brightness(1.4);
+  }
+
+  .node text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    fill: #c8d8e8;
+    pointer-events: none;
+    text-shadow: 0 0 8px rgba(0,0,0,0.9);
+  }
+
+  .node.core text {
+    font-size: 14px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    fill: #00ff9d;
+  }
+
+  .node.shenron_sub text {
+    font-size: 10px;
+    fill: #88ffcc;
+  }
+
+  .link {
+    stroke-opacity: 0.5;
+    fill: none;
+  }
+
+  .link.contains { stroke: #00ff9d; stroke-width: 1.5; stroke-dasharray: none; }
+  .link.orchestrates { stroke: #ff6b35; stroke-width: 1.5; }
+  .link.feeds { stroke: #4a9eff; stroke-width: 1; stroke-dasharray: 4 2; }
+  .link.monitors { stroke: #ff9f43; stroke-width: 1; stroke-dasharray: 2 3; }
+  .link.evolved { stroke: #a855f7; stroke-width: 1.5; }
+  .link.extends { stroke: #06b6d4; stroke-width: 1; }
+  .link.recon { stroke: #4a9eff; stroke-width: 0.8; stroke-dasharray: 2 4; }
+
+  .link.dimmed { stroke-opacity: 0.05; }
+  .link.highlighted { stroke-opacity: 0.9; stroke-width: 2.5; }
+
+  .node.dimmed circle { opacity: 0.1; }
+  .node.dimmed text { opacity: 0.1; }
+
+  #info-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 260px;
+    background: rgba(8, 11, 15, 0.95);
+    border: 1px solid #1a2a3a;
+    border-left: 3px solid #00ff9d;
+    padding: 16px;
+    font-size: 12px;
+    line-height: 1.6;
+    display: none;
+  }
+
+  #info-panel h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #00ff9d;
+    margin-bottom: 8px;
+  }
+
+  #info-panel .group-label {
+    font-size: 10px;
+    color: #4a9eff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  #info-panel .connections {
+    margin-top: 10px;
+    color: #8899aa;
+    font-size: 11px;
+  }
+
+  #info-panel .connections span {
+    color: #c8d8e8;
+  }
+
+  #legend {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(8, 11, 15, 0.9);
+    border: 1px solid #1a2a3a;
+    padding: 14px;
+    font-size: 11px;
+  }
+
+  #legend h4 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    color: #4a9eff;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    color: #8899aa;
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .legend-line {
+    width: 24px;
+    height: 2px;
+    flex-shrink: 0;
+  }
+
+  #title {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  #title h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #00ff9d;
+    letter-spacing: 2px;
+  }
+
+  #title p {
+    font-size: 11px;
+    color: #4a6a8a;
+    margin-top: 3px;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  #hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 10px;
+    color: #2a4a6a;
+    text-align: right;
+    line-height: 1.8;
+  }
+
+  .scanline {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+<div id="title">
+  <h1>GNOMEMAN4201 ECOSYSTEM</h1>
+  <p>// inter-tool integration graph — v1.0</p>
+</div>
+<div id="graph-container"><svg id="graph"></svg></div>
+<div id="info-panel">
+  <div class="group-label" id="info-group"></div>
+  <h3 id="info-name"></h3>
+  <div id="info-desc"></div>
+  <div class="connections" id="info-connections"></div>
+</div>
+<div id="legend">
+  <h4>// LEGEND</h4>
+  <div class="legend-item"><div class="legend-dot" style="background:#00ff9d"></div> Core / SHENRON</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#88ffcc;opacity:0.7"></div> SHENRON subsystem</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ff6b35"></div> Offense framework</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#4a9eff"></div> Recon & network</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div> ML research</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#ff9f43"></div> Monitoring / ops</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8899aa"></div> Platform / utility</div>
+  <br>
+  <div class="legend-item"><div class="legend-line" style="background:#00ff9d"></div> contains</div>
+  <div class="legend-item"><div class="legend-line" style="background:#ff6b35"></div> orchestrates</div>
+  <div class="legend-item"><div class="legend-line" style="background:#4a9eff;background:repeating-linear-gradient(90deg,#4a9eff 0,#4a9eff 4px,transparent 4px,transparent 6px)"></div> feeds</div>
+  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#ff9f43 0,#ff9f43 2px,transparent 2px,transparent 5px)"></div> monitors</div>
+  <div class="legend-item"><div class="legend-line" style="background:#a855f7"></div> evolved from</div>
+</div>
+<div id="hint">
+  drag nodes to reposition<br>
+  click node to highlight connections<br>
+  click background to reset
+</div>
+
+<script>
+const nodes = [
+  { id: 'SHENRON', group: 'core', size: 22, desc: 'Adaptive persistent offense framework. 89 modules across 7 subsystems. The central engine of the offense stack.' },
+  { id: 'AI Modules', group: 'shenron_sub', size: 11, desc: 'core/ai_module — autonomous decision-making layer within SHENRON.' },
+  { id: 'Autonomy &\nOrchestration', group: 'shenron_sub', size: 11, desc: 'Internal orchestration brain — coordinates module execution and adaptive behavior.' },
+  { id: 'Evasion &\nStealth', group: 'shenron_sub', size: 11, desc: 'core/layers — detection avoidance, AV evasion, behavioral camouflage.' },
+  { id: 'Mutation Engine', group: 'shenron_sub', size: 11, desc: 'Payload and behavior mutation — polymorphic capabilities.' },
+  { id: 'C2', group: 'shenron_sub', size: 11, desc: 'Communication & C2 — command and control channel management.' },
+  { id: 'Persistence &\nPropagation', group: 'shenron_sub', size: 11, desc: 'Survival mechanisms and lateral movement capabilities.' },
+  { id: 'Steganography\n& Utils', group: 'shenron_sub', size: 10, desc: 'Covert data encoding and utility tooling.' },
+  { id: 'OWN', group: 'offense', size: 13, desc: 'Offensive Workflow Navigator — orchestrates the full offense pipeline. Primary interface into SHENRON.' },
+  { id: 'Blackglass', group: 'offense', size: 12, desc: 'AI-powered payload mutation and covert ops suite. Feeds evasion and mutation subsystems.' },
+  { id: 'LUNE', group: 'offense', size: 12, desc: 'Adversary simulation framework — models threat actor behavior, feeds C2 and persistence layers.' },
+  { id: 'zer0DAYSlater', group: 'offense', size: 11, desc: 'Adversarial simulation framework — vulnerability simulation and exploit development pipeline.' },
+  { id: 'PHANTOM', group: 'offense', size: 11, desc: 'Stealth-focused tool — interfaces with C2 and steganography subsystems.' },
+  { id: 'pwn', group: 'offense', size: 10, desc: 'Penetration testing platform — entry-point tooling feeding into LUNE simulation.' },
+  { id: 'LANimals', group: 'recon', size: 14, desc: 'Network reconnaissance platform. Primary recon data source for SHENRON. Foundation tool built from Termux-era friction.' },
+  { id: 'LANIMORPH', group: 'recon', size: 11, desc: 'Behavioral personality mutation layer extending LANimals. Feeds mutation engine directly.' },
+  { id: 'OpenSight', group: 'recon', size: 10, desc: 'Intelligence and observation platform. Upstream data feed into LANimals recon chain.' },
+  { id: 'drift_orchestrator', group: 'platform', size: 11, desc: 'Policy engine and monitoring orchestrator. Interfaces with SHENRON autonomy layer.' },
+  { id: 'chain', group: 'platform', size: 10, desc: 'Chaining and sequencing primitive. Feeds OWN workflow orchestration.' },
+  { id: 'aliasOS', group: 'platform', size: 9, desc: 'Shell alias and identity management layer. Utility across the full stack.' },
+  { id: 'BANANA_TREE', group: 'monitor', size: 13, desc: 'Self-healing AI-Ops dashboard — monitors the full ecosystem. Intelligence & Observation roots feeding Simulation & Operations trunk.' },
+  { id: 'HYDRA', group: 'ml', size: 13, desc: 'Static analysis framework — VENOM Hunter, DepChain Hunter, RepoScan Hunter. Systematizes ML framework vuln discovery.' },
+  { id: 'Pickle Hunter', group: 'ml', size: 10, desc: 'Original ML deserialization scanner. Evolved into HYDRA after discovering MLflow and BentoML findings.' },
+  { id: 'bad_BANANA', group: 'ml', size: 11, desc: 'Adversarial ML toolkit — attacks ML model pipelines. Feeds SHENRON AI module layer.' },
+  { id: 'DevToReconSuite', group: 'platform', size: 9, desc: 'Built from DEV.to API recon findings. Input validation vulnerability discovery tooling.' },
+  { id: 'repo_alias_forge', group: 'platform', size: 9, desc: 'GitHub repo discovery, sync, and shell command generation. Recon utility.' },
+];
+
+const links = [
+  { source: 'SHENRON', target: 'AI Modules', type: 'contains' },
+  { source: 'SHENRON', target: 'Autonomy &\nOrchestration', type: 'contains' },
+  { source: 'SHENRON', target: 'Evasion &\nStealth', type: 'contains' },
+  { source: 'SHENRON', target: 'Mutation Engine', type: 'contains' },
+  { source: 'SHENRON', target: 'C2', type: 'contains' },
+  { source: 'SHENRON', target: 'Persistence &\nPropagation', type: 'contains' },
+  { source: 'SHENRON', target: 'Steganography\n& Utils', type: 'contains' },
+  { source: 'OWN', target: 'Autonomy &\nOrchestration', type: 'orchestrates' },
+  { source: 'Blackglass', target: 'Evasion &\nStealth', type: 'feeds' },
+  { source: 'Blackglass', target: 'Mutation Engine', type: 'feeds' },
+  { source: 'LUNE', target: 'C2', type: 'feeds' },
+  { source: 'LUNE', target: 'Persistence &\nPropagation', type: 'feeds' },
+  { source: 'PHANTOM', target: 'C2', type: 'feeds' },
+  { source: 'PHANTOM', target: 'Steganography\n& Utils', type: 'feeds' },
+  { source: 'drift_orchestrator', target: 'Autonomy &\nOrchestration', type: 'feeds' },
+  { source: 'bad_BANANA', target: 'AI Modules', type: 'feeds' },
+  { source: 'LANIMORPH', target: 'Mutation Engine', type: 'feeds' },
+  { source: 'zer0DAYSlater', target: 'SHENRON', type: 'feeds' },
+  { source: 'LANimals', target: 'SHENRON', type: 'feeds' },
+  { source: 'OpenSight', target: 'LANimals', type: 'feeds' },
+  { source: 'LANimals', target: 'LANIMORPH', type: 'extends' },
+  { source: 'Pickle Hunter', target: 'HYDRA', type: 'evolved' },
+  { source: 'HYDRA', target: 'zer0DAYSlater', type: 'feeds' },
+  { source: 'HYDRA', target: 'bad_BANANA', type: 'feeds' },
+  { source: 'chain', target: 'OWN', type: 'feeds' },
+  { source: 'BANANA_TREE', target: 'SHENRON', type: 'monitors' },
+  { source: 'BANANA_TREE', target: 'OWN', type: 'monitors' },
+  { source: 'BANANA_TREE', target: 'LANimals', type: 'monitors' },
+  { source: 'pwn', target: 'LUNE', type: 'feeds' },
+  { source: 'repo_alias_forge', target: 'LANimals', type: 'recon' },
+  { source: 'DevToReconSuite', target: 'OWN', type: 'feeds' },
+];
+
+const groupColors = {
+  core: '#00ff9d',
+  shenron_sub: '#1aff9d',
+  offense: '#ff6b35',
+  recon: '#4a9eff',
+  ml: '#a855f7',
+  monitor: '#ff9f43',
+  platform: '#64748b',
+};
+
+const groupNames = {
+  core: 'CORE',
+  shenron_sub: 'SHENRON SUBSYSTEM',
+  offense: 'OFFENSE FRAMEWORK',
+  recon: 'RECON & NETWORK',
+  ml: 'ML RESEARCH',
+  monitor: 'MONITORING / OPS',
+  platform: 'PLATFORM / UTILITY',
+};
+
+const w = window.innerWidth;
+const h = window.innerHeight;
+
+const svg = d3.select('#graph')
+  .attr('viewBox', `0 0 ${w} ${h}`);
+
+// Grid background
+const defs = svg.append('defs');
+const pattern = defs.append('pattern')
+  .attr('id', 'grid')
+  .attr('width', 40)
+  .attr('height', 40)
+  .attr('patternUnits', 'userSpaceOnUse');
+pattern.append('path')
+  .attr('d', 'M 40 0 L 0 0 0 40')
+  .attr('fill', 'none')
+  .attr('stroke', '#0d1620')
+  .attr('stroke-width', 0.5);
+svg.append('rect').attr('width', w).attr('height', h).attr('fill', 'url(#grid)');
+
+// Glow filter for SHENRON
+const filter = defs.append('filter').attr('id', 'glow');
+filter.append('feGaussianBlur').attr('stdDeviation', 4).attr('result', 'blur');
+const feMerge = filter.append('feMerge');
+feMerge.append('feMergeNode').attr('in', 'blur');
+feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+const g = svg.append('g');
+
+// Zoom
+svg.call(d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => g.attr('transform', e.transform)));
+
+const simulation = d3.forceSimulation(nodes)
+  .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+    if (d.type === 'contains') return 90;
+    if (d.type === 'orchestrates') return 140;
+    return 180;
+  }).strength(d => d.type === 'contains' ? 0.8 : 0.3))
+  .force('charge', d3.forceManyBody().strength(d => d.group === 'core' ? -800 : d.group === 'shenron_sub' ? -200 : -350))
+  .force('center', d3.forceCenter(w / 2, h / 2))
+  .force('collision', d3.forceCollide(d => d.size + 18));
+
+const link = g.append('g')
+  .selectAll('line')
+  .data(links)
+  .join('line')
+  .attr('class', d => `link ${d.type}`);
+
+const node = g.append('g')
+  .selectAll('g')
+  .data(nodes)
+  .join('g')
+  .attr('class', d => `node ${d.group}`)
+  .call(d3.drag()
+    .on('start', (e, d) => { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
+    .on('drag', (e, d) => { d.fx = e.x; d.fy = e.y; })
+    .on('end', (e, d) => { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
+  );
+
+node.append('circle')
+  .attr('r', d => d.size)
+  .attr('fill', d => groupColors[d.group] + (d.group === 'shenron_sub' ? '22' : '18'))
+  .attr('stroke', d => groupColors[d.group])
+  .attr('stroke-width', d => d.group === 'core' ? 2 : 1)
+  .attr('filter', d => d.group === 'core' ? 'url(#glow)' : null);
+
+// Label with newline support
+node.each(function(d) {
+  const el = d3.select(this);
+  const lines = d.id.split('\n');
+  const offset = d.size + 6;
+  if (lines.length === 1) {
+    el.append('text')
+      .attr('dy', offset + 10)
+      .attr('text-anchor', 'middle')
+      .text(d.id);
+  } else {
+    lines.forEach((line, i) => {
+      el.append('text')
+        .attr('dy', offset + 10 + i * 13)
+        .attr('text-anchor', 'middle')
+        .text(line);
+    });
+  }
+});
+
+// Click to highlight
+let selected = null;
+
+node.on('click', function(e, d) {
+  e.stopPropagation();
+
+  if (selected === d.id) {
+    resetHighlight();
+    selected = null;
+    document.getElementById('info-panel').style.display = 'none';
+    return;
+  }
+
+  selected = d.id;
+
+  const connected = new Set([d.id]);
+  links.forEach(l => {
+    if (l.source.id === d.id || l.target.id === d.id) {
+      connected.add(l.source.id);
+      connected.add(l.target.id);
+    }
+  });
+
+  node.classed('dimmed', n => !connected.has(n.id));
+  link.classed('dimmed', l => l.source.id !== d.id && l.target.id !== d.id);
+  link.classed('highlighted', l => l.source.id === d.id || l.target.id === d.id);
+
+  // Info panel
+  const panel = document.getElementById('info-panel');
+  document.getElementById('info-name').textContent = d.id.replace('\n', ' ');
+  document.getElementById('info-group').textContent = '// ' + groupNames[d.group];
+  document.getElementById('info-desc').textContent = d.desc;
+
+  const inLinks = links.filter(l => l.target.id === d.id);
+  const outLinks = links.filter(l => l.source.id === d.id);
+
+  let connText = '';
+  if (outLinks.length) connText += `feeds into: <span>${outLinks.map(l => l.target.id.replace('\n',' ')).join(', ')}</span><br>`;
+  if (inLinks.length) connText += `receives from: <span>${inLinks.map(l => l.source.id.replace('\n',' ')).join(', ')}</span>`;
+  document.getElementById('info-connections').innerHTML = connText;
+  panel.style.display = 'block';
+});
+
+svg.on('click', () => {
+  resetHighlight();
+  selected = null;
+  document.getElementById('info-panel').style.display = 'none';
+});
+
+function resetHighlight() {
+  node.classed('dimmed', false);
+  link.classed('dimmed', false).classed('highlighted', false);
+}
+
+simulation.on('tick', () => {
+  link
+    .attr('x1', d => d.source.x)
+    .attr('y1', d => d.source.y)
+    .attr('x2', d => d.target.x)
+    .attr('y2', d => d.target.y);
+
+  node.attr('transform', d => `translate(${d.x},${d.y})`);
+});
+
+// Pulse animation on SHENRON
+const shenronNode = node.filter(d => d.id === 'SHENRON');
+function pulse() {
+  shenronNode.select('circle')
+    .transition().duration(1200).attr('r', 26)
+    .transition().duration(1200).attr('r', 22)
+    .on('end', pulse);
+}
+pulse();
+</script>
+</body>
+</html>
