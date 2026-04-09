@@ -8,34 +8,33 @@
   <style>
     :root{
       --bg:#04050a;
-      --panel:#08090d;
-      --panel2:#0c0d11;
+      --panel:#09090f;
+      --panel2:#0f0d12;
       --gold:#ffb11a;
-      --gold2:#d79215;
-      --cyan:#16d9ff;
-      --green:#29e39a;
+      --gold-d:#7e5410;
+      --cyan:#17d9ff;
+      --green:#2fe39a;
       --amber:#ffb11a;
       --red:#ff4b4b;
-      --purple:#8e4dff;
-      --gray:#8d95a3;
-      --text:#f3d188;
-      --muted:#8f7135;
-      --line:#39260e;
+      --text:#f6d58a;
+      --muted:#9f7d3a;
+      --line:#3e2a0f;
       --white:#e8eef6;
     }
 
-    *{ box-sizing:border-box; }
-    html,body{
+    * { box-sizing:border-box; }
+
+    html, body {
       margin:0;
       min-height:100%;
-      overflow:hidden;
       background:
-        radial-gradient(circle at 20% 18%, rgba(255,177,26,.08), transparent 18%),
-        radial-gradient(circle at 82% 30%, rgba(22,217,255,.06), transparent 16%),
-        radial-gradient(circle at 55% 75%, rgba(41,227,154,.04), transparent 16%),
-        linear-gradient(180deg, #04050a 0%, #020307 100%);
+        radial-gradient(circle at 18% 18%, rgba(255,177,26,0.10), transparent 18%),
+        radial-gradient(circle at 80% 22%, rgba(23,217,255,0.08), transparent 16%),
+        radial-gradient(circle at 65% 80%, rgba(47,227,154,0.05), transparent 18%),
+        linear-gradient(180deg, #07070d 0%, #030308 100%);
       color:var(--text);
       font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      overflow:hidden;
     }
 
     body::before{
@@ -43,107 +42,112 @@
       position:fixed;
       inset:0;
       pointer-events:none;
-      opacity:.12;
+      opacity:.18;
       background-image:
         radial-gradient(circle, rgba(255,255,255,.9) 0.6px, transparent 0.8px);
-      background-size: 130px 130px;
-      background-position: 14px 22px;
+      background-size: 120px 120px;
+      background-position: 20px 40px;
     }
 
     .app{
-      position:relative;
-      width:100vw;
+      display:grid;
+      grid-template-columns: minmax(0, 1fr) 290px;
+      gap:14px;
+      padding:16px;
       height:100vh;
-      padding:20px;
     }
 
-    .title{
-      position:absolute;
-      top:18px;
-      left:20px;
-      z-index:20;
+    .main-panel, .side-panel{
+      background:rgba(5,6,10,0.88);
+      border:1px solid var(--line);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,177,26,0.06),
+        0 0 25px rgba(0,0,0,0.30);
+      position:relative;
+    }
+
+    .main-panel{
+      padding:16px 16px 12px;
+      overflow:hidden;
     }
 
     .brand{
-      color:var(--gold);
-      font-size:1.9rem;
+      font-size:2.2rem;
       font-weight:900;
-      letter-spacing:.22em;
-      text-shadow:0 0 14px rgba(255,177,26,.18);
+      letter-spacing:.18em;
+      color:var(--gold);
+      text-shadow:0 0 14px rgba(255,177,26,0.18);
       margin-bottom:4px;
     }
 
-    .sub{
+    .subtitle{
+      font-size:.92rem;
+      letter-spacing:.24em;
       color:var(--muted);
-      font-size:.8rem;
-      letter-spacing:.28em;
       text-transform:uppercase;
       margin-bottom:14px;
     }
 
-    .chipbar, .tabbar, .rangebar{
+    .chipbar{
       display:flex;
-      gap:8px;
-      margin-bottom:8px;
       flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:14px;
     }
 
-    .chip, .tab{
+    .chip{
       border:1px solid var(--line);
-      background:rgba(16,11,6,.45);
       color:var(--text);
-      padding:7px 11px;
-      font-size:.82rem;
-      letter-spacing:.08em;
-      min-height:34px;
+      background:rgba(17,11,5,0.55);
+      padding:8px 11px;
+      font-size:.88rem;
+      letter-spacing:.06em;
+      min-height:36px;
       display:flex;
       align-items:center;
     }
 
-    .tab{ color:var(--muted); }
-    .tab.active{
-      color:var(--text);
-      border-color:#5d3a10;
+    #graph{
+      height:calc(100vh - 165px);
+      border:1px solid var(--line);
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,177,26,0.05), transparent 16%),
+        radial-gradient(circle at 83% 24%, rgba(23,217,255,0.05), transparent 18%),
+        radial-gradient(circle at center, rgba(255,177,26,0.025), transparent 28%),
+        linear-gradient(180deg, #03040a 0%, #020308 100%);
+      position:relative;
     }
 
-    #graph{
+    #graph::after{
+      content:"";
       position:absolute;
       inset:0;
+      pointer-events:none;
+      box-shadow: inset 0 0 70px rgba(0,0,0,.42);
     }
 
-    .left-legend, .right-metrics, .right-sources{
+    .overlay-note{
       position:absolute;
-      border:1px solid var(--line);
-      background:rgba(7,8,12,.82);
-      box-shadow: inset 0 0 0 1px rgba(255,177,26,.05);
-      z-index:20;
+      right:26px;
+      bottom:18px;
+      color:#8a6b30;
+      font-size:.84rem;
+      opacity:.9;
+      line-height:1.55;
+      text-align:right;
+      pointer-events:none;
+      z-index:3;
     }
 
-    .left-legend{
-      left:22px;
-      bottom:26px;
-      width:245px;
+    .side-panel{
       padding:14px;
+      overflow:auto;
     }
 
-    .right-metrics{
-      right:22px;
-      top:22px;
-      width:255px;
-      padding:14px;
-    }
-
-    .right-sources{
-      right:22px;
-      bottom:28px;
-      width:255px;
-      padding:14px;
-    }
-
-    .panel-title{
-      color:var(--gold);
-      font-size:1rem;
-      letter-spacing:.18em;
+    .side-title{
+      font-size:1.05rem;
+      letter-spacing:.22em;
+      color:var(--text);
       text-transform:uppercase;
       margin-bottom:12px;
     }
@@ -152,116 +156,101 @@
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
+      margin-bottom:14px;
     }
 
     .metric{
       border:1px solid var(--line);
-      background:rgba(13,10,14,.58);
+      background:rgba(14,9,15,0.72);
       padding:10px;
-      min-height:68px;
+      min-height:72px;
     }
 
     .metric .k{
       color:var(--muted);
-      font-size:.68rem;
-      letter-spacing:.16em;
+      font-size:.72rem;
       text-transform:uppercase;
+      letter-spacing:.16em;
       margin-bottom:8px;
     }
 
     .metric .v{
       color:var(--text);
-      font-size:1.02rem;
-      line-height:1.25;
+      font-size:1.05rem;
+      line-height:1.3;
     }
 
-    .legend-group{
+    .section{
       border-top:1px solid var(--line);
-      padding-top:10px;
-      margin-top:10px;
+      padding-top:12px;
+      margin-top:12px;
     }
 
-    .legend-line{
+    .legend-line, .detail-line{
       color:var(--muted);
-      font-size:.82rem;
-      line-height:1.75;
+      font-size:.92rem;
+      line-height:1.65;
     }
 
-    .legend-line b{
+    .legend-line b, .detail-line b{
       color:var(--text);
       font-weight:700;
     }
 
-    .hint{
-      position:absolute;
-      right:26px;
-      bottom:170px;
-      z-index:20;
-      color:#6f5728;
+    .selected{
+      min-height:180px;
+      border:1px solid var(--line);
+      background:rgba(12,9,14,0.72);
+      padding:10px;
+      margin-top:10px;
+    }
+
+    .selected .name{
+      color:var(--gold);
+      font-size:1.05rem;
+      margin-bottom:8px;
+      letter-spacing:.08em;
+    }
+
+    .footer-note{
+      color:#7f6330;
       font-size:.82rem;
-      text-align:right;
+      margin-top:12px;
       line-height:1.6;
-      opacity:.8;
+    }
+
+    @media (max-width: 1100px){
+      .app{ grid-template-columns:1fr; height:auto; min-height:100vh; overflow:auto; }
+      #graph{ height:68vh; }
+      body{ overflow:auto; }
     }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="title">
+    <section class="main-panel">
       <div class="brand">GNOMEMAN4201</div>
-      <div class="sub">Ecosystem · Integration Graph · Live v3.0</div>
+      <div class="subtitle">Ecosystem · Integration Graph · Live Control Plane</div>
 
       <div class="chipbar">
         <div class="chip" id="liveChip">LIVE DATA: LOADING</div>
         <div class="chip" id="updateChip">LAST UPDATE: --</div>
-        <div class="chip" id="nodesChip">REPOS TRACKED: --</div>
+        <div class="chip" id="nodesChip">NODES TRACKED: --</div>
+        <div class="chip">SOURCE: docs/data/runtime_signals.json</div>
       </div>
 
-      <div class="tabbar">
-        <div class="tab active">ARCHITECTURE</div>
-        <div class="tab">RUNTIME</div>
-        <div class="tab">DATA FLOW</div>
-        <div class="tab">THREAT MODEL</div>
+      <div id="graph"></div>
+
+      <div class="overlay-note">
+        drag nodes · scroll to zoom<br/>
+        click node to inspect<br/>
+        live posture overlay enabled
       </div>
+    </section>
 
-      <div class="rangebar">
-        <div class="tab">7D</div>
-        <div class="tab active">30D</div>
-        <div class="tab">90D</div>
-        <div class="tab">ALL</div>
-      </div>
-    </div>
+    <aside class="side-panel">
+      <div class="side-title">System Metrics</div>
 
-    <div id="graph"></div>
-
-    <div class="left-legend">
-      <div class="panel-title">Legend</div>
-
-      <div class="legend-line"><b>⬡</b> Core / SHENRON</div>
-      <div class="legend-line"><b>⬡</b> SHENRON subsystem</div>
-      <div class="legend-line"><b>⬡</b> Offense</div>
-      <div class="legend-line"><b>⬡</b> Recon & network</div>
-      <div class="legend-line"><b>⬡</b> ML research</div>
-      <div class="legend-line"><b>⬡</b> Monitoring / ops</div>
-      <div class="legend-line"><b>⬡</b> Platform / utility</div>
-
-      <div class="legend-group">
-        <div class="legend-line"><b>—</b> contains</div>
-        <div class="legend-line"><b>—</b> orchestrates / controls</div>
-        <div class="legend-line"><b>—</b> feeds / data flow</div>
-        <div class="legend-line"><b>—</b> monitors / observes</div>
-        <div class="legend-line"><b>—</b> evolved from</div>
-        <div class="legend-line"><b>—</b> extends / generates</div>
-      </div>
-
-      <div class="legend-group">
-        <div class="legend-line">←→ keyboard node navigation</div>
-        <div class="legend-line">enter = select · esc = reset</div>
-      </div>
-    </div>
-
-    <div class="right-metrics">
-      <div class="panel-title">System Metrics</div>
       <div class="metrics">
         <div class="metric"><div class="k">Total Nodes</div><div class="v" id="m_total">--</div></div>
         <div class="metric"><div class="k">Warning Nodes</div><div class="v" id="m_warn">--</div></div>
@@ -272,88 +261,57 @@
         <div class="metric"><div class="k">Highest Drift</div><div class="v" id="m_highest">--</div></div>
         <div class="metric"><div class="k">Activity Health</div><div class="v" id="m_health">--</div></div>
       </div>
-    </div>
 
-    <div class="right-sources">
-      <div class="panel-title">Data Sources</div>
-      <div class="legend-line">GitHub API-derived repo metadata</div>
-      <div class="legend-line">Static ecosystem mapping + runtime overlay</div>
-      <div class="legend-line">Frontend: GitHub Pages · refresh: 5s</div>
-      <div class="legend-line">Source: docs/data/runtime_signals.json</div>
-    </div>
+      <div class="section">
+        <div class="legend-line"><b>Color by posture</b></div>
+        <div class="legend-line">ROUTINE → green</div>
+        <div class="legend-line">CAUTIOUS → amber</div>
+        <div class="legend-line">LOCKED → red</div>
+      </div>
 
-    <div class="hint">
-      drag nodes · scroll to zoom<br/>
-      click node to inspect<br/>
-      double-click canvas to reset
-    </div>
+      <div class="section">
+        <div class="legend-line"><b>Visual language</b></div>
+        <div class="legend-line">gold center = SHENRON core</div>
+        <div class="legend-line">node size = activity</div>
+        <div class="legend-line">glow = posture intensity</div>
+        <div class="legend-line">dashed cyan = telemetry / data flow</div>
+      </div>
+
+      <div class="section">
+        <div class="legend-line"><b>Selected Node</b></div>
+        <div class="selected" id="selectedCard">
+          <div class="detail-line">Click a node to inspect live posture, drift, and activity.</div>
+        </div>
+      </div>
+
+      <div class="footer-note">
+        Restored SHENRON-centered visual hierarchy with live control-plane overlays.
+      </div>
+    </aside>
   </div>
 
   <script>
     let network = null;
+    let currentData = {};
 
-    const INNER_NODES = [
-      { id:"Autonomy & Orchestration", x:0, y:-140, type:"sub" },
-      { id:"Persistence & Propagation", x:165, y:-55, type:"sub" },
-      { id:"AI Modules", x:65, y:120, type:"sub" },
-      { id:"Mutation Engine", x:-135, y:90, type:"sub" },
-      { id:"Evasion & Stealth", x:-45, y:190, type:"sub" },
-      { id:"Steganography & Utils", x:-50, y:-85, type:"sub" }
-    ];
+    const STATIC_LAYOUT = {
+      "SHENRON": { x: -190, y: -100, cluster: "core" },
+      "drift_orchestrator": { x: 140, y: -30, cluster: "core" },
+      "zeroDAYSlater": { x: 420, y: -90, cluster: "offense" },
+      "LANimals": { x: 640, y: 80, cluster: "offense" },
+      "PHANTOM": { x: 20, y: 130, cluster: "analysis" },
+      "OpenSight": { x: 130, y: 310, cluster: "analysis" },
+      "LUNE": { x: 470, y: 280, cluster: "research" }
+    };
 
-    const OUTER_NODES = [
-      { id:"drift_orchestrator", x:-320, y:-20, type:"ops", signal:"drift_orchestrator" },
-      { id:"LANimals", x:-240, y:210, type:"recon", signal:"LANimals" },
-      { id:"OpenSight", x:-55, y:360, type:"recon", signal:"OpenSight" },
-      { id:"zeroDAYSlater", x:300, y:205, type:"offense", signal:"zeroDAYSlater" },
-      { id:"PHANTOM", x:-225, y:-250, type:"offense", signal:"PHANTOM" },
-      { id:"LUNE", x:385, y:-210, type:"research", signal:"LUNE" },
-
-      { id:"BANANA_TREE", x:-170, y:-75, type:"ops" },
-      { id:"OWN", x:265, y:0, type:"core2" },
-      { id:"HYDRA", x:560, y:145, type:"research" },
-      { id:"Pickle Hunter", x:405, y:305, type:"research" },
-      { id:"DevToReconSuite", x:450, y:255, type:"platform" },
-      { id:"bad_BANANA", x:385, y:-40, type:"research" },
-      { id:"chain", x:505, y:-105, type:"platform" },
-      { id:"repo_alias_forge", x:-560, y:190, type:"platform" },
-      { id:"LANIMORPH", x:-415, y:-55, type:"recon" },
-      { id:"Blackglass", x:-350, y:235, type:"offense" },
-      { id:"pwn", x:720, y:-170, type:"offense" }
-    ];
-
-    const EDGES = [
-      ["SHENRON","Autonomy & Orchestration","contains"],
-      ["SHENRON","Persistence & Propagation","contains"],
-      ["SHENRON","AI Modules","contains"],
-      ["SHENRON","Mutation Engine","contains"],
-      ["SHENRON","Evasion & Stealth","contains"],
-      ["SHENRON","Steganography & Utils","contains"],
-
-      ["SHENRON","drift_orchestrator","feeds"],
-      ["SHENRON","LANimals","feeds"],
-      ["SHENRON","OpenSight","feeds"],
-      ["SHENRON","zeroDAYSlater","controls"],
-      ["SHENRON","PHANTOM","feeds"],
-      ["SHENRON","LUNE","feeds"],
-
-      ["drift_orchestrator","BANANA_TREE","monitors"],
-      ["drift_orchestrator","LANimals","extends"],
-      ["LANimals","OpenSight","feeds"],
-      ["Blackglass","Mutation Engine","feeds"],
-      ["PHANTOM","Autonomy & Orchestration","feeds"],
-      ["PHANTOM","Steganography & Utils","feeds"],
-
-      ["OWN","zeroDAYSlater","controls"],
-      ["OWN","HYDRA","feeds"],
-      ["OWN","SHENRON","controls"],
-      ["bad_BANANA","HYDRA","feeds"],
-      ["Pickle Hunter","HYDRA","evolved"],
-      ["repo_alias_forge","LANimals","feeds"],
-      ["chain","OWN","feeds"],
-      ["LUNE","Autonomy & Orchestration","feeds"],
-      ["LUNE","Persistence & Propagation","feeds"],
-      ["pwn","LUNE","feeds"]
+    const EDGE_MAP = [
+      ["SHENRON", "drift_orchestrator", "controls"],
+      ["SHENRON", "zeroDAYSlater", "feeds"],
+      ["SHENRON", "LANimals", "feeds"],
+      ["SHENRON", "PHANTOM", "feeds"],
+      ["SHENRON", "OpenSight", "feeds"],
+      ["SHENRON", "LUNE", "feeds"],
+      ["drift_orchestrator", "zeroDAYSlater", "monitors"]
     ];
 
     function postureColor(posture) {
@@ -362,157 +320,129 @@
       return "#2fe39a";
     }
 
-    function fillForType(type) {
-      if (type === "core") return "#ffb11a";
-      if (type === "sub") return "#2fe39a";
-      if (type === "offense") return "#ff8c2a";
-      if (type === "recon") return "#16d9ff";
-      if (type === "research") return "#8e4dff";
-      if (type === "ops") return "#d89624";
-      if (type === "core2") return "#ffb11a";
-      return "#8d95a3";
+    function clusterFill(name) {
+      const cluster = STATIC_LAYOUT[name]?.cluster || "misc";
+      if (cluster === "core") return "#ffb11a";
+      if (cluster === "offense") return "#ff8c2a";
+      if (cluster === "analysis") return "#ffd166";
+      if (cluster === "research") return "#2fe39a";
+      return "#9ca3af";
     }
 
-    function edgeStyle(kind) {
-      if (kind === "controls") return { color:"#ffb11a", width:2.2, dashes:false };
-      if (kind === "contains") return { color:"#ffb11a", width:2.0, dashes:false };
-      if (kind === "monitors") return { color:"#ffd166", width:1.4, dashes:[2,7] };
-      if (kind === "evolved") return { color:"#8e4dff", width:1.8, dashes:false };
-      if (kind === "extends") return { color:"#2fe39a", width:1.5, dashes:false };
-      return { color:"#16d9ff", width:1.6, dashes:true };
-    }
-
-    function nodeTitle(name, sig) {
-      if (!sig) return name;
-      return [
-        name,
-        `status: ${sig.status}`,
-        `activity: ${sig.activity}`,
-        `drift: ${sig.drift_score}`,
-        `posture: ${sig.posture}`,
-        `last_event: ${sig.last_event}`,
-        `updated_at: ${sig.updated_at}`
-      ].join("\\n");
+    function activityValue(activity) {
+      return Math.max(16, Math.round(activity / 2));
     }
 
     function fmtAgo(iso) {
       const then = new Date(iso).getTime();
       const now = Date.now();
       const sec = Math.max(0, Math.floor((now - then) / 1000));
-      if (sec < 60) return "JUST NOW";
+      if (sec < 60) return sec + "s ago";
       const min = Math.floor(sec / 60);
-      if (min < 60) return `${min}m ago`;
+      if (min < 60) return min + "m ago";
       const hr = Math.floor(min / 60);
-      return `${hr}h ago`;
+      return hr + "h ago";
     }
 
-    function buildGraph(signals) {
+    function glowShadow(posture) {
+      if (posture === "LOCKED") return "0 0 20px rgba(255,75,75,0.42)";
+      if (posture === "CAUTIOUS") return "0 0 18px rgba(255,177,26,0.35)";
+      return "0 0 16px rgba(47,227,154,0.32)";
+    }
+
+    function nodeTitle(name, v) {
+      return [
+        name,
+        `status: ${v.status}`,
+        `activity: ${v.activity}`,
+        `drift: ${v.drift_score}`,
+        `posture: ${v.posture}`,
+        `last_event: ${v.last_event}`,
+        `updated_at: ${v.updated_at}`
+      ].join("\n");
+    }
+
+    function buildGraph(data) {
+      currentData = data;
       const nodes = [];
-      const ids = new Map();
-      let nid = 1;
+      const ids = {};
+      let idCounter = 1;
 
-      function pushNode(def, opts={}) {
-        const id = nid++;
-        ids.set(def.id, id);
-        nodes.push({ id, ...opts });
-      }
+      const orderedNames = ["SHENRON", ...Object.keys(data).filter(n => n !== "SHENRON")];
 
-      const coreSignal = signals["SHENRON"];
+      for (const name of orderedNames) {
+        const v = data[name];
+        if (!v) continue;
 
-      pushNode(
-        { id:"SHENRON" },
-        {
-          label:"SHENRON",
-          x:0,
-          y:40,
-          fixed:true,
-          shape:"hexagon",
-          value:42,
-          font:{ color:"#ffe4a8", size:28, face:"monospace", bold:true },
-          color:{
-            background:"#ffb11a",
-            border: postureColor(coreSignal?.posture || "CAUTIOUS"),
-            highlight:{ background:"#ffb11a", border:"#fff" },
-            hover:{ background:"#ffb11a", border:"#fff" }
+        const id = idCounter++;
+        ids[name] = id;
+
+        const pos = STATIC_LAYOUT[name] || { x: 0, y: 0, cluster: "misc" };
+        const isCore = name === "SHENRON";
+
+        const baseFill = isCore ? "#ffb11a" : clusterFill(name);
+        const ringColor = postureColor(v.posture);
+        const size = isCore ? 44 : activityValue(v.activity);
+
+        nodes.push({
+          id,
+          label: name,
+          x: pos.x,
+          y: pos.y,
+          fixed: true,
+          shape: "hexagon",
+          value: size,
+          title: nodeTitle(name, v),
+          font: {
+            color: isCore ? "#ffe4a8" : "#ecf4ff",
+            face: "monospace",
+            size: isCore ? 24 : 16,
+            bold: isCore
           },
-          borderWidth:4,
-          shadow:{ enabled:true, color:"#ffb11a", size:32, x:0, y:0 },
-          margin:20,
-          title: nodeTitle("SHENRON", coreSignal)
-        }
-      );
-
-      for (const def of INNER_NODES) {
-        pushNode(def, {
-          label:def.id,
-          x:def.x,
-          y:def.y,
-          fixed:true,
-          shape:"hexagon",
-          value:20,
-          font:{ color:"#dff6ea", size:14, face:"monospace" },
-          color:{
-            background:fillForType(def.type),
-            border:"#29e39a",
-            highlight:{ background:fillForType(def.type), border:"#fff" },
-            hover:{ background:fillForType(def.type), border:"#fff" }
+          color: {
+            background: baseFill,
+            border: ringColor,
+            highlight: { background: baseFill, border: "#ffffff" },
+            hover: { background: baseFill, border: "#ffffff" }
           },
-          borderWidth:2.5,
-          shadow:{ enabled:true, color:"#29e39a", size:16, x:0, y:0 },
-          margin:12,
-          title:def.id
+          borderWidth: isCore ? 4 : 3,
+          shadow: {
+            enabled: true,
+            color: ringColor,
+            size: isCore ? 26 : 18,
+            x: 0,
+            y: 0
+          },
+          margin: isCore ? 18 : 12
         });
       }
 
-      for (const def of OUTER_NODES) {
-        const sig = def.signal ? signals[def.signal] : null;
-        const posture = sig?.posture || "CAUTIOUS";
-        const activity = sig?.activity || 36;
+      const edges = EDGE_MAP
+        .filter(([from, to]) => ids[from] && ids[to])
+        .map(([from, to, kind]) => {
+          let color = "#17d9ff";
+          let dashes = true;
+          let width = 1.8;
+          let arrows = "to";
 
-        pushNode(def, {
-          label:def.id,
-          x:def.x,
-          y:def.y,
-          fixed:true,
-          shape:"hexagon",
-          value: def.signal ? Math.max(16, Math.round(activity / 2)) : 18,
-          font:{
-            color:def.type === "core2" ? "#ffe4a8" : "#e8eef6",
-            size:def.type === "core2" ? 20 : 14,
-            face:"monospace",
-            bold:def.type === "core2"
-          },
-          color:{
-            background:fillForType(def.type),
-            border: postureColor(posture),
-            highlight:{ background:fillForType(def.type), border:"#fff" },
-            hover:{ background:fillForType(def.type), border:"#fff" }
-          },
-          borderWidth:def.type === "core2" ? 4 : 2.8,
-          shadow:{
-            enabled:true,
-            color:postureColor(posture),
-            size:def.type === "core2" ? 24 : 14,
-            x:0,
-            y:0
-          },
-          margin:def.type === "core2" ? 16 : 12,
-          title: nodeTitle(def.id, sig)
-        });
-      }
+          if (kind === "controls") {
+            color = "#ffb11a";
+            dashes = false;
+            width = 2.4;
+          } else if (kind === "monitors") {
+            color = "#ffd166";
+            dashes = [2, 8];
+            width = 1.4;
+          }
 
-      const edges = EDGES
-        .filter(([a,b]) => ids.has(a) && ids.has(b))
-        .map(([a,b,kind]) => {
-          const s = edgeStyle(kind);
           return {
-            from: ids.get(a),
-            to: ids.get(b),
-            arrows:"to",
-            color:{ color:s.color, highlight:s.color, hover:s.color },
-            width:s.width,
-            dashes:s.dashes,
-            smooth:{ type:"curvedCW", roundness:0.18 }
+            from: ids[from],
+            to: ids[to],
+            color: { color, highlight: color, hover: color },
+            dashes,
+            width,
+            arrows,
+            smooth: { type: "curvedCW", roundness: 0.16 }
           };
         });
 
@@ -528,11 +458,13 @@
       const routine = entries.filter(([,v]) => v.posture === "ROUTINE").length;
 
       const drifts = entries.map(([,v]) => Number(v.drift_score || 0));
-      const avgDrift = drifts.length ? (drifts.reduce((a,b)=>a+b,0)/drifts.length).toFixed(2) : "0.00";
+      const avgDrift = drifts.length
+        ? (drifts.reduce((a,b) => a + b, 0) / drifts.length).toFixed(2)
+        : "0.00";
 
       let highest = "--";
       if (entries.length) {
-        const top = [...entries].sort((a,b)=>(b[1].drift_score||0)-(a[1].drift_score||0))[0];
+        const top = [...entries].sort((a,b) => (b[1].drift_score || 0) - (a[1].drift_score || 0))[0];
         highest = `${top[0]} (${top[1].drift_score})`;
       }
 
@@ -550,43 +482,99 @@
       document.getElementById("m_health").textContent =
         avgActivity >= 75 ? "high" : avgActivity >= 45 ? "moderate" : "low";
 
-      document.getElementById("nodesChip").textContent = `REPOS TRACKED: ${total}`;
+      document.getElementById("nodesChip").textContent = `NODES TRACKED: ${total}`;
 
-      const newest = [...entries].map(([,v]) => v.updated_at).filter(Boolean).sort().reverse()[0];
+      const newest = [...entries]
+        .map(([,v]) => v.updated_at)
+        .filter(Boolean)
+        .sort()
+        .reverse()[0];
+
       if (newest) {
         document.getElementById("updateChip").textContent = `LAST UPDATE: ${fmtAgo(newest)}`;
       }
+
       document.getElementById("liveChip").textContent = "LIVE DATA: ACTIVE";
+    }
+
+    function renderSelected(name) {
+      const el = document.getElementById("selectedCard");
+      const v = currentData[name];
+      if (!v) {
+        el.innerHTML = `<div class="detail-line">No node selected.</div>`;
+        return;
+      }
+
+      const posture = v.posture || "UNKNOWN";
+      const border = postureColor(posture);
+
+      el.style.boxShadow = `inset 0 0 0 1px ${border}33`;
+
+      el.innerHTML = `
+        <div class="name">${name}</div>
+        <div class="detail-line"><b>Status:</b> ${v.status}</div>
+        <div class="detail-line"><b>Posture:</b> ${v.posture}</div>
+        <div class="detail-line"><b>Drift:</b> ${v.drift_score}</div>
+        <div class="detail-line"><b>Activity:</b> ${v.activity}</div>
+        <div class="detail-line"><b>Last event:</b> ${v.last_event}</div>
+        <div class="detail-line"><b>Updated:</b> ${v.updated_at}</div>
+      `;
     }
 
     async function load() {
       const res = await fetch("./data/runtime_signals.json?ts=" + Date.now());
-      const signals = await res.json();
+      const data = await res.json();
 
-      const graphData = buildGraph(signals);
-      setMetrics(signals);
+      const graphData = buildGraph(data);
+      setMetrics(data);
 
       const container = document.getElementById("graph");
       const options = {
-        physics:false,
-        interaction:{
-          hover:true,
-          navigationButtons:true,
-          keyboard:true,
-          dragNodes:true,
-          dragView:true,
-          zoomView:true
+        autoResize: true,
+        physics: false,
+        interaction: {
+          hover: true,
+          navigationButtons: true,
+          keyboard: true,
+          dragNodes: true,
+          dragView: true,
+          zoomView: true
         },
-        edges:{
-          smooth:{ enabled:true, type:"curvedCW", roundness:0.16 }
+        edges: {
+          smooth: { enabled: true, type: "curvedCW", roundness: 0.15 }
         },
-        nodes:{ chosen:true }
+        nodes: {
+          chosen: true
+        }
       };
 
       if (!network) {
         network = new vis.Network(container, graphData, options);
+
+        network.on("click", function(params) {
+          if (!params.nodes.length) return;
+          const nodeId = params.nodes[0];
+          const selected = Object.entries(graphData.nodes.get ? {} : {});
+        });
+
+        network.on("selectNode", function(params) {
+          const nodeId = params.nodes[0];
+          const node = graphData.nodes.find(n => n.id === nodeId);
+          if (node) renderSelected(node.label);
+        });
+
+        network.once("afterDrawing", function() {
+          renderSelected("SHENRON");
+        });
       } else {
+        const selectedIds = network.getSelectedNodes();
         network.setData(graphData);
+        if (selectedIds.length) {
+          const node = graphData.nodes.find(n => n.id === selectedIds[0]);
+          if (node) renderSelected(node.label);
+        } else {
+          renderSelected("SHENRON");
+        }
       }
     }
 
