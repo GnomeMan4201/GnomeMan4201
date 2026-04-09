@@ -1,0 +1,58 @@
+{
+  "SHENRON": {
+    "node": "SHENRON",
+    "status": "active",
+    "activity": 89,
+    "last_event": "runtime cycle",
+    "last_event_recent": true,
+    "updated_at": "2026-04-09T05:18:12.114205Z"
+  },
+  "LANimals": {
+    "node": "LANimals",
+    "status": "warning",
+    "activity": 86,
+    "last_event": "telemetry refresh",
+    "last_event_recent": true,
+    "updated_at": "2026-04-09T05:18:12.114223Z"
+  },
+  "OpenSight": {
+    "node": "OpenSight",
+    "status": "idle",
+    "activity": 72,
+    "last_event": "runtime cycle",
+    "last_event_recent": true,
+    "updated_at": "2026-04-09T05:18:12.114230Z"
+  },
+  "drift_orchestrator": {
+    "node": "drift_orchestrator",
+    "status": "active",
+    "activity": 29,
+    "last_event": "telemetry refresh",
+    "last_event_recent": true,
+    "updated_at": "2026-04-09T05:18:12.114237Z"
+  },
+  "zeroDAYSlater": {
+    "node": "zeroDAYSlater",
+    "status": "warning",
+    "activity": 20,
+    "last_event": "runtime cycle",
+    "last_event_recent": true,
+    "updated_at": "2026-04-09T05:18:12.114244Z"
+  },
+  "PHANTOM": {
+    "node": "PHANTOM",
+    "status": "warning",
+    "activity": 75,
+    "last_event": "pipeline execution",
+    "last_event_recent": true,
+    "updated_at": "2026-04-09T05:18:12.114250Z"
+  },
+  "LUNE": {
+    "node": "LUNE",
+    "status": "active",
+    "activity": 86,
+    "last_event": "telemetry refresh",
+    "last_event_recent": true,
+    "updated_at": "2026-04-09T05:18:12.114256Z"
+  }
+}
