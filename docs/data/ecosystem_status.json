@@ -1,51 +1,51 @@
 {
-  "updated_at": "1970-01-01T00:00:00Z",
+  "updated_at": "2026-04-09T04:53:25Z",
   "nodes": {
     "SHENRON": {
       "health": "ok",
-      "activity": 90,
-      "status": "active",
-      "last_event": "core runtime online",
-      "last_updated": "1970-01-01T00:00:00Z"
+      "activity": 55,
+      "status": "idle",
+      "last_event": "repo telemetry refresh",
+      "last_updated": "2026-04-09T04:53:25Z"
     },
     "LANimals": {
-      "health": "ok",
-      "activity": 60,
-      "status": "active",
+      "health": "warning",
+      "activity": 62,
+      "status": "warning",
       "active_hosts": 0,
       "alerts": 0,
-      "last_event": "recon channel initialized",
-      "last_updated": "1970-01-01T00:00:00Z"
+      "last_event": "repo telemetry refresh",
+      "last_updated": "2026-04-09T04:53:25Z"
     },
     "drift_orchestrator": {
-      "health": "ok",
-      "activity": 55,
-      "status": "active",
+      "health": "warning",
+      "activity": 54,
+      "status": "warning",
       "drift_score": 0.0,
-      "last_event": "policy monitor online",
-      "last_updated": "1970-01-01T00:00:00Z"
+      "last_event": "repo telemetry refresh",
+      "last_updated": "2026-04-09T04:53:25Z"
     },
     "BANANA_TREE": {
-      "health": "ok",
-      "activity": 48,
-      "status": "active",
+      "health": "warning",
+      "activity": 24,
+      "status": "warning",
       "alerts": 0,
-      "last_event": "ecosystem telemetry online",
-      "last_updated": "1970-01-01T00:00:00Z"
+      "last_event": "ecosystem aggregate refreshed",
+      "last_updated": "2026-04-09T04:53:25Z"
     }
   },
   "edges": {
     "LANimals->SHENRON": {
-      "active": true,
-      "throughput": 20
+      "active": false,
+      "throughput": 10
     },
     "drift_orchestrator->Autonomy &\nOrchestration": {
       "active": true,
-      "throughput": 12
+      "throughput": 8
     },
     "BANANA_TREE->SHENRON": {
       "active": true,
-      "throughput": 10
+      "throughput": 12
     }
   }
 }
