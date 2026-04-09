@@ -1116,14 +1116,23 @@ function computeRuntimeActivityScore(runtime) {
 function computeNodeIsActive(n) {
   const repo = getRepoMetrics(n.id);
   const runtime = getNodeMetrics(n.id);
-  return runtime?.status === 'active' || computeRepoFreshnessScore(repo) >= 2;
+
+  // active if runtime explicitly active OR recent repo OR decent runtime activity
+  if (runtime?.status === 'active') return true;
+  if (computeRepoFreshnessScore(repo) >= 1) return true;
+  if (computeRuntimeActivityScore(runtime) >= 2) return true;
+
+  return false;
 }
 
 function computeNodeIsDormant(n) {
   const repo = getRepoMetrics(n.id);
+  if (!repo) return false; // ignore non-repo nodes
+
   const runtime = getNodeMetrics(n.id);
   const noRecentRepo = computeRepoFreshnessScore(repo) === 0;
-  const noRuntime = !runtime || runtime.status !== 'active';
+  const noRuntime = !runtime || computeRuntimeActivityScore(runtime) === 0;
+
   return noRecentRepo && noRuntime;
 }
 
@@ -1156,7 +1165,8 @@ function computeSystemMetrics() {
     : 0;
 
   let avgHealth = 'low';
-  if (avgHealthScore >= 4.5) avgHealth = 'strong';
+  if (avgHealthScore >= 3.5) avgHealth = 'strong';
+  else if (avgHealthScore >= 1.8) avgHealth = 'moderate';
   else if (avgHealthScore >= 2.5) avgHealth = 'moderate';
 
   const highestRisk = nodes.map(n => ({
