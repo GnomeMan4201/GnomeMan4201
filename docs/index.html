@@ -344,12 +344,6 @@
       return hr + "h ago";
     }
 
-    function glowShadow(posture) {
-      if (posture === "LOCKED") return "0 0 20px rgba(255,75,75,0.42)";
-      if (posture === "CAUTIOUS") return "0 0 18px rgba(255,177,26,0.35)";
-      return "0 0 16px rgba(47,227,154,0.32)";
-    }
-
     function nodeTitle(name, v) {
       return [
         name,
@@ -359,7 +353,7 @@
         `posture: ${v.posture}`,
         `last_event: ${v.last_event}`,
         `updated_at: ${v.updated_at}`
-      ].join("\n");
+      ].join("\\n");
     }
 
     function buildGraph(data) {
@@ -550,12 +544,6 @@
 
       if (!network) {
         network = new vis.Network(container, graphData, options);
-
-        network.on("click", function(params) {
-          if (!params.nodes.length) return;
-          const nodeId = params.nodes[0];
-          const selected = Object.entries(graphData.nodes.get ? {} : {});
-        });
 
         network.on("selectNode", function(params) {
           const nodeId = params.nodes[0];
