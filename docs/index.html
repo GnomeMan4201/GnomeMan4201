@@ -591,6 +591,11 @@ const nodes = [
 ];
 
 const links = [
+  // synthetic edges injected
+  { source: "LANimals", target: "SHENRON", type: "feeds_runtime" },
+  { source: "drift_orchestrator", target: "SHENRON", type: "controls" },
+  { source: "OpenSight", target: "LANimals", type: "shares_data_with" },
+
   {source:'SHENRON',target:'AI Modules',type:'contains'},
   {source:'SHENRON',target:'Autonomy &\nOrchestration',type:'contains'},
   {source:'SHENRON',target:'Evasion &\nStealth',type:'contains'},
@@ -1096,21 +1101,25 @@ function computeNodeCentrality(nodeId) {
 }
 
 function computeRepoFreshnessScore(repo) {
-  if (!repo?.pushed_at) return 0;
-  const mins = minutesSince(repo.pushed_at);
-  if (mins === null) return 0;
-  if (mins < 1440) return 3;
-  if (mins < 10080) return 2;
-  if (mins < 43200) return 1;
-  return 0;
+  if (!repo) return 0;
+
+  let score = 0;
+  if (repo.pushed_recently) score += 2;
+  if (repo.stars > 0) score += 1;
+  if (repo.forks > 0) score += 1;
+
+  return score;
 }
 
 function computeRuntimeActivityScore(runtime) {
-  const raw = runtime?.activity ?? 0;
-  if (raw >= 75) return 3;
-  if (raw >= 40) return 2;
-  if (raw > 0) return 1;
-  return 0;
+  let score = 0;
+  if (!runtime) return 0;
+
+  if (runtime.status === 'active') score += 2;
+  if (runtime.activity && runtime.activity > 50) score += 2;
+  if (runtime.last_event_recent) score += 1;
+
+  return score;
 }
 
 function computeNodeIsActive(n) {
@@ -1165,7 +1174,8 @@ function computeSystemMetrics() {
     : 0;
 
   let avgHealth = 'low';
-  if (avgHealthScore >= 3.5) avgHealth = 'strong';
+if (avgHealthScore >= 3) avgHealth = 'strong';
+else if (avgHealthScore >= 1.5) avgHealth = 'moderate';
   else if (avgHealthScore >= 1.8) avgHealth = 'moderate';
   else if (avgHealthScore >= 2.5) avgHealth = 'moderate';
 
