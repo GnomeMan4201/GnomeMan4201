@@ -13,6 +13,15 @@ from collections import deque
 from dataclasses import dataclass, field
 from typing import Any
 
+from pathlib import Path
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from orchestrator.execute_with_policy import execute
+
 
 SPARK_CHARS = "▁▂▃▄▅▆▇█"
 DEGRADE_THRESHOLD = 0.35
@@ -315,7 +324,7 @@ def run_dashboard(stdscr, urls: list[str], labels: list[str], history_size: int)
     first_rollback: str | None = None
 
     try:
-        while True:
+        for _ in range(max_steps):
             key = stdscr.getch()
             if key in (ord("q"), ord("Q")):
                 break
@@ -397,6 +406,19 @@ def run_dashboard(stdscr, urls: list[str], labels: list[str], history_size: int)
 
 
 def main() -> None:
+
+    result = execute("drift_orchestrator", "live_dashboard")
+    if not result["executed"]:
+        raise SystemExit(result["reason"])
+
+    mode = result["mode"]
+    allow_network = mode["allow_network"]
+    allow_writeback = mode["allow_writeback"]
+    max_steps = mode["max_steps"]
+
+    if not allow_network:
+        print("network disabled by control plane")
+        return
     parser = argparse.ArgumentParser(description="Live terminal dashboard for drift telemetry SSE stream")
     parser.add_argument(
         "--url",
