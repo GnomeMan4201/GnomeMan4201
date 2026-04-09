@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>GnomeMan4201 Ecosystem Graph</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <style>
@@ -10,9 +10,21 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  :root {
+    --bg: #080b0f;
+    --fg: #c8d8e8;
+    --muted: #8899aa;
+    --line: #1a2a3a;
+    --accent: #00ff9d;
+    --warn: #ff9f43;
+    --crit: #ff3b30;
+    --cool: #4a9eff;
+    --violet: #a855f7;
+  }
+
   body {
-    background: #080b0f;
-    color: #c8d8e8;
+    background: var(--bg);
+    color: var(--fg);
     font-family: 'Share Tech Mono', monospace;
     overflow: hidden;
     height: 100vh;
@@ -32,7 +44,7 @@
 
   .node circle {
     cursor: pointer;
-    transition: filter 0.2s;
+    transition: filter 0.2s, opacity 0.2s, stroke 0.2s, stroke-width 0.2s;
   }
 
   .node:hover circle {
@@ -42,7 +54,7 @@
   .node text {
     font-family: 'Share Tech Mono', monospace;
     font-size: 11px;
-    fill: #c8d8e8;
+    fill: var(--fg);
     pointer-events: none;
     text-shadow: 0 0 8px rgba(0,0,0,0.9);
   }
@@ -51,7 +63,7 @@
     font-size: 14px;
     font-family: 'Rajdhani', sans-serif;
     font-weight: 600;
-    fill: #00ff9d;
+    fill: var(--accent);
   }
 
   .node.shenron_sub text {
@@ -59,9 +71,17 @@
     fill: #88ffcc;
   }
 
+  .node.dimmed circle { opacity: 0.1; }
+  .node.dimmed text { opacity: 0.1; }
+
+  .node.active-node circle {
+    filter: drop-shadow(0 0 10px rgba(0,255,157,0.55));
+  }
+
   .link {
     stroke-opacity: 0.5;
     fill: none;
+    transition: stroke-opacity 0.2s, stroke-width 0.2s;
   }
 
   .link.contains { stroke: #00ff9d; stroke-width: 1.5; stroke-dasharray: none; }
@@ -73,49 +93,77 @@
   .link.recon { stroke: #4a9eff; stroke-width: 0.8; stroke-dasharray: 2 4; }
 
   .link.dimmed { stroke-opacity: 0.05; }
-  .link.highlighted { stroke-opacity: 0.9; stroke-width: 2.5; }
-
-  .node.dimmed circle { opacity: 0.1; }
-  .node.dimmed text { opacity: 0.1; }
+  .link.highlighted { stroke-opacity: 0.95; stroke-width: 2.5; }
+  .link.active-link { stroke-opacity: 0.95 !important; }
 
   #info-panel {
     position: fixed;
     top: 20px;
     right: 20px;
-    width: 260px;
-    background: rgba(8, 11, 15, 0.95);
-    border: 1px solid #1a2a3a;
-    border-left: 3px solid #00ff9d;
+    width: 320px;
+    background: rgba(8, 11, 15, 0.96);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
     padding: 16px;
     font-size: 12px;
     line-height: 1.6;
     display: none;
+    z-index: 20;
   }
 
   #info-panel h3 {
     font-family: 'Rajdhani', sans-serif;
     font-size: 16px;
     font-weight: 600;
-    color: #00ff9d;
+    color: var(--accent);
     margin-bottom: 8px;
   }
 
   #info-panel .group-label {
     font-size: 10px;
-    color: #4a9eff;
+    color: var(--cool);
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 8px;
   }
 
-  #info-panel .connections {
+  #info-panel .connections,
+  #info-panel .metrics {
     margin-top: 10px;
-    color: #8899aa;
+    color: var(--muted);
     font-size: 11px;
   }
 
-  #info-panel .connections span {
-    color: #c8d8e8;
+  #info-panel .connections span,
+  #info-panel .metrics span {
+    color: var(--fg);
+  }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 10px;
+    margin-top: 8px;
+  }
+
+  .metric-grid div {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    padding: 6px 8px;
+  }
+
+  .metric-grid strong {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-bottom: 2px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .metric-grid span {
+    color: var(--fg);
   }
 
   #legend {
@@ -123,15 +171,16 @@
     bottom: 20px;
     left: 20px;
     background: rgba(8, 11, 15, 0.9);
-    border: 1px solid #1a2a3a;
+    border: 1px solid var(--line);
     padding: 14px;
     font-size: 11px;
+    z-index: 20;
   }
 
   #legend h4 {
     font-family: 'Rajdhani', sans-serif;
     font-size: 13px;
-    color: #4a9eff;
+    color: var(--cool);
     margin-bottom: 10px;
     letter-spacing: 1px;
   }
@@ -141,7 +190,7 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 5px;
-    color: #8899aa;
+    color: var(--muted);
   }
 
   .legend-dot {
@@ -162,12 +211,13 @@
     top: 20px;
     left: 20px;
     font-family: 'Rajdhani', sans-serif;
+    z-index: 20;
   }
 
   #title h1 {
     font-size: 22px;
     font-weight: 600;
-    color: #00ff9d;
+    color: var(--accent);
     letter-spacing: 2px;
   }
 
@@ -178,6 +228,36 @@
     font-family: 'Share Tech Mono', monospace;
   }
 
+  #status-bar {
+    position: fixed;
+    top: 72px;
+    left: 20px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 20;
+    font-size: 10px;
+    color: #6f86a0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .status-chip {
+    padding: 5px 8px;
+    border: 1px solid var(--line);
+    background: rgba(8,11,15,0.86);
+  }
+
+  .status-chip.live {
+    color: var(--accent);
+    border-color: rgba(0,255,157,0.25);
+  }
+
+  .status-chip.warn {
+    color: var(--warn);
+    border-color: rgba(255,159,67,0.25);
+  }
+
   #hint {
     position: fixed;
     bottom: 20px;
@@ -186,6 +266,7 @@
     color: #2a4a6a;
     text-align: right;
     line-height: 1.8;
+    z-index: 20;
   }
 
   .scanline {
@@ -206,17 +287,30 @@
 </head>
 <body>
 <div class="scanline"></div>
+
 <div id="title">
   <h1>GNOMEMAN4201 ECOSYSTEM</h1>
-  <p>// inter-tool integration graph — v1.0</p>
+  <p>// inter-tool integration graph — live mode</p>
 </div>
-<div id="graph-container"><svg id="graph"></svg></div>
+
+<div id="status-bar">
+  <div class="status-chip live" id="live-state">live data: initializing</div>
+  <div class="status-chip" id="last-updated">last update: --</div>
+  <div class="status-chip" id="repo-count">repos tracked: --</div>
+</div>
+
+<div id="graph-container">
+  <svg id="graph"></svg>
+</div>
+
 <div id="info-panel">
   <div class="group-label" id="info-group"></div>
   <h3 id="info-name"></h3>
   <div id="info-desc"></div>
+  <div class="metrics" id="info-metrics"></div>
   <div class="connections" id="info-connections"></div>
 </div>
+
 <div id="legend">
   <h4>// LEGEND</h4>
   <div class="legend-item"><div class="legend-dot" style="background:#00ff9d"></div> Core / SHENRON</div>
@@ -229,44 +323,46 @@
   <br>
   <div class="legend-item"><div class="legend-line" style="background:#00ff9d"></div> contains</div>
   <div class="legend-item"><div class="legend-line" style="background:#ff6b35"></div> orchestrates</div>
-  <div class="legend-item"><div class="legend-line" style="background:#4a9eff;background:repeating-linear-gradient(90deg,#4a9eff 0,#4a9eff 4px,transparent 4px,transparent 6px)"></div> feeds</div>
+  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#4a9eff 0,#4a9eff 4px,transparent 4px,transparent 6px)"></div> feeds</div>
   <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#ff9f43 0,#ff9f43 2px,transparent 2px,transparent 5px)"></div> monitors</div>
   <div class="legend-item"><div class="legend-line" style="background:#a855f7"></div> evolved from</div>
 </div>
+
 <div id="hint">
   drag nodes to reposition<br>
   click node to highlight connections<br>
+  double-click node to open repo<br>
   click background to reset
 </div>
 
 <script>
 const nodes = [
-  { id: 'SHENRON', group: 'core', size: 22, desc: 'Adaptive persistent offense framework. 89 modules across 7 subsystems. The central engine of the offense stack.' },
-  { id: 'AI Modules', group: 'shenron_sub', size: 11, desc: 'core/ai_module — autonomous decision-making layer within SHENRON.' },
+  { id: 'SHENRON', group: 'core', size: 22, repo: 'shenron', desc: 'Adaptive persistent offense framework. Central engine of the offense stack.' },
+  { id: 'AI Modules', group: 'shenron_sub', size: 11, desc: 'Autonomous decision-making layer within SHENRON.' },
   { id: 'Autonomy &\nOrchestration', group: 'shenron_sub', size: 11, desc: 'Internal orchestration brain — coordinates module execution and adaptive behavior.' },
-  { id: 'Evasion &\nStealth', group: 'shenron_sub', size: 11, desc: 'core/layers — detection avoidance, AV evasion, behavioral camouflage.' },
+  { id: 'Evasion &\nStealth', group: 'shenron_sub', size: 11, desc: 'Detection avoidance, AV evasion, behavioral camouflage.' },
   { id: 'Mutation Engine', group: 'shenron_sub', size: 11, desc: 'Payload and behavior mutation — polymorphic capabilities.' },
-  { id: 'C2', group: 'shenron_sub', size: 11, desc: 'Communication & C2 — command and control channel management.' },
+  { id: 'C2', group: 'shenron_sub', size: 11, desc: 'Communication and command-and-control channel management.' },
   { id: 'Persistence &\nPropagation', group: 'shenron_sub', size: 11, desc: 'Survival mechanisms and lateral movement capabilities.' },
   { id: 'Steganography\n& Utils', group: 'shenron_sub', size: 10, desc: 'Covert data encoding and utility tooling.' },
-  { id: 'OWN', group: 'offense', size: 13, desc: 'Offensive Workflow Navigator — orchestrates the full offense pipeline. Primary interface into SHENRON.' },
-  { id: 'Blackglass', group: 'offense', size: 12, desc: 'AI-powered payload mutation and covert ops suite. Feeds evasion and mutation subsystems.' },
-  { id: 'LUNE', group: 'offense', size: 12, desc: 'Adversary simulation framework — models threat actor behavior, feeds C2 and persistence layers.' },
-  { id: 'zer0DAYSlater', group: 'offense', size: 11, desc: 'Adversarial simulation framework — vulnerability simulation and exploit development pipeline.' },
-  { id: 'PHANTOM', group: 'offense', size: 11, desc: 'Stealth-focused tool — interfaces with C2 and steganography subsystems.' },
-  { id: 'pwn', group: 'offense', size: 10, desc: 'Penetration testing platform — entry-point tooling feeding into LUNE simulation.' },
-  { id: 'LANimals', group: 'recon', size: 14, desc: 'Network reconnaissance platform. Primary recon data source for SHENRON. Foundation tool built from Termux-era friction.' },
-  { id: 'LANIMORPH', group: 'recon', size: 11, desc: 'Behavioral personality mutation layer extending LANimals. Feeds mutation engine directly.' },
-  { id: 'OpenSight', group: 'recon', size: 10, desc: 'Intelligence and observation platform. Upstream data feed into LANimals recon chain.' },
-  { id: 'drift_orchestrator', group: 'platform', size: 11, desc: 'Policy engine and monitoring orchestrator. Interfaces with SHENRON autonomy layer.' },
-  { id: 'chain', group: 'platform', size: 10, desc: 'Chaining and sequencing primitive. Feeds OWN workflow orchestration.' },
-  { id: 'aliasOS', group: 'platform', size: 9, desc: 'Shell alias and identity management layer. Utility across the full stack.' },
-  { id: 'BANANA_TREE', group: 'monitor', size: 13, desc: 'Self-healing AI-Ops dashboard — monitors the full ecosystem. Intelligence & Observation roots feeding Simulation & Operations trunk.' },
-  { id: 'HYDRA', group: 'ml', size: 13, desc: 'Static analysis framework — VENOM Hunter, DepChain Hunter, RepoScan Hunter. Systematizes ML framework vuln discovery.' },
-  { id: 'Pickle Hunter', group: 'ml', size: 10, desc: 'Original ML deserialization scanner. Evolved into HYDRA after discovering MLflow and BentoML findings.' },
-  { id: 'bad_BANANA', group: 'ml', size: 11, desc: 'Adversarial ML toolkit — attacks ML model pipelines. Feeds SHENRON AI module layer.' },
-  { id: 'DevToReconSuite', group: 'platform', size: 9, desc: 'Built from DEV.to API recon findings. Input validation vulnerability discovery tooling.' },
-  { id: 'repo_alias_forge', group: 'platform', size: 9, desc: 'GitHub repo discovery, sync, and shell command generation. Recon utility.' },
+  { id: 'OWN', group: 'offense', size: 13, repo: 'OWN', desc: 'Offensive Workflow Navigator — primary interface into SHENRON.' },
+  { id: 'Blackglass', group: 'offense', size: 12, repo: 'Blackglass', desc: 'AI-powered payload mutation and covert ops suite.' },
+  { id: 'LUNE', group: 'offense', size: 12, repo: 'Lune', desc: 'Adversary simulation framework — models threat actor behavior.' },
+  { id: 'zer0DAYSlater', group: 'offense', size: 11, repo: 'zer0DAYSlater', desc: 'Adversarial simulation framework — exploit development and post-exploitation research.' },
+  { id: 'PHANTOM', group: 'offense', size: 11, repo: 'PHANTOM', desc: 'Stealth-focused tool — interfaces with C2 and steganography subsystems.' },
+  { id: 'pwn', group: 'offense', size: 10, repo: 'pwn', desc: 'Penetration testing platform — entry-point tooling feeding into LUNE simulation.' },
+  { id: 'LANimals', group: 'recon', size: 14, repo: 'LANimals', desc: 'Network reconnaissance platform. Primary recon data source for SHENRON.' },
+  { id: 'LANIMORPH', group: 'recon', size: 11, repo: 'lanimorph', desc: 'Behavioral personality mutation layer extending LANimals.' },
+  { id: 'OpenSight', group: 'recon', size: 10, repo: 'OpenSight', desc: 'Intelligence and observation platform.' },
+  { id: 'drift_orchestrator', group: 'platform', size: 11, repo: 'drift_orchestrator', desc: 'Policy engine and monitoring orchestrator.' },
+  { id: 'chain', group: 'platform', size: 10, repo: 'chain', desc: 'Chaining and sequencing primitive.' },
+  { id: 'aliasOS', group: 'platform', size: 9, repo: 'aliasOS', desc: 'Shell alias and identity management layer.' },
+  { id: 'BANANA_TREE', group: 'monitor', size: 13, desc: 'Self-healing AI-Ops dashboard — monitors the full ecosystem.' },
+  { id: 'HYDRA', group: 'ml', size: 13, repo: 'HYDRA', desc: 'Static analysis framework for ML framework vulnerability discovery.' },
+  { id: 'Pickle Hunter', group: 'ml', size: 10, repo: 'Pickle-Hunter', desc: 'Original ML deserialization scanner. Evolved into HYDRA.' },
+  { id: 'bad_BANANA', group: 'ml', size: 11, repo: 'bad_BANANA', desc: 'Adversarial ML toolkit — attacks ML model pipelines.' },
+  { id: 'DevToReconSuite', group: 'platform', size: 9, repo: 'DevToReconSuite', desc: 'Input validation vulnerability discovery tooling built from DEV.to API recon findings.' },
+  { id: 'repo_alias_forge', group: 'platform', size: 9, repo: 'repo_alias_forge', desc: 'GitHub repo discovery, sync, and shell command generation utility.' }
 ];
 
 const links = [
@@ -300,7 +396,7 @@ const links = [
   { source: 'BANANA_TREE', target: 'LANimals', type: 'monitors' },
   { source: 'pwn', target: 'LUNE', type: 'feeds' },
   { source: 'repo_alias_forge', target: 'LANimals', type: 'recon' },
-  { source: 'DevToReconSuite', target: 'OWN', type: 'feeds' },
+  { source: 'DevToReconSuite', target: 'OWN', type: 'feeds' }
 ];
 
 const groupColors = {
@@ -310,7 +406,7 @@ const groupColors = {
   recon: '#4a9eff',
   ml: '#a855f7',
   monitor: '#ff9f43',
-  platform: '#64748b',
+  platform: '#64748b'
 };
 
 const groupNames = {
@@ -320,8 +416,18 @@ const groupNames = {
   recon: 'RECON & NETWORK',
   ml: 'ML RESEARCH',
   monitor: 'MONITORING / OPS',
-  platform: 'PLATFORM / UTILITY',
+  platform: 'PLATFORM / UTILITY'
 };
+
+const repoLinks = Object.fromEntries(
+  nodes
+    .filter(n => n.repo)
+    .map(n => [n.id, `https://github.com/GnomeMan4201/${n.repo}`])
+);
+
+let repoState = { updated_at: null, repos: {} };
+let liveState = { updated_at: null, nodes: {}, edges: {} };
+let selected = null;
 
 const w = window.innerWidth;
 const h = window.innerHeight;
@@ -329,21 +435,25 @@ const h = window.innerHeight;
 const svg = d3.select('#graph')
   .attr('viewBox', `0 0 ${w} ${h}`);
 
-// Grid background
 const defs = svg.append('defs');
+
 const pattern = defs.append('pattern')
   .attr('id', 'grid')
   .attr('width', 40)
   .attr('height', 40)
   .attr('patternUnits', 'userSpaceOnUse');
+
 pattern.append('path')
   .attr('d', 'M 40 0 L 0 0 0 40')
   .attr('fill', 'none')
   .attr('stroke', '#0d1620')
   .attr('stroke-width', 0.5);
-svg.append('rect').attr('width', w).attr('height', h).attr('fill', 'url(#grid)');
 
-// Glow filter for SHENRON
+svg.append('rect')
+  .attr('width', w)
+  .attr('height', h)
+  .attr('fill', 'url(#grid)');
+
 const filter = defs.append('filter').attr('id', 'glow');
 filter.append('feGaussianBlur').attr('stdDeviation', 4).attr('result', 'blur');
 const feMerge = filter.append('feMerge');
@@ -352,7 +462,6 @@ feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
 
 const g = svg.append('g');
 
-// Zoom
 svg.call(d3.zoom().scaleExtent([0.3, 3]).on('zoom', e => g.attr('transform', e.transform)));
 
 const simulation = d3.forceSimulation(nodes)
@@ -361,7 +470,7 @@ const simulation = d3.forceSimulation(nodes)
     if (d.type === 'orchestrates') return 140;
     return 180;
   }).strength(d => d.type === 'contains' ? 0.8 : 0.3))
-  .force('charge', d3.forceManyBody().strength(d => d.group === 'core' ? -800 : d.group === 'shenron_sub' ? -200 : -350))
+  .force('charge', d3.forceManyBody().strength(d => d.group === 'core' ? -800 : d.group === 'shenron_sub' ? -220 : -350))
   .force('center', d3.forceCenter(w / 2, h / 2))
   .force('collision', d3.forceCollide(d => d.size + 18));
 
@@ -377,9 +486,20 @@ const node = g.append('g')
   .join('g')
   .attr('class', d => `node ${d.group}`)
   .call(d3.drag()
-    .on('start', (e, d) => { if (!e.active) simulation.alphaTarget(0.3).restart(); d.fx = d.x; d.fy = d.y; })
-    .on('drag', (e, d) => { d.fx = e.x; d.fy = e.y; })
-    .on('end', (e, d) => { if (!e.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
+    .on('start', (e, d) => {
+      if (!e.active) simulation.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    })
+    .on('drag', (e, d) => {
+      d.fx = e.x;
+      d.fy = e.y;
+    })
+    .on('end', (e, d) => {
+      if (!e.active) simulation.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    })
   );
 
 node.append('circle')
@@ -389,7 +509,6 @@ node.append('circle')
   .attr('stroke-width', d => d.group === 'core' ? 2 : 1)
   .attr('filter', d => d.group === 'core' ? 'url(#glow)' : null);
 
-// Label with newline support
 node.each(function(d) {
   const el = d3.select(this);
   const lines = d.id.split('\n');
@@ -409,9 +528,6 @@ node.each(function(d) {
   }
 });
 
-// Click to highlight
-let selected = null;
-
 node.on('click', function(e, d) {
   e.stopPropagation();
 
@@ -423,8 +539,8 @@ node.on('click', function(e, d) {
   }
 
   selected = d.id;
-
   const connected = new Set([d.id]);
+
   links.forEach(l => {
     if (l.source.id === d.id || l.target.id === d.id) {
       connected.add(l.source.id);
@@ -436,20 +552,13 @@ node.on('click', function(e, d) {
   link.classed('dimmed', l => l.source.id !== d.id && l.target.id !== d.id);
   link.classed('highlighted', l => l.source.id === d.id || l.target.id === d.id);
 
-  // Info panel
-  const panel = document.getElementById('info-panel');
-  document.getElementById('info-name').textContent = d.id.replace('\n', ' ');
-  document.getElementById('info-group').textContent = '// ' + groupNames[d.group];
-  document.getElementById('info-desc').textContent = d.desc;
+  renderInfoPanel(d);
+});
 
-  const inLinks = links.filter(l => l.target.id === d.id);
-  const outLinks = links.filter(l => l.source.id === d.id);
-
-  let connText = '';
-  if (outLinks.length) connText += `feeds into: <span>${outLinks.map(l => l.target.id.replace('\n',' ')).join(', ')}</span><br>`;
-  if (inLinks.length) connText += `receives from: <span>${inLinks.map(l => l.source.id.replace('\n',' ')).join(', ')}</span>`;
-  document.getElementById('info-connections').innerHTML = connText;
-  panel.style.display = 'block';
+node.on('dblclick', function(e, d) {
+  e.stopPropagation();
+  const url = repoLinks[d.id];
+  if (url) window.open(url, '_blank', 'noopener,noreferrer');
 });
 
 svg.on('click', () => {
@@ -473,14 +582,174 @@ simulation.on('tick', () => {
   node.attr('transform', d => `translate(${d.x},${d.y})`);
 });
 
-// Pulse animation on SHENRON
-const shenronNode = node.filter(d => d.id === 'SHENRON');
 function pulse() {
+  const shenronNode = node.filter(d => d.id === 'SHENRON');
   shenronNode.select('circle')
     .transition().duration(1200).attr('r', 26)
-    .transition().duration(1200).attr('r', 22)
+    .transition().duration(1200).attr('r', getVisualRadius({ id: 'SHENRON', size: 22 }))
     .on('end', pulse);
 }
+
+function minutesSince(iso) {
+  if (!iso) return null;
+  const ms = Date.now() - new Date(iso).getTime();
+  return Math.max(0, Math.floor(ms / 60000));
+}
+
+function formatRelative(iso) {
+  if (!iso) return '--';
+  const mins = minutesSince(iso);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  if (mins < 1440) return `${Math.floor(mins / 60)}h ago`;
+  return `${Math.floor(mins / 1440)}d ago`;
+}
+
+function fetchJson(path) {
+  return fetch(`${path}?t=${Date.now()}`, { cache: 'no-store' }).then(res => {
+    if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
+    return res.json();
+  });
+}
+
+function getRepoMetrics(id) {
+  return repoState.repos?.[id] || null;
+}
+
+function getNodeMetrics(id) {
+  return liveState.nodes?.[id] || null;
+}
+
+function getEdgeMetrics(sourceId, targetId) {
+  return liveState.edges?.[`${sourceId}->${targetId}`] || null;
+}
+
+function getVisualRadius(d) {
+  const repo = getRepoMetrics(d.id);
+  const runtime = getNodeMetrics(d.id);
+  const activity = runtime?.activity || 0;
+  const activityBoost = Math.min(10, activity / 14);
+  const freshnessBoost = repo?.pushed_at && minutesSince(repo.pushed_at) < 1440 ? 2 : 0;
+  return d.size + activityBoost + freshnessBoost;
+}
+
+function getStrokeColor(d) {
+  const runtime = getNodeMetrics(d.id);
+  if (runtime?.health === 'critical') return '#ff3b30';
+  if (runtime?.health === 'warning') return '#ff9f43';
+  return groupColors[d.group];
+}
+
+function applyLiveState() {
+  node
+    .classed('active-node', d => getNodeMetrics(d.id)?.status === 'active');
+
+  node.select('circle')
+    .transition()
+    .duration(300)
+    .attr('r', d => d.id === 'SHENRON' ? Math.max(22, getVisualRadius(d)) : getVisualRadius(d))
+    .attr('stroke', d => getStrokeColor(d))
+    .attr('stroke-width', d => {
+      const runtime = getNodeMetrics(d.id);
+      if (runtime?.status === 'active') return 2.5;
+      if (runtime?.status === 'warning') return 2;
+      return d.group === 'core' ? 2 : 1;
+    });
+
+  link
+    .classed('active-link', l => !!getEdgeMetrics(l.source.id, l.target.id)?.active)
+    .attr('stroke-width', l => {
+      const edge = getEdgeMetrics(l.source.id, l.target.id);
+      if (edge?.throughput) return Math.min(4, 1 + edge.throughput / 15);
+      if (l.type === 'contains') return 1.5;
+      if (l.type === 'orchestrates') return 1.5;
+      return 1;
+    });
+
+  if (selected) {
+    const selectedNode = nodes.find(n => n.id === selected);
+    if (selectedNode) renderInfoPanel(selectedNode);
+  }
+
+  document.getElementById('live-state').textContent = 'live data: active';
+  document.getElementById('last-updated').textContent = `last update: ${formatRelative(liveState.updated_at || repoState.updated_at)}`;
+  document.getElementById('repo-count').textContent = `repos tracked: ${Object.keys(repoState.repos || {}).length}`;
+}
+
+function renderInfoPanel(d) {
+  const panel = document.getElementById('info-panel');
+  const repo = getRepoMetrics(d.id);
+  const runtime = getNodeMetrics(d.id);
+
+  document.getElementById('info-name').textContent = d.id.replace('\n', ' ');
+  document.getElementById('info-group').textContent = '// ' + groupNames[d.group];
+  document.getElementById('info-desc').textContent = d.desc;
+
+  const inLinks = links.filter(l => l.target.id === d.id);
+  const outLinks = links.filter(l => l.source.id === d.id);
+
+  let metricsHtml = '<div class="metric-grid">';
+  metricsHtml += `<div><strong>status</strong><span>${runtime?.status || repo?.status || 'static'}</span></div>`;
+  metricsHtml += `<div><strong>health</strong><span>${runtime?.health || 'ok'}</span></div>`;
+  metricsHtml += `<div><strong>activity</strong><span>${runtime?.activity ?? 0}</span></div>`;
+  metricsHtml += `<div><strong>last update</strong><span>${formatRelative(runtime?.last_updated || repo?.pushed_at)}</span></div>`;
+
+  if (repo) {
+    metricsHtml += `<div><strong>stars</strong><span>${repo.stars ?? 0}</span></div>`;
+    metricsHtml += `<div><strong>forks</strong><span>${repo.forks ?? 0}</span></div>`;
+    metricsHtml += `<div><strong>issues</strong><span>${repo.open_issues ?? 0}</span></div>`;
+    metricsHtml += `<div><strong>repo push</strong><span>${formatRelative(repo.pushed_at)}</span></div>`;
+  }
+
+  if (runtime?.drift_score !== undefined) {
+    metricsHtml += `<div><strong>drift score</strong><span>${runtime.drift_score}</span></div>`;
+  }
+  if (runtime?.active_hosts !== undefined) {
+    metricsHtml += `<div><strong>active hosts</strong><span>${runtime.active_hosts}</span></div>`;
+  }
+  if (runtime?.alerts !== undefined) {
+    metricsHtml += `<div><strong>alerts</strong><span>${runtime.alerts}</span></div>`;
+  }
+  if (runtime?.last_event) {
+    metricsHtml += `<div style="grid-column:1 / -1"><strong>last event</strong><span>${runtime.last_event}</span></div>`;
+  }
+  if (repoLinks[d.id]) {
+    metricsHtml += `<div style="grid-column:1 / -1"><strong>repo</strong><span><a href="${repoLinks[d.id]}" target="_blank" rel="noopener noreferrer" style="color:#4a9eff;text-decoration:none">open repository</a></span></div>`;
+  }
+  metricsHtml += '</div>';
+
+  document.getElementById('info-metrics').innerHTML = metricsHtml;
+
+  let connText = '';
+  if (outLinks.length) connText += `feeds into: <span>${outLinks.map(l => l.target.id.replace('\n', ' ')).join(', ')}</span><br>`;
+  if (inLinks.length) connText += `receives from: <span>${inLinks.map(l => l.source.id.replace('\n', ' ')).join(', ')}</span>`;
+  document.getElementById('info-connections').innerHTML = connText;
+
+  panel.style.display = 'block';
+}
+
+async function refreshGraphState() {
+  try {
+    const [repos, ecosystem] = await Promise.all([
+      fetchJson('./data/repos.json'),
+      fetchJson('./data/ecosystem_status.json')
+    ]);
+
+    repoState = repos || { updated_at: null, repos: {} };
+    liveState = ecosystem || { updated_at: null, nodes: {}, edges: {} };
+
+    applyLiveState();
+  } catch (err) {
+    console.error('refreshGraphState failed:', err);
+    const liveChip = document.getElementById('live-state');
+    liveChip.textContent = 'live data: degraded';
+    liveChip.classList.remove('live');
+    liveChip.classList.add('warn');
+  }
+}
+
+refreshGraphState();
+setInterval(refreshGraphState, 60000);
 pulse();
 </script>
 </body>
