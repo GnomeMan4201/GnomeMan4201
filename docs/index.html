@@ -1,1344 +1,329 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHENRON Ecosystem — live v3</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --bg: #07060a;
-    --amber: #f5a623;
-    --amber-dim: #c47e10;
-    --amber-pale: #ffd27a;
-    --crimson: #e84040;
-    --violet: #9b59e8;
-    --cyan: #38c9c9;
-    --jade: #3dc87a;
-    --slate: #8892a4;
-    --panel-bg: rgba(10,8,14,0.96);
-    --border: rgba(245,166,35,0.2);
-    --warn: #ff9f43;
-    --crit: #ff3b30;
-    --ok: #42d77d;
-    --text: #d4c5a0;
-    --muted: #8c7650;
-  }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Mono', monospace;
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-  }
-
-  canvas#stars {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  #graph-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1;
-  }
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  #title {
-    position: fixed;
-    top: 24px;
-    left: 24px;
-    z-index: 30;
-  }
-
-  #title h1 {
-    font-family: 'Cinzel', serif;
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--amber);
-    letter-spacing: 4px;
-    text-shadow: 0 0 30px rgba(245,166,35,0.4);
-  }
-
-  #title p {
-    font-size: 9.5px;
-    color: #4a3a20;
-    letter-spacing: 2px;
-    margin-top: 4px;
-  }
-
-  #controls {
-    position: fixed;
-    top: 82px;
-    left: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    z-index: 30;
-  }
-
-  .control-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .status-chip, .toggle-btn {
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #7b633c;
-    background: rgba(10,8,14,0.92);
-    border: 1px solid rgba(245,166,35,0.12);
-    padding: 6px 8px;
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .status-chip.live {
-    color: var(--amber-pale);
-    border-color: rgba(245,166,35,0.25);
-  }
-
-  .status-chip.warn {
-    color: var(--warn);
-    border-color: rgba(255,159,67,0.25);
-  }
-
-  .toggle-btn.active {
-    color: var(--amber-pale);
-    border-color: rgba(245,166,35,0.35);
-    box-shadow: 0 0 12px rgba(245,166,35,0.14);
-  }
-
-  .toggle-btn:hover {
-    border-color: rgba(245,166,35,0.3);
-  }
-
-  #legend, #system-metrics, #info-panel, #hover-card, #provenance {
-    background: var(--panel-bg);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 0 40px rgba(245,166,35,0.07), inset 0 0 20px rgba(0,0,0,0.35);
-  }
-
-  #legend {
-    position: fixed;
-    bottom: 24px;
-    left: 24px;
-    padding: 14px 16px;
-    min-width: 240px;
-    z-index: 20;
-  }
-
-  #legend h4, #system-metrics h4, #provenance h4 {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    color: var(--amber);
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin-bottom: 6px;
-    font-size: 10px;
-    color: #7a6a50;
-  }
-
-  .legend-hex {
-    width: 13px;
-    height: 13px;
-    flex-shrink: 0;
-  }
-
-  .legend-line {
-    width: 22px;
-    height: 2px;
-    flex-shrink: 0;
-  }
-
-  #legend .sep, #system-metrics .sep, #provenance .sep {
-    border: none;
-    border-top: 1px solid rgba(245,166,35,0.1);
-    margin: 8px 0;
-  }
-
-  #system-metrics {
-    position: fixed;
-    top: 24px;
-    right: 24px;
-    width: 290px;
-    padding: 14px 16px;
-    z-index: 20;
-  }
-
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .metric-box {
-    padding: 8px;
-    border: 1px solid rgba(245,166,35,0.08);
-    background: rgba(255,255,255,0.015);
-  }
-
-  .metric-box strong {
-    display: block;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #7d6540;
-    font-weight: 400;
-    margin-bottom: 2px;
-  }
-
-  .metric-box span {
-    color: var(--amber-pale);
-    font-size: 11px;
-  }
-
-  #info-panel {
-    position: fixed;
-    top: 24px;
-    right: 330px;
-    width: 360px;
-    border-top: 2px solid var(--amber);
-    padding: 18px 18px 16px;
-    display: none;
-    z-index: 20;
-  }
-
-  #info-panel::before {
-    content:'';
-    position:absolute;
-    top:0; left:0; right:0;
-    height:1px;
-    background: linear-gradient(90deg, transparent, var(--amber), transparent);
-  }
-
-  #info-panel .group-label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--amber-dim);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  #info-panel h3 {
-    font-family: 'Cinzel', serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--amber-pale);
-    margin-bottom: 10px;
-    line-height: 1.3;
-  }
-
-  #info-desc {
-    font-size: 11px;
-    line-height: 1.7;
-    color: #a89878;
-    border-left: 2px solid rgba(245,166,35,0.25);
-    padding-left: 10px;
-  }
-
-  #info-panel .metrics,
-  #info-panel .connections,
-  #info-panel .threat-info {
-    margin-top: 12px;
-    font-size: 10.5px;
-    color: #5a5040;
-    line-height: 1.8;
-  }
-
-  #info-panel .connections span,
-  #info-panel .metrics span,
-  #info-panel .threat-info span {
-    color: #c4a060;
-  }
-
-  .detail-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 8px;
-  }
-
-  .detail-grid div {
-    padding: 6px 8px;
-    border: 1px solid rgba(245,166,35,0.08);
-    background: rgba(255,255,255,0.015);
-  }
-
-  .detail-grid strong {
-    display: block;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #7d6540;
-    font-weight: 400;
-    margin-bottom: 2px;
-  }
-
-  #hover-card {
-    position: fixed;
-    display: none;
-    pointer-events: none;
-    z-index: 40;
-    width: 220px;
-    padding: 10px 12px;
-    font-size: 10px;
-  }
-
-  #hover-card h5 {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    color: var(--amber-pale);
-    margin-bottom: 6px;
-  }
-
-  #hover-card p {
-    color: #a89878;
-    line-height: 1.6;
-  }
-
-  #provenance {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 260px;
-    padding: 12px 14px;
-    z-index: 20;
-  }
-
-  #provenance p {
-    font-size: 10px;
-    color: #7a6a50;
-    line-height: 1.8;
-  }
-
-  #provenance .muted {
-    color: #5e4c30;
-  }
-
-  #hint {
-    position: fixed;
-    bottom: 170px;
-    right: 24px;
-    font-size: 9px;
-    color: #2a2010;
-    text-align: right;
-    line-height: 2;
-    letter-spacing: 1px;
-    z-index: 20;
-  }
-
-  .link {
-    fill: none;
-    transition: stroke-opacity 0.2s, stroke-width 0.2s;
-  }
-
-  .link.contains     { stroke: var(--amber);     stroke-width: 2;   stroke-opacity: 0.55; }
-  .link.orchestrates { stroke: var(--crimson);   stroke-width: 1.8; stroke-opacity: 0.55; }
-  .link.feeds        { stroke: var(--cyan);      stroke-width: 1.2; stroke-opacity: 0.45; stroke-dasharray: 6 3; }
-  .link.monitors     { stroke: var(--amber-dim); stroke-width: 1;   stroke-opacity: 0.45; stroke-dasharray: 2 4; }
-  .link.evolved      { stroke: var(--violet);    stroke-width: 1.5; stroke-opacity: 0.5; }
-  .link.extends      { stroke: var(--jade);      stroke-width: 1.2; stroke-opacity: 0.45; }
-  .link.recon        { stroke: var(--cyan);      stroke-width: 0.9; stroke-opacity: 0.35; stroke-dasharray: 2 5; }
-  .link.depends_on   { stroke: #6aa0ff;          stroke-width: 1.1; stroke-opacity: 0.45; stroke-dasharray: 3 5; }
-  .link.controls     { stroke: #ff6262;          stroke-width: 1.8; stroke-opacity: 0.5; }
-  .link.observes     { stroke: #ffc857;          stroke-width: 1;   stroke-opacity: 0.45; stroke-dasharray: 1 4; }
-  .link.generates    { stroke: #75f1b1;          stroke-width: 1.3; stroke-opacity: 0.45; }
-
-  .link.dimmed      { stroke-opacity: 0.04 !important; }
-  .link.highlighted { stroke-opacity: 0.95 !important; stroke-width: 3 !important; }
-  .link.active-link { stroke-opacity: 0.95 !important; }
-
-  .link.mode-dim {
-    stroke-opacity: 0.08 !important;
-  }
-
-  .node { cursor: pointer; }
-  .node polygon { transition: filter 0.2s, opacity 0.2s, stroke 0.2s, stroke-width 0.2s; }
-  .node:hover polygon { filter: brightness(1.6); }
-
-  .node text {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    fill: #c4b08a;
-    pointer-events: none;
-    text-shadow: 0 0 10px #000;
-  }
-
-  .node.core text {
-    font-family: 'Cinzel', serif;
-    font-size: 13px;
-    font-weight: 700;
-    fill: var(--amber-pale);
-  }
-
-  .node.shenron_sub text {
-    fill: #b8e8cc;
-    font-size: 9.5px;
-  }
-
-  .node.dimmed polygon { opacity: 0.07; }
-  .node.dimmed text { opacity: 0.07; }
-
-  .node.active-node polygon {
-    filter: drop-shadow(0 0 10px rgba(245,166,35,0.22));
-  }
-
-  .node.threat-high polygon {
-    filter: drop-shadow(0 0 14px rgba(255,59,48,0.35));
-  }
-
-  .node.threat-medium polygon {
-    filter: drop-shadow(0 0 12px rgba(255,159,67,0.25));
-  }
-
-  .node.stale polygon {
-    opacity: 0.45;
-  }
-
-  .node.experimental polygon {
-    stroke-dasharray: 3 3;
-  }
-
-  a.inline-link {
-    color: var(--cyan);
-    text-decoration: none;
-  }
-
-  a.inline-link:hover {
-    text-decoration: underline;
-  }
-</style>
+  <meta charset="utf-8" />
+  <title>SHENRON Ecosystem · Runtime Signals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    :root {
+      --bg: #07070b;
+      --panel: #0d0a12;
+      --line: #3d2a10;
+      --text: #f4d38a;
+      --muted: #9e7d42;
+      --accent: #ffb11a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #0b0b14 0%, #050507 60%, #000 100%);
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      min-height: 100vh;
+    }
+    .wrap {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 16px;
+      padding: 18px;
+    }
+    .panel {
+      background: rgba(9, 7, 12, 0.95);
+      border: 1px solid var(--line);
+      padding: 14px;
+    }
+    .brand {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .sub {
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+    }
+    .topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .chip {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      background: rgba(18, 12, 5, 0.5);
+      font-size: 0.85rem;
+    }
+    #graph {
+      height: 78vh;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,177,26,0.08), transparent 12%),
+        radial-gradient(circle at 80% 70%, rgba(0,255,255,0.05), transparent 10%),
+        #05060a;
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      padding: 10px;
+      min-height: 72px;
+      background: rgba(14, 9, 15, 0.8);
+    }
+    .metric .k {
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .metric .v {
+      font-size: 1rem;
+      color: var(--text);
+    }
+    .legend {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 0.88rem;
+    }
+    .legend b { color: var(--text); }
+    @media (max-width: 980px) {
+      .wrap { grid-template-columns: 1fr; }
+      #graph { height: 62vh; }
+    }
+  </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
+  <div class="wrap">
+    <section class="panel">
+      <div class="brand">GNOMEMAN4201</div>
+      <div class="sub">ECOSYSTEM · INTEGRATION GRAPH · LIVE CONTROL PLANE</div>
 
-<div id="title">
-  <h1>GNOMEMAN4201</h1>
-  <p>ECOSYSTEM · INTEGRATION GRAPH · LIVE v3.0</p>
-</div>
+      <div class="topbar">
+        <div class="chip" id="liveChip">LIVE DATA: LOADING</div>
+        <div class="chip" id="updateChip">LAST UPDATE: --</div>
+        <div class="chip" id="reposChip">NODES TRACKED: --</div>
+        <div class="chip">SOURCE: docs/data/runtime_signals.json</div>
+      </div>
 
-<div id="controls">
-  <div class="control-row">
-    <div class="status-chip live" id="live-state">live data: initializing</div>
-    <div class="status-chip" id="last-updated">last update: --</div>
-    <div class="status-chip" id="repo-count">repos tracked: --</div>
+      <div id="graph"></div>
+    </section>
+
+    <aside class="panel">
+      <div style="font-size:1.1rem; margin-bottom:12px; letter-spacing:0.12em;">SYSTEM METRICS</div>
+
+      <div class="metrics">
+        <div class="metric"><div class="k">Total Nodes</div><div class="v" id="m_total">--</div></div>
+        <div class="metric"><div class="k">Warning Nodes</div><div class="v" id="m_warn">--</div></div>
+        <div class="metric"><div class="k">Locked Nodes</div><div class="v" id="m_locked">--</div></div>
+        <div class="metric"><div class="k">Cautious Nodes</div><div class="v" id="m_cautious">--</div></div>
+        <div class="metric"><div class="k">Routine Nodes</div><div class="v" id="m_routine">--</div></div>
+        <div class="metric"><div class="k">Avg Drift</div><div class="v" id="m_avgdrift">--</div></div>
+        <div class="metric"><div class="k">Highest Drift</div><div class="v" id="m_highest">--</div></div>
+        <div class="metric"><div class="k">Activity Health</div><div class="v" id="m_health">--</div></div>
+      </div>
+
+      <div class="legend">
+        <div><b>Color by posture</b></div>
+        <div>ROUTINE → green</div>
+        <div>CAUTIOUS → amber</div>
+        <div>LOCKED → red</div>
+        <br/>
+        <div><b>Node size</b> scales with activity</div>
+        <div><b>Dashed cyan edges</b> = telemetry/data flow</div>
+        <div><b>Gold center</b> = SHENRON core</div>
+      </div>
+    </aside>
   </div>
-  <div class="control-row" id="mode-controls">
-    <div class="toggle-btn active" data-mode="architecture">architecture</div>
-    <div class="toggle-btn" data-mode="runtime">runtime</div>
-    <div class="toggle-btn" data-mode="data_flow">data flow</div>
-    <div class="toggle-btn" data-mode="threat">threat model</div>
-  </div>
-  <div class="control-row" id="range-controls">
-    <div class="toggle-btn" data-range="7">7d</div>
-    <div class="toggle-btn active" data-range="30">30d</div>
-    <div class="toggle-btn" data-range="90">90d</div>
-    <div class="toggle-btn" data-range="all">all</div>
-  </div>
-</div>
 
-<div id="graph-container"><svg id="graph"></svg></div>
+  <script>
+    let network = null;
 
-<div id="system-metrics">
-  <h4>System Metrics</h4>
-  <div class="metrics-grid">
-    <div class="metric-box"><strong>Total repos</strong><span id="metric-total-repos">--</span></div>
-    <div class="metric-box"><strong>Active nodes</strong><span id="metric-active-nodes">--</span></div>
-    <div class="metric-box"><strong>Dormant nodes</strong><span id="metric-dormant-nodes">--</span></div>
-    <div class="metric-box"><strong>Graph density</strong><span id="metric-density">--</span></div>
-    <div class="metric-box"><strong>Core centrality</strong><span id="metric-centrality">--</span></div>
-    <div class="metric-box"><strong>Activity health</strong><span id="metric-health">--</span></div>
-    <div class="metric-box"><strong>Highest risk</strong><span id="metric-risk">--</span></div>
-    <div class="metric-box"><strong>Tracked edges</strong><span id="metric-edges">--</span></div>
-  </div>
-</div>
-
-<div id="info-panel">
-  <div class="group-label" id="info-group"></div>
-  <h3 id="info-name"></h3>
-  <div id="info-desc"></div>
-  <div class="metrics" id="info-metrics"></div>
-  <div class="threat-info" id="info-threat"></div>
-  <div class="connections" id="info-connections"></div>
-</div>
-
-<div id="hover-card">
-  <h5 id="hover-name"></h5>
-  <p id="hover-text"></p>
-</div>
-
-<div id="legend">
-  <h4>Legend</h4>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#f5a623" stroke-width="1.5"/></svg> Core / SHENRON</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#3dc87a" stroke-width="1.5"/></svg> SHENRON subsystem</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#e84040" stroke-width="1.5"/></svg> Offense</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#38c9c9" stroke-width="1.5"/></svg> Recon & network</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#9b59e8" stroke-width="1.5"/></svg> ML research</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#c47e10" stroke-width="1" stroke-dasharray="2,2"/></svg> Monitoring / ops</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#8892a4" stroke-width="1.5"/></svg> Platform / utility</div>
-  <hr class="sep">
-  <div class="legend-item"><div class="legend-line" style="background:#f5a623"></div> contains</div>
-  <div class="legend-item"><div class="legend-line" style="background:#e84040"></div> orchestrates / controls</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#38c9c9 0,#38c9c9 6px,transparent 6px,transparent 9px)"></div> feeds / data flow</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#c47e10 0,#c47e10 2px,transparent 2px,transparent 6px)"></div> monitors / observes</div>
-  <div class="legend-item"><div class="legend-line" style="background:#9b59e8"></div> evolved from</div>
-  <div class="legend-item"><div class="legend-line" style="background:#3dc87a"></div> extends / generates</div>
-  <hr class="sep">
-  <div class="legend-item">← → keyboard node navigation</div>
-  <div class="legend-item">enter = select · esc = reset</div>
-</div>
-
-<div id="hint">
-  drag nodes · scroll to zoom<br>
-  click node to inspect<br>
-  double-click node to open repo<br>
-  click canvas to reset
-</div>
-
-<div id="provenance">
-  <h4>Data Sources</h4>
-  <p>GitHub API-derived repo metadata</p>
-  <p>Static ecosystem mapping + runtime overlay</p>
-  <p class="muted">Frontend: GitHub Pages · refresh: 60s polling</p>
-</div>
-
-<script>
-(function(){
-  const c = document.getElementById('stars');
-  const ctx = c.getContext('2d');
-  let stars = [];
-
-  function reseed(){
-    stars = Array.from({ length: 320 }, () => ({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      r: Math.random() * 0.9,
-      a: Math.random() * 0.35 + 0.05
-    }));
-  }
-
-  function resize(){
-    c.width = window.innerWidth;
-    c.height = window.innerHeight;
-    reseed();
-    draw();
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    for(const s of stars){
-      ctx.beginPath();
-      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle = `rgba(245,200,120,${s.a})`;
-      ctx.fill();
+    function postureColor(posture) {
+      if (posture === "LOCKED") return "#ff3b30";
+      if (posture === "CAUTIOUS") return "#ffb11a";
+      return "#20d98f";
     }
-  }
 
-  window.addEventListener('resize', resize);
-  resize();
-})();
-
-const nodes = [
-  {id:'SHENRON',group:'core',size:22,repo:'shenron',desc:'Apex autonomous agent — unified orchestration core integrating all subsystems, offense, recon, ML, and ops.'},
-  {id:'AI Modules',group:'shenron_sub',size:14,desc:'Pluggable AI inference layers within SHENRON.'},
-  {id:'Autonomy &\nOrchestration',group:'shenron_sub',size:14,desc:'Decision loop and task scheduling engine.'},
-  {id:'Evasion &\nStealth',group:'shenron_sub',size:13,desc:'Anti-detection and obfuscation subsystem.'},
-  {id:'Mutation Engine',group:'shenron_sub',size:13,desc:'Polymorphic payload and behavior mutation layer.'},
-  {id:'C2',group:'shenron_sub',size:12,desc:'Command and control communication channel.'},
-  {id:'Persistence &\nPropagation',group:'shenron_sub',size:12,desc:'Survivability and lateral movement module.'},
-  {id:'Steganography\n& Utils',group:'shenron_sub',size:11,desc:'Hidden data channel and utility belt.'},
-  {id:'OWN',group:'core',size:17,repo:'OWN',desc:'Workflow autonomy orchestrator — high-level task runner interfacing SHENRON and platform tools.'},
-  {id:'Blackglass',group:'offense',size:12,repo:'Blackglass',desc:'Evasion-focused framework. Feeds Mutation Engine and Evasion subsystem.'},
-  {id:'LUNE',group:'offense',size:12,repo:'Lune',desc:'Simulation and deception engine. Interfaces with C2 and Persistence.'},
-  {id:'zer0DAYSlater',group:'offense',size:11,repo:'zer0DAYSlater',desc:'Adversarial simulation — vulnerability and exploit development pipeline.'},
-  {id:'PHANTOM',group:'offense',size:11,repo:'PHANTOM',desc:'Stealth-focused — interfaces with C2 and steganography subsystems.'},
-  {id:'pwn',group:'offense',size:10,repo:'pwn',desc:'Penetration testing platform — entry-point tooling feeding LUNE simulation.'},
-  {id:'LANimals',group:'recon',size:14,repo:'LANimals',desc:'Network reconnaissance platform. Primary recon data source for SHENRON.'},
-  {id:'LANIMORPH',group:'recon',size:11,repo:'lanimorph',desc:'Behavioral mutation layer extending LANimals.'},
-  {id:'OpenSight',group:'recon',size:10,repo:'OpenSight',desc:'Intelligence and observation platform. Upstream data feed into LANimals.'},
-  {id:'drift_orchestrator',group:'platform',size:11,repo:'drift_orchestrator',desc:'Policy engine and monitoring orchestrator. Interfaces with SHENRON autonomy layer.'},
-  {id:'chain',group:'platform',size:10,repo:'chain',desc:'Chaining and sequencing primitive. Feeds OWN workflow orchestration.'},
-  {id:'aliasOS',group:'platform',size:9,repo:'aliasOS',desc:'Shell alias and identity management layer. Utility across the full stack.'},
-  {id:'BANANA_TREE',group:'monitor',size:13,desc:'Self-healing AI-Ops dashboard — monitors the full ecosystem.'},
-  {id:'HYDRA',group:'ml',size:13,repo:'HYDRA',desc:'Static analysis framework — VENOM Hunter, DepChain Hunter, RepoScan Hunter.'},
-  {id:'Pickle Hunter',group:'ml',size:10,repo:'Pickle-Hunter',desc:'Original ML deserialization scanner. Evolved into HYDRA.'},
-  {id:'bad_BANANA',group:'ml',size:11,repo:'bad_BANANA',desc:'Adversarial ML toolkit — attacks ML model pipelines. Feeds SHENRON AI module layer.'},
-  {id:'DevToReconSuite',group:'platform',size:9,repo:'DevToReconSuite',desc:'Input validation vulnerability discovery tooling from DEV.to API recon.'},
-  {id:'repo_alias_forge',group:'platform',size:9,repo:'repo_alias_forge',desc:'GitHub repo discovery, sync, and shell command generation. Recon utility.'}
-];
-
-const links = [
-  // synthetic edges injected
-  { source: "LANimals", target: "SHENRON", type: "feeds_runtime" },
-  { source: "drift_orchestrator", target: "SHENRON", type: "controls" },
-  { source: "OpenSight", target: "LANimals", type: "shares_data_with" },
-
-  {source:'SHENRON',target:'AI Modules',type:'contains'},
-  {source:'SHENRON',target:'Autonomy &\nOrchestration',type:'contains'},
-  {source:'SHENRON',target:'Evasion &\nStealth',type:'contains'},
-  {source:'SHENRON',target:'Mutation Engine',type:'contains'},
-  {source:'SHENRON',target:'C2',type:'contains'},
-  {source:'SHENRON',target:'Persistence &\nPropagation',type:'contains'},
-  {source:'SHENRON',target:'Steganography\n& Utils',type:'contains'},
-  {source:'OWN',target:'Autonomy &\nOrchestration',type:'orchestrates'},
-  {source:'Blackglass',target:'Evasion &\nStealth',type:'feeds'},
-  {source:'Blackglass',target:'Mutation Engine',type:'feeds'},
-  {source:'LUNE',target:'C2',type:'feeds'},
-  {source:'LUNE',target:'Persistence &\nPropagation',type:'feeds'},
-  {source:'PHANTOM',target:'C2',type:'feeds'},
-  {source:'PHANTOM',target:'Steganography\n& Utils',type:'feeds'},
-  {source:'drift_orchestrator',target:'Autonomy &\nOrchestration',type:'feeds'},
-  {source:'bad_BANANA',target:'AI Modules',type:'feeds'},
-  {source:'LANIMORPH',target:'Mutation Engine',type:'extends'},
-  {source:'zer0DAYSlater',target:'SHENRON',type:'controls'},
-  {source:'LANimals',target:'SHENRON',type:'feeds'},
-  {source:'OpenSight',target:'LANimals',type:'feeds'},
-  {source:'LANimals',target:'LANIMORPH',type:'extends'},
-  {source:'Pickle Hunter',target:'HYDRA',type:'evolved'},
-  {source:'HYDRA',target:'zer0DAYSlater',type:'feeds'},
-  {source:'HYDRA',target:'bad_BANANA',type:'feeds'},
-  {source:'chain',target:'OWN',type:'depends_on'},
-  {source:'BANANA_TREE',target:'SHENRON',type:'monitors'},
-  {source:'BANANA_TREE',target:'OWN',type:'observes'},
-  {source:'BANANA_TREE',target:'LANimals',type:'observes'},
-  {source:'pwn',target:'LUNE',type:'feeds'},
-  {source:'repo_alias_forge',target:'LANimals',type:'recon'},
-  {source:'DevToReconSuite',target:'OWN',type:'feeds'}
-];
-
-const groupColors = {
-  core:'#f5a623',
-  shenron_sub:'#3dc87a',
-  offense:'#e84040',
-  recon:'#38c9c9',
-  ml:'#9b59e8',
-  monitor:'#c47e10',
-  platform:'#8892a4'
-};
-
-const groupNames = {
-  core:'CORE',
-  shenron_sub:'SHENRON SUBSYSTEM',
-  offense:'OFFENSE FRAMEWORK',
-  recon:'RECON & NETWORK',
-  ml:'ML RESEARCH',
-  monitor:'MONITORING / OPS',
-  platform:'PLATFORM / UTILITY'
-};
-
-const modeEdgeRules = {
-  architecture: new Set(['contains','extends','evolved','depends_on']),
-  runtime: new Set(['orchestrates','controls','monitors','observes']),
-  data_flow: new Set(['feeds','recon','generates']),
-  threat: new Set(['feeds','controls','depends_on','monitors','observes','recon'])
-};
-
-const repoLinks = Object.fromEntries(
-  nodes.filter(n => n.repo).map(n => [n.id, `https://github.com/GnomeMan4201/${n.repo}`])
-);
-
-let repoState = { updated_at: null, repos: {} };
-let liveState = { updated_at: null, nodes: {}, edges: {} };
-let selected = null;
-let currentMode = 'architecture';
-let currentRange = '30';
-
-function hexPoints(r){
-  return d3.range(6).map(i => {
-    const a = (Math.PI / 3) * i - Math.PI / 6;
-    return [r * Math.cos(a), r * Math.sin(a)].join(',');
-  }).join(' ');
-}
-
-const w = window.innerWidth;
-const h = window.innerHeight;
-
-const svg = d3.select('#graph').attr('viewBox', `0 0 ${w} ${h}`);
-const defs = svg.append('defs');
-
-const glowCore = defs.append('filter')
-  .attr('id','glow-core')
-  .attr('x','-60%').attr('y','-60%')
-  .attr('width','220%').attr('height','220%');
-
-glowCore.append('feGaussianBlur')
-  .attr('in','SourceGraphic')
-  .attr('stdDeviation',6)
-  .attr('result','blur');
-
-const mergeCore = glowCore.append('feMerge');
-mergeCore.append('feMergeNode').attr('in','blur');
-mergeCore.append('feMergeNode').attr('in','blur');
-mergeCore.append('feMergeNode').attr('in','SourceGraphic');
-
-const glowSoft = defs.append('filter')
-  .attr('id','glow-soft')
-  .attr('x','-40%').attr('y','-40%')
-  .attr('width','180%').attr('height','180%');
-
-glowSoft.append('feGaussianBlur')
-  .attr('in','SourceGraphic')
-  .attr('stdDeviation',3)
-  .attr('result','blur');
-
-const mergeSoft = glowSoft.append('feMerge');
-mergeSoft.append('feMergeNode').attr('in','blur');
-mergeSoft.append('feMergeNode').attr('in','SourceGraphic');
-
-const linkColors = {
-  contains:'#f5a623',
-  orchestrates:'#e84040',
-  controls:'#ff6262',
-  feeds:'#38c9c9',
-  monitors:'#c47e10',
-  observes:'#ffc857',
-  evolved:'#9b59e8',
-  extends:'#3dc87a',
-  recon:'#38c9c9',
-  depends_on:'#6aa0ff',
-  generates:'#75f1b1'
-};
-
-Object.entries(linkColors).forEach(([type,color]) => {
-  defs.append('marker')
-    .attr('id', `arrow-${type}`)
-    .attr('viewBox', '0 -4 8 8')
-    .attr('refX', 8)
-    .attr('refY', 0)
-    .attr('markerWidth', 5)
-    .attr('markerHeight', 5)
-    .attr('orient', 'auto')
-    .append('path')
-    .attr('d', 'M0,-4L8,0L0,4')
-    .attr('fill', color)
-    .attr('opacity', 0.7);
-});
-
-const g = svg.append('g');
-
-svg.call(
-  d3.zoom()
-    .scaleExtent([0.25, 4])
-    .on('zoom', e => g.attr('transform', e.transform))
-);
-
-const simulation = d3.forceSimulation(nodes)
-  .force('link', d3.forceLink(links)
-    .id(d => d.id)
-    .distance(d => getModeDistance(d.type))
-    .strength(d => getModeStrength(d.type)))
-  .force('charge', d3.forceManyBody().strength(d => d.group === 'core' ? -900 : d.group === 'shenron_sub' ? -220 : -380))
-  .force('center', d3.forceCenter(w / 2, h / 2))
-  .force('collision', d3.forceCollide(d => getVisualRadius(d) + 20));
-
-const link = g.append('g')
-  .selectAll('path')
-  .data(links)
-  .join('path')
-  .attr('class', d => `link ${d.type}`)
-  .attr('marker-end', d => `url(#arrow-${d.type})`);
-
-const node = g.append('g')
-  .selectAll('g')
-  .data(nodes)
-  .join('g')
-  .attr('class', d => `node ${d.group}`)
-  .call(d3.drag()
-    .on('start', (e, d) => {
-      if (!e.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x;
-      d.fy = d.y;
-    })
-    .on('drag', (e, d) => {
-      d.fx = e.x;
-      d.fy = e.y;
-    })
-    .on('end', (e, d) => {
-      if (!e.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-    })
-  );
-
-node.append('polygon')
-  .attr('points', d => hexPoints(d.size))
-  .attr('fill', d => groupColors[d.group] + (d.group === 'shenron_sub' ? '14' : '10'))
-  .attr('stroke', d => groupColors[d.group])
-  .attr('stroke-width', d => d.group === 'core' ? 2.2 : 1.2)
-  .attr('filter', d => d.group === 'core' ? 'url(#glow-core)' : d.group === 'shenron_sub' ? 'url(#glow-soft)' : null);
-
-node.each(function(d){
-  const el = d3.select(this);
-  const lines = d.id.split('\n');
-  const offset = d.size + 7;
-  lines.forEach((line, i) => {
-    el.append('text')
-      .attr('dy', offset + 10 + i * 12)
-      .attr('text-anchor', 'middle')
-      .text(line);
-  });
-});
-
-node.on('click', function(e, d){
-  e.stopPropagation();
-
-  if (selected === d.id) {
-    resetHighlight();
-    selected = null;
-    document.getElementById('info-panel').style.display = 'none';
-    return;
-  }
-
-  selected = d.id;
-  applySelectionHighlight(d.id);
-  renderInfoPanel(d);
-});
-
-node.on('dblclick', function(e, d){
-  e.stopPropagation();
-  const url = repoLinks[d.id];
-  if (url) window.open(url, '_blank', 'noopener,noreferrer');
-});
-
-node.on('mouseenter', function(e, d){
-  renderHoverCard(d, e.clientX, e.clientY);
-});
-
-node.on('mousemove', function(e, d){
-  renderHoverCard(d, e.clientX, e.clientY);
-});
-
-node.on('mouseleave', function(){
-  document.getElementById('hover-card').style.display = 'none';
-});
-
-svg.on('click', () => {
-  resetHighlight();
-  selected = null;
-  document.getElementById('info-panel').style.display = 'none';
-});
-
-document.getElementById('mode-controls').addEventListener('click', (e) => {
-  const btn = e.target.closest('.toggle-btn');
-  if (!btn) return;
-  currentMode = btn.dataset.mode;
-  document.querySelectorAll('#mode-controls .toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
-  applyModeStyling();
-});
-
-document.getElementById('range-controls').addEventListener('click', (e) => {
-  const btn = e.target.closest('.toggle-btn');
-  if (!btn) return;
-  currentRange = btn.dataset.range;
-  document.querySelectorAll('#range-controls .toggle-btn').forEach(b => b.classList.toggle('active', b === btn));
-  applyLiveState();
-});
-
-document.addEventListener('keydown', (e) => {
-  const idx = selected ? nodes.findIndex(n => n.id === selected) : -1;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-    e.preventDefault();
-    const next = nodes[(idx + 1 + nodes.length) % nodes.length];
-    selected = next.id;
-    applySelectionHighlight(next.id);
-    renderInfoPanel(next);
-  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-    e.preventDefault();
-    const next = nodes[(idx - 1 + nodes.length) % nodes.length];
-    selected = next.id;
-    applySelectionHighlight(next.id);
-    renderInfoPanel(next);
-  } else if (e.key === 'Escape') {
-    selected = null;
-    resetHighlight();
-    document.getElementById('info-panel').style.display = 'none';
-  } else if (e.key === 'Enter' && selected) {
-    const url = repoLinks[selected];
-    if (url) window.open(url, '_blank', 'noopener,noreferrer');
-  }
-});
-
-function applySelectionHighlight(id){
-  const connected = new Set([id]);
-  links.forEach(l => {
-    if (l.source.id === id || l.target.id === id) {
-      connected.add(l.source.id);
-      connected.add(l.target.id);
+    function activityValue(activity) {
+      return Math.max(18, Math.round(activity / 2));
     }
-  });
 
-  node.classed('dimmed', n => !connected.has(n.id));
-  link.classed('dimmed', l => l.source.id !== id && l.target.id !== id);
-  link.classed('highlighted', l => l.source.id === id || l.target.id === id);
-}
-
-function resetHighlight(){
-  node.classed('dimmed', false);
-  link.classed('dimmed', false).classed('highlighted', false);
-}
-
-simulation.on('tick', () => {
-  link.attr('d', d => {
-    const dx = d.target.x - d.source.x;
-    const dy = d.target.y - d.source.y;
-    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-    const curve = currentMode === 'data_flow' ? dist * 0.22 : dist * 0.18;
-    const mx = (d.source.x + d.target.x) / 2 - dy * curve / dist;
-    const my = (d.source.y + d.target.y) / 2 + dx * curve / dist;
-    const tr = getVisualRadius(d.target) + 9;
-    const ex = d.target.x - (dx / dist) * tr;
-    const ey = d.target.y - (dy / dist) * tr;
-    return `M${d.source.x},${d.source.y} Q${mx},${my} ${ex},${ey}`;
-  });
-
-  node.attr('transform', d => `translate(${d.x},${d.y})`);
-});
-
-function minutesSince(iso){
-  if (!iso) return null;
-  const ms = Date.now() - new Date(iso).getTime();
-  return Math.max(0, Math.floor(ms / 60000));
-}
-
-function rangeMinutes(){
-  if (currentRange === '7') return 7 * 24 * 60;
-  if (currentRange === '30') return 30 * 24 * 60;
-  if (currentRange === '90') return 90 * 24 * 60;
-  return Infinity;
-}
-
-function inCurrentRange(iso){
-  if (currentRange === 'all') return true;
-  const mins = minutesSince(iso);
-  if (mins === null) return false;
-  return mins <= rangeMinutes();
-}
-
-function formatRelative(iso){
-  if (!iso) return '--';
-  const mins = minutesSince(iso);
-  if (mins < 1) return 'just now';
-  if (mins < 60) return `${mins}m ago`;
-  if (mins < 1440) return `${Math.floor(mins / 60)}h ago`;
-  return `${Math.floor(mins / 1440)}d ago`;
-}
-
-function fetchJson(path){
-  return fetch(`${path}?t=${Date.now()}`, { cache: 'no-store' }).then(res => {
-    if (!res.ok) throw new Error(`${path}: HTTP ${res.status}`);
-    return res.json();
-  });
-}
-
-function getRepoMetrics(id){
-  return repoState.repos?.[id] || null;
-}
-
-function getNodeMetrics(id){
-  return liveState.nodes?.[id] || null;
-}
-
-function getEdgeMetrics(sourceId, targetId){
-  return liveState.edges?.[`${sourceId}->${targetId}`] || null;
-}
-
-function getVisualRadius(d){
-  const repo = getRepoMetrics(d.id);
-  const runtime = getNodeMetrics(d.id);
-  const activity = runtime?.activity || 0;
-  const activityBoost = Math.min(10, activity / 14);
-  const freshnessBoost = repo?.pushed_at && inCurrentRange(repo.pushed_at) ? 2 : 0;
-  return d.size + activityBoost + freshnessBoost;
-}
-
-function getStrokeColor(d){
-  const runtime = getNodeMetrics(d.id);
-  if (runtime?.health === 'critical') return '#ff3b30';
-  if (runtime?.health === 'warning') return '#ff9f43';
-  if (currentMode === 'threat') {
-    const score = getThreatScore(d);
-    if (score >= 8) return '#ff3b30';
-    if (score >= 5) return '#ff9f43';
-  }
-  return groupColors[d.group];
-}
-
-function getStrokeWidth(d){
-  const runtime = getNodeMetrics(d.id);
-  if (runtime?.status === 'active') return d.group === 'core' ? 3 : 2;
-  if (runtime?.status === 'warning') return d.group === 'core' ? 2.6 : 1.8;
-  return d.group === 'core' ? 2.2 : 1.2;
-}
-
-function getModeDistance(type){
-  if (currentMode === 'data_flow') {
-    if (['feeds','recon','generates','extends'].includes(type)) return 150;
-    return 210;
-  }
-  if (currentMode === 'runtime') {
-    if (['orchestrates','controls','monitors','observes'].includes(type)) return 145;
-    return 200;
-  }
-  if (currentMode === 'threat') {
-    if (['controls','depends_on','feeds'].includes(type)) return 150;
-    return 185;
-  }
-  return type === 'contains' ? 95 : type === 'orchestrates' ? 150 : 195;
-}
-
-function getModeStrength(type){
-  if (currentMode === 'data_flow') {
-    return ['feeds','recon','generates','extends'].includes(type) ? 0.48 : 0.16;
-  }
-  if (currentMode === 'runtime') {
-    return ['orchestrates','controls','monitors','observes'].includes(type) ? 0.52 : 0.14;
-  }
-  if (currentMode === 'threat') {
-    return ['controls','depends_on','feeds'].includes(type) ? 0.4 : 0.18;
-  }
-  return type === 'contains' ? 0.75 : 0.28;
-}
-
-function getThreatScore(d){
-  let score = 0;
-  const inbound = links.filter(l => l.target.id === d.id).length;
-  const outbound = links.filter(l => l.source.id === d.id).length;
-  const runtime = getNodeMetrics(d.id);
-  const repo = getRepoMetrics(d.id);
-
-  score += inbound >= 3 ? 3 : inbound;
-  score += outbound >= 3 ? 2 : outbound * 0.5;
-
-  if (d.group === 'core') score += 4;
-  if (d.group === 'offense') score += 3;
-  if (d.group === 'platform') score += 2;
-  if (runtime?.status === 'active') score += 1.5;
-  if (runtime?.health === 'warning') score += 1;
-  if (runtime?.health === 'critical') score += 2.5;
-  if (repo?.open_issues >= 3) score += 1;
-  if (repo?.pushed_at && inCurrentRange(repo.pushed_at)) score += 1;
-
-  return Math.min(10, Number(score.toFixed(1)));
-}
-
-function classifyNodeState(d){
-  const repo = getRepoMetrics(d.id);
-  const runtime = getNodeMetrics(d.id);
-  const threat = getThreatScore(d);
-
-  return {
-    active: runtime?.status === 'active',
-    stale: repo?.pushed_at ? !inCurrentRange(repo.pushed_at) : false,
-    experimental: d.group === 'offense' || d.group === 'ml',
-    threatHigh: threat >= 8,
-    threatMedium: threat >= 5 && threat < 8
-  };
-}
-
-function applyModeStyling(){
-  const allowed = modeEdgeRules[currentMode] || new Set();
-
-  link.classed('mode-dim', d => {
-    if (currentMode === 'architecture') return false;
-    return !allowed.has(d.type);
-  });
-
-  simulation.force('link').distance(d => getModeDistance(d.type)).strength(d => getModeStrength(d.type));
-  simulation.alpha(0.35).restart();
-}
-
-function getEdgeWeight(l) {
-  const edge = getEdgeMetrics(l.source.id, l.target.id);
-  if (edge?.throughput) return edge.throughput;
-
-  switch (l.type) {
-    case 'contains': return 3;
-    case 'orchestrates':
-    case 'controls': return 2.5;
-    case 'feeds':
-    case 'recon':
-    case 'generates': return 2;
-    case 'monitors':
-    case 'observes': return 1.5;
-    case 'extends':
-    case 'depends_on':
-    case 'evolved': return 1;
-    default: return 1;
-  }
-}
-
-function computeNodeCentrality(nodeId) {
-  let score = 0;
-  for (const l of links) {
-    if (l.source.id === nodeId || l.target.id === nodeId) {
-      score += getEdgeWeight(l);
+    function fmtAgo(iso) {
+      const then = new Date(iso).getTime();
+      const now = Date.now();
+      const sec = Math.max(0, Math.floor((now - then) / 1000));
+      if (sec < 60) return sec + "s ago";
+      const min = Math.floor(sec / 60);
+      if (min < 60) return min + "m ago";
+      const hr = Math.floor(min / 60);
+      return hr + "h ago";
     }
-  }
-  return score;
-}
 
-function computeRepoFreshnessScore(repo) {
-  if (!repo) return 0;
+    function buildGraph(data) {
+      const entries = Object.entries(data);
+      const coreId = 1;
+      const nodes = [{
+        id: coreId,
+        label: "SHENRON",
+        value: 42,
+        shape: "hexagon",
+        color: {
+          background: "#ffb11a",
+          border: "#ffcf66",
+          highlight: { background: "#ffd166", border: "#fff0b3" }
+        },
+        font: { color: "#ffdf96", face: "monospace", size: 26, bold: true },
+        title: "SHENRON core\\ncentral control node"
+      }];
 
-  let score = 0;
-  if (repo.pushed_recently) score += 2;
-  if (repo.stars > 0) score += 1;
-  if (repo.forks > 0) score += 1;
+      const edges = [];
+      let nextId = 2;
+      let angle = 0;
+      const radius = 260;
 
-  return score;
-}
+      for (const [name, v] of entries) {
+        const id = nextId++;
+        const x = Math.round(Math.cos(angle) * radius);
+        const y = Math.round(Math.sin(angle) * radius);
+        angle += (Math.PI * 2) / Math.max(entries.length, 1);
 
-function computeRuntimeActivityScore(runtime) {
-  let score = 0;
-  if (!runtime) return 0;
+        nodes.push({
+          id,
+          label: name,
+          x,
+          y,
+          value: activityValue(v.activity || 0),
+          shape: "hexagon",
+          color: {
+            background: postureColor(v.posture),
+            border: postureColor(v.posture),
+            highlight: { background: postureColor(v.posture), border: "#ffffff" }
+          },
+          font: { color: "#d9f7e8", face: "monospace", size: 18 },
+          title:
+            name + "\\n" +
+            "status: " + v.status + "\\n" +
+            "activity: " + v.activity + "\\n" +
+            "drift: " + v.drift_score + "\\n" +
+            "posture: " + v.posture + "\\n" +
+            "last_event: " + v.last_event + "\\n" +
+            "updated_at: " + v.updated_at
+        });
 
-  if (runtime.status === 'active') score += 2;
-  if (runtime.activity && runtime.activity > 50) score += 2;
-  if (runtime.last_event_recent) score += 1;
+        if (name !== "SHENRON") {
+          edges.push({
+            from: coreId,
+            to: id,
+            color: { color: "#15d7e8", highlight: "#6ef2ff" },
+            dashes: true,
+            width: 1.5,
+            arrows: "to"
+          });
+        }
+      }
 
-  return score;
-}
+      return { nodes, edges };
+    }
 
-function computeNodeIsActive(n) {
-  const repo = getRepoMetrics(n.id);
-  const runtime = getNodeMetrics(n.id);
+    function setMetrics(data) {
+      const entries = Object.entries(data);
+      const total = entries.length;
+      const warnings = entries.filter(([,v]) => v.status === "warning").length;
+      const locked = entries.filter(([,v]) => v.posture === "LOCKED").length;
+      const cautious = entries.filter(([,v]) => v.posture === "CAUTIOUS").length;
+      const routine = entries.filter(([,v]) => v.posture === "ROUTINE").length;
 
-  // active if runtime explicitly active OR recent repo OR decent runtime activity
-  if (runtime?.status === 'active') return true;
-  if (computeRepoFreshnessScore(repo) >= 1) return true;
-  if (computeRuntimeActivityScore(runtime) >= 2) return true;
+      const drifts = entries.map(([,v]) => Number(v.drift_score || 0));
+      const avgDrift = drifts.length ? (drifts.reduce((a,b) => a + b, 0) / drifts.length).toFixed(2) : "0.00";
 
-  return false;
-}
+      let highest = "--";
+      if (entries.length) {
+        const top = [...entries].sort((a,b) => (b[1].drift_score || 0) - (a[1].drift_score || 0))[0];
+        highest = `${top[0]} (${top[1].drift_score})`;
+      }
 
-function computeNodeIsDormant(n) {
-  const repo = getRepoMetrics(n.id);
-  if (!repo) return false; // ignore non-repo nodes
+      const avgActivity = entries.length
+        ? Math.round(entries.reduce((a,[,v]) => a + Number(v.activity || 0), 0) / entries.length)
+        : 0;
 
-  const runtime = getNodeMetrics(n.id);
-  const noRecentRepo = computeRepoFreshnessScore(repo) === 0;
-  const noRuntime = !runtime || computeRuntimeActivityScore(runtime) === 0;
+      document.getElementById("m_total").textContent = String(total);
+      document.getElementById("m_warn").textContent = String(warnings);
+      document.getElementById("m_locked").textContent = String(locked);
+      document.getElementById("m_cautious").textContent = String(cautious);
+      document.getElementById("m_routine").textContent = String(routine);
+      document.getElementById("m_avgdrift").textContent = String(avgDrift);
+      document.getElementById("m_highest").textContent = highest;
+      document.getElementById("m_health").textContent =
+        avgActivity >= 75 ? "high" : avgActivity >= 45 ? "moderate" : "low";
 
-  return noRecentRepo && noRuntime;
-}
+      document.getElementById("reposChip").textContent = `NODES TRACKED: ${total}`;
 
-function computeSystemMetrics() {
-  const totalRepos = Object.keys(repoState.repos || {}).length;
-  const activeNodes = nodes.filter(n => computeNodeIsActive(n)).length;
-  const dormantNodes = nodes.filter(n => computeNodeIsDormant(n)).length;
+      const newest = [...entries]
+        .map(([,v]) => v.updated_at)
+        .filter(Boolean)
+        .sort()
+        .reverse()[0];
 
-  const nodeCount = nodes.length;
-  const edgeCount = links.length;
-  const density = nodeCount > 1
-    ? (edgeCount / (nodeCount * (nodeCount - 1))).toFixed(3)
-    : '0.000';
+      if (newest) {
+        document.getElementById("updateChip").textContent = `LAST UPDATE: ${fmtAgo(newest)}`;
+      }
 
-  const centralityScores = nodes.map(n => ({
-    id: n.id,
-    score: computeNodeCentrality(n.id)
-  })).sort((a, b) => b.score - a.score);
+      document.getElementById("liveChip").textContent = "LIVE DATA: ACTIVE";
+    }
 
-  const centralityNode = centralityScores[0]?.id || '--';
+    async function load() {
+      const res = await fetch("./data/runtime_signals.json?ts=" + Date.now());
+      const data = await res.json();
 
-  const healthSamples = nodes.map(n => {
-    const repo = getRepoMetrics(n.id);
-    const runtime = getNodeMetrics(n.id);
-    return computeRepoFreshnessScore(repo) + computeRuntimeActivityScore(runtime);
-  });
+      const graphData = buildGraph(data);
+      setMetrics(data);
 
-  const avgHealthScore = healthSamples.length
-    ? healthSamples.reduce((a, b) => a + b, 0) / healthSamples.length
-    : 0;
+      const container = document.getElementById("graph");
+      const options = {
+        nodes: {
+          borderWidth: 2,
+          shadow: true
+        },
+        edges: {
+          smooth: { type: "dynamic" }
+        },
+        physics: {
+          enabled: true,
+          stabilization: { iterations: 100 }
+        },
+        interaction: {
+          hover: true,
+          navigationButtons: true,
+          keyboard: true
+        }
+      };
 
-  let avgHealth = 'low';
-if (avgHealthScore >= 3) avgHealth = 'strong';
-else if (avgHealthScore >= 1.5) avgHealth = 'moderate';
-  else if (avgHealthScore >= 1.8) avgHealth = 'moderate';
-  else if (avgHealthScore >= 2.5) avgHealth = 'moderate';
+      if (!network) {
+        network = new vis.Network(container, graphData, options);
+      } else {
+        network.setData(graphData);
+      }
+    }
 
-  const highestRisk = nodes.map(n => ({
-    id: n.id,
-    score: getThreatScore(n)
-  })).sort((a, b) => b.score - a.score)[0]?.id || '--';
-
-  document.getElementById('metric-total-repos').textContent = totalRepos;
-  document.getElementById('metric-active-nodes').textContent = activeNodes;
-  document.getElementById('metric-dormant-nodes').textContent = dormantNodes;
-  document.getElementById('metric-density').textContent = density;
-  document.getElementById('metric-centrality').textContent = centralityNode;
-  document.getElementById('metric-health').textContent = avgHealth;
-  document.getElementById('metric-risk').textContent = highestRisk;
-  document.getElementById('metric-edges').textContent = edgeCount;
-}
-
-function applyLiveState(){
-  node.each(function(d){
-    const state = classifyNodeState(d);
-    d3.select(this)
-      .classed('active-node', state.active)
-      .classed('stale', state.stale)
-      .classed('experimental', state.experimental)
-      .classed('threat-high', currentMode === 'threat' && state.threatHigh)
-      .classed('threat-medium', currentMode === 'threat' && state.threatMedium);
-  });
-
-  node.select('polygon')
-    .transition()
-    .duration(300)
-    .attr('points', d => hexPoints(d.id === 'SHENRON' ? Math.max(22, getVisualRadius(d)) : getVisualRadius(d)))
-    .attr('stroke', d => getStrokeColor(d))
-    .attr('stroke-width', d => getStrokeWidth(d));
-
-  link
-    .classed('active-link', l => !!getEdgeMetrics(l.source.id, l.target.id)?.active)
-    .attr('stroke-width', l => {
-      const edge = getEdgeMetrics(l.source.id, l.target.id);
-      if (edge?.throughput) return Math.min(4, 1 + edge.throughput / 15);
-      if (l.type === 'contains') return 2;
-      if (l.type === 'orchestrates' || l.type === 'controls') return 1.8;
-      return 1.2;
+    load().catch(err => {
+      document.getElementById("liveChip").textContent = "LIVE DATA: ERROR";
+      console.error(err);
     });
 
-  simulation.force('collision', d3.forceCollide(d => getVisualRadius(d) + 20));
-  simulation.alpha(0.2).restart();
-
-  if (selected) {
-    const selectedNode = nodes.find(n => n.id === selected);
-    if (selectedNode) renderInfoPanel(selectedNode);
-  }
-
-  document.getElementById('live-state').textContent = 'live data: active';
-  document.getElementById('last-updated').textContent = `last update: ${formatRelative(liveState.updated_at || repoState.updated_at)}`;
-  document.getElementById('repo-count').textContent = `repos tracked: ${Object.keys(repoState.repos || {}).length}`;
-
-  computeSystemMetrics();
-  applyModeStyling();
-}
-
-function renderInfoPanel(d){
-  const panel = document.getElementById('info-panel');
-  const repo = getRepoMetrics(d.id);
-  const runtime = getNodeMetrics(d.id);
-  const threat = getThreatScore(d);
-
-  document.getElementById('info-name').textContent = d.id.replace('\n', ' ');
-  document.getElementById('info-group').textContent = '◆ ' + groupNames[d.group];
-  document.getElementById('info-desc').textContent = d.desc;
-
-  let metricsHtml = '<div class="detail-grid">';
-  metricsHtml += `<div><strong>status</strong><span>${runtime?.status || repo?.status || 'static'}</span></div>`;
-  metricsHtml += `<div><strong>health</strong><span>${runtime?.health || 'ok'}</span></div>`;
-  metricsHtml += `<div><strong>activity</strong><span>${runtime?.activity ?? 0}</span></div>`;
-  metricsHtml += `<div><strong>last update</strong><span>${formatRelative(runtime?.last_updated || repo?.pushed_at)}</span></div>`;
-
-  if (repo) {
-    metricsHtml += `<div><strong>stars</strong><span>${repo.stars ?? 0}</span></div>`;
-    metricsHtml += `<div><strong>forks</strong><span>${repo.forks ?? 0}</span></div>`;
-    metricsHtml += `<div><strong>issues</strong><span>${repo.open_issues ?? 0}</span></div>`;
-    metricsHtml += `<div><strong>repo push</strong><span>${formatRelative(repo.pushed_at)}</span></div>`;
-  }
-
-  if (runtime?.drift_score !== undefined) metricsHtml += `<div><strong>drift score</strong><span>${runtime.drift_score}</span></div>`;
-  if (runtime?.active_hosts !== undefined) metricsHtml += `<div><strong>active hosts</strong><span>${runtime.active_hosts}</span></div>`;
-  if (runtime?.alerts !== undefined) metricsHtml += `<div><strong>alerts</strong><span>${runtime.alerts}</span></div>`;
-  if (runtime?.last_event) metricsHtml += `<div style="grid-column:1 / -1"><strong>last event</strong><span>${runtime.last_event}</span></div>`;
-  if (repoLinks[d.id]) metricsHtml += `<div style="grid-column:1 / -1"><strong>repo</strong><span><a class="inline-link" href="${repoLinks[d.id]}" target="_blank" rel="noopener noreferrer">open repository</a></span></div>`;
-
-  metricsHtml += '</div>';
-  document.getElementById('info-metrics').innerHTML = metricsHtml;
-
-  const inbound = links.filter(l => l.target.id === d.id);
-  const outbound = links.filter(l => l.source.id === d.id);
-  const threatHtml = `
-    threat score → <span>${threat}/10</span><br>
-    choke point → <span>${inbound.length + outbound.length >= 5 ? 'yes' : 'no'}</span><br>
-    risk class → <span>${threat >= 8 ? 'high' : threat >= 5 ? 'medium' : 'low'}</span>
-  `;
-  document.getElementById('info-threat').innerHTML = threatHtml;
-
-  let connText = '';
-  if (outbound.length) connText += `feeds into → <span>${outbound.map(l => l.target.id.replace('\n', ' ')).join(', ')}</span><br>`;
-  if (inbound.length) connText += `receives ← <span>${inbound.map(l => l.source.id.replace('\n', ' ')).join(', ')}</span>`;
-  document.getElementById('info-connections').innerHTML = connText;
-
-  panel.style.display = 'block';
-}
-
-function renderHoverCard(d, x, y){
-  const repo = getRepoMetrics(d.id);
-  const runtime = getNodeMetrics(d.id);
-  const card = document.getElementById('hover-card');
-  document.getElementById('hover-name').textContent = d.id.replace('\n', ' ');
-  document.getElementById('hover-text').innerHTML =
-    `${d.desc}<br><br>` +
-    `status: ${runtime?.status || repo?.status || 'static'}<br>` +
-    `activity: ${runtime?.activity ?? 0}<br>` +
-    `updated: ${formatRelative(runtime?.last_updated || repo?.pushed_at)}`;
-  card.style.left = `${Math.min(window.innerWidth - 240, x + 14)}px`;
-  card.style.top = `${Math.min(window.innerHeight - 140, y + 14)}px`;
-  card.style.display = 'block';
-}
-
-async function refreshGraphState(){
-  try {
-    const [repos, ecosystem] = await Promise.all([
-      fetchJson('./data/repos.json'),
-      fetchJson('./data/ecosystem_status.json')
-    ]);
-
-    repoState = repos || { updated_at: null, repos: {} };
-    liveState = ecosystem || { updated_at: null, nodes: {}, edges: {} };
-
-    document.getElementById('live-state').classList.remove('warn');
-    document.getElementById('live-state').classList.add('live');
-
-    applyLiveState();
-  } catch (err) {
-    console.error('refreshGraphState failed:', err);
-    const liveChip = document.getElementById('live-state');
-    liveChip.textContent = 'live data: degraded';
-    liveChip.classList.remove('live');
-    liveChip.classList.add('warn');
-    computeSystemMetrics();
-  }
-}
-
-function pulse(){
-  const shenronNode = node.filter(d => d.id === 'SHENRON');
-  shenronNode.select('polygon')
-    .transition().duration(1400)
-    .attr('points', hexPoints(Math.max(26, getVisualRadius({ id:'SHENRON', size:22 }))))
-    .transition().duration(1400)
-    .attr('points', hexPoints(Math.max(22, getVisualRadius({ id:'SHENRON', size:22 }))))
-    .on('end', pulse);
-}
-
-refreshGraphState();
-setInterval(refreshGraphState, 60000);
-pulse();
-</script>
+    setInterval(() => {
+      load().catch(console.error);
+    }, 5000);
+  </script>
 </body>
 </html>

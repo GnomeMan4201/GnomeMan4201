@@ -34,5 +34,9 @@ jobs:
           git config user.name "github-actions"
           git config user.email "actions@github.com"
           git add docs/data/*.json || true
-          git diff --cached --quiet || git commit -m "update runtime signals"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "update runtime signals"
+            git push
+          else
+            echo "No changes to commit"
+          fi
