@@ -1,15 +1,15 @@
 {
   "LANimals": {
-    "_recovery_streak": 3,
+    "_recovery_streak": 0,
     "_target_pressure": 0.49,
     "activity": 90,
-    "drift_score": 0.47,
+    "drift_score": 0.53,
     "last_event": "telemetry refresh",
     "last_event_recent": true,
     "node": "LANimals",
     "posture": "CAUTIOUS",
     "status": "warning",
-    "updated_at": "2026-04-17T10:02:45.767641Z"
+    "updated_at": "2026-04-17T11:06:15.613955Z"
   },
   "LUNE": {
     "_recovery_streak": 0,
@@ -21,7 +21,7 @@
     "node": "LUNE",
     "posture": "ROUTINE",
     "status": "idle",
-    "updated_at": "2026-04-17T10:02:45.767641Z"
+    "updated_at": "2026-04-17T11:06:15.613955Z"
   },
   "OpenSight": {
     "_recovery_streak": 0,
@@ -33,7 +33,7 @@
     "node": "OpenSight",
     "posture": "ROUTINE",
     "status": "warning",
-    "updated_at": "2026-04-17T10:02:45.767641Z"
+    "updated_at": "2026-04-17T11:06:15.613955Z"
   },
   "PHANTOM": {
     "_recovery_streak": 0,
@@ -45,7 +45,7 @@
     "node": "PHANTOM",
     "posture": "CAUTIOUS",
     "status": "warning",
-    "updated_at": "2026-04-17T10:02:45.767641Z"
+    "updated_at": "2026-04-17T11:06:15.613955Z"
   },
   "SHENRON": {
     "_recovery_streak": 0,
@@ -57,7 +57,7 @@
     "node": "SHENRON",
     "posture": "ROUTINE",
     "status": "idle",
-    "updated_at": "2026-04-17T10:02:45.767641Z"
+    "updated_at": "2026-04-17T11:06:15.613955Z"
   },
   "drift_orchestrator": {
     "_recovery_streak": 0,
@@ -69,7 +69,7 @@
     "node": "drift_orchestrator",
     "posture": "CAUTIOUS",
     "status": "idle",
-    "updated_at": "2026-04-17T10:02:45.767641Z"
+    "updated_at": "2026-04-17T11:06:15.613955Z"
   },
   "zeroDAYSlater": {
     "_recovery_streak": 0,
@@ -81,6 +81,6 @@
     "node": "zeroDAYSlater",
     "posture": "CAUTIOUS",
     "status": "warning",
-    "updated_at": "2026-04-17T10:02:45.767641Z"
+    "updated_at": "2026-04-17T11:06:15.613955Z"
   }
 }
