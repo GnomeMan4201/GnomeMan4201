@@ -70,7 +70,7 @@ VERIFIED // GnomeMan4201
 ──────────────────────────────────────────────────────────────────
 GitHub Stars                34        across 21 public repos
 GitHub Forks               3        zer0DAYSlater ×2
-Followers                   76        organic
+Followers                   77        organic
 Contributions              857        last 12 months
 ──────────────────────────────────────────────────────────────────
 Dev.to Articles           28        gnomeman4201
