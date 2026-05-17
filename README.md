@@ -68,10 +68,10 @@ Nothing here is speculative. Every tool in the map is operational.
 ```
 VERIFIED // GnomeMan4201
 ──────────────────────────────────────────────────────────────────
-GitHub Stars                35        across 22 public repos
+GitHub Stars                40        across 23 public repos
 GitHub Forks               3        zer0DAYSlater ×2
-Followers                   91        organic
-Contributions              810        last 12 months
+Followers                   94        organic
+Contributions              811        last 12 months
 ──────────────────────────────────────────────────────────────────
 Dev.to Articles           28        gnomeman4201
 Dev.to Views           4,188        total reads
