@@ -10,76 +10,9 @@
 
 Security researcher and tool developer building local-first systems for network deception, document intelligence, LLM runtime monitoring, and adversarial simulation. Stack: Python, FastAPI, SQLite, Linux, C.
 
-**Start here:** [LANimals](https://github.com/GnomeMan4201/LANimals) · [drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator) · [OpenSight](https://github.com/GnomeMan4201/OpenSight)
-
 Self-taught. No lab access, no team, no institutional backing. Everything here started as friction — and became a tool.
 
 Part of the **badBANANA collective** — a one-person operation that treats security research as a craft, not a career move.
-
----
-
-## The Ecosystem
-
-The BANANA_TREE is an adversarial training loop. Every tool feeds the next.
-
-```
-  OBSERVE                          SIMULATE
-  LANimals ─ network deception      Lune ─ 64-module tradecraft
-  OpenSight ─ OSINT / graphs        PHANTOM ─ honeypot detection
-  Decoy-Hunter ─ decoy analysis     SHENRON ─ adversarial telemetry
-  TERRAIN ─ local intelligence      Blackglass_Suite ─ offline mutation
-
-  EXECUTE                          ADAPT
-  zer0DAYSlater ─ post-exploit      drift_orchestrator ─ LLM drift
-  bad_BANANA ─ Android/Termux       chain ─ mutation lineage
-  pwn ─ modular pentest             aliasOS ─ operator shell
-  OWN ─ execution layer             reflexive-identity ─ self-auth agent
-
-  RESEARCH                         UTILITY
-  drift-artifact ─ authorship       devto-botnet-hunter ─ network forensics
-  gnome-prompt-field-manual         devto-analytics-pro ─ platform intel
-
-  observe → simulate → execute → adapt → observe
-```
-
-Nothing here is speculative. Every tool in the map is operational.
-
----
-
-## Last Operation
-
-```
-[BANANA_TREE] kill chain — synthetic demonstration
-──────────────────────────────────────────────────────────────────────
-$ lanimals scan --subnet 192.168.1.0/24 --score behavioral
-  [+] 14 hosts discovered
-  [+] 3 flagged: elevated entropy, unusual port cadence
-  [→] exporting target profiles → lanimorph
-
-$ lanimorph inject --profile target_03 --subnet 192.168.1.0/24
-  [+] XOR mutation: xor_delta=0.847
-  [+] persona selected: volatile_mirror
-  [→] sealed mesh export → shenron handoff
-
-$ shenron mutate --input target_03.sealed --layers 7
-  [2026-05-24T03:12:44Z]  layer_41  entropy=7.91  sig=a3f9e1c2  ✓
-  [2026-05-24T03:13:01Z]  layer_42  entropy=7.94  sig=b8d02f4a  ✓ fork
-  [2026-05-24T03:13:19Z]  layer_43  entropy=7.88  sig=c1e74b91  ✓ sealed
-  [→] lineage logged → chain
-
-$ drift_orchestrator monitor --session op_volatile_mirror
-  [+] flight recorder active — SQLite telemetry open
-  [+] semantic baseline established
-  [!] drift event at t+00:04:12 — composite score: 0.73
-  [→] hysteresis policy: INTERVENE
-
-$ phantom probe --target 192.168.1.47
-  [+] signature match: Cowrie 2.x  confidence=0.94
-  [!] honeypot confirmed — aborting contact
-──────────────────────────────────────────────────────────────────────
-synthetic only // no live targets // authorized research environments
-──────────────────────────────────────────────────────────────────────
-```
 
 ---
 
