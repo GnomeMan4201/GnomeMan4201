@@ -46,10 +46,10 @@ Part of the **badBANANA collective** — a one-person operation that treats secu
 ```
 VERIFIED // GnomeMan4201
 ──────────────────────────────────────────────────────────────────
-GitHub Stars                38        across 25 public repos
+GitHub Stars                38        across 26 public repos
 GitHub Forks                5         drift_orchestrator · LANimals · zer0DAYSlater ×3
 GitHub Followers                   99        organic
-Contributions              915        last 12 months
+Contributions              917        last 12 months
 ──────────────────────────────────────────────────────────────────
 Dev.to Followers         2,987        gnomeman4201
 Dev.to Articles             42        published
