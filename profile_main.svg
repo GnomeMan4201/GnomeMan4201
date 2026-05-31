@@ -147,19 +147,19 @@
   <text x="44"  y="671" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">102<tspan font-size="9" fill="#cc2200"> followers</tspan></text>
   <text x="44"  y="690" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">931<tspan font-size="9" fill="#cc2200"> contributions</tspan></text>
   <text x="44"  y="709" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">27<tspan font-size="9" fill="#cc2200"> public repos</tspan></text>
-  <line x1="224" y1="614" x2="224" y2="757" stroke="#2a0000" stroke-width="1"/>
+  <line x1="224" y1="614" x2="224" y2="757" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
   <text x="244" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">DEV.TO</text>
   <text x="244" y="652" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">4,270<tspan font-size="9" fill="#cc2200"> followers</tspan></text>
   <text x="244" y="671" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">42<tspan font-size="9" fill="#cc2200"> articles</tspan></text>
   <text x="244" y="690" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">8,150<tspan font-size="9" fill="#cc2200"> readers (all time)</tspan></text>
-  <line x1="434" y1="614" x2="434" y2="757" stroke="#2a0000" stroke-width="1"/>
+  <line x1="434" y1="614" x2="434" y2="757" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
   <text x="454" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">BUILD STATUS</text>
   <text x="454" y="650" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">LANimals</tspan></text>
   <text x="454" y="667" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">Lune  (92 tests)</tspan></text>
   <text x="454" y="684" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">drift_orchestrator</tspan></text>
   <text x="454" y="701" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">OpenSight (52 tests)</tspan></text>
   <text x="454" y="718" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">chain · aliasOS · zer0</tspan></text>
-  <line x1="674" y1="614" x2="674" y2="757" stroke="#2a0000" stroke-width="1"/>
+  <line x1="674" y1="614" x2="674" y2="757" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
   <text x="694" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">CONTACT</text>
   <text x="694" y="652" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">preferred:</text>
   <text x="694" y="667" font-family="'Courier New',monospace" font-size="9" fill="#cc2200">github issues / advisories</text>
