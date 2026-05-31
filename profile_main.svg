@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" viewBox="0 0 860 920" style="background:#0d0000;">
+  <defs>
+    <pattern id="grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0L0 0 0 40" fill="none" stroke="#8b0000" stroke-width="0.4" opacity="0.12"/>
+    </pattern>
+    <style>
+      @keyframes pulse-core  { 0%,100%{opacity:.14;r:38} 50%{opacity:.38;r:52} }
+      @keyframes pulse-inner { 0%,100%{opacity:.22;r:22} 50%{opacity:.55;r:30} }
+      @keyframes blink { 0%,88%,100%{opacity:1} 90%{opacity:0} 94%{opacity:1} 96%{opacity:0} }
+      @keyframes flow1 { to{stroke-dashoffset:-80} }
+      @keyframes flow2 { to{stroke-dashoffset:-60} }
+      @keyframes flow3 { to{stroke-dashoffset:-100} }
+      @keyframes y-breathe { 0%,100%{opacity:.7} 50%{opacity:1} }
+      .fa{stroke-dasharray:7 13;animation:flow1 2.6s linear infinite}
+      .fb{stroke-dasharray:4 18;animation:flow2 3.3s linear infinite}
+      .fc{stroke-dasharray:6 11;animation:flow3 2.0s linear infinite}
+      .fd{stroke-dasharray:4 20;animation:flow1 4.5s linear infinite reverse}
+      .fe{stroke-dasharray:5 10;animation:flow2 2.8s linear infinite reverse}
+      .ff{stroke-dasharray:3 17;animation:flow3 3.8s linear infinite}
+      .pc{animation:pulse-core  3.2s ease-in-out infinite}
+      .pi{animation:pulse-inner 3.2s ease-in-out infinite .5s}
+      .cur{animation:blink 4.5s ease-in-out infinite}
+      .yg{animation:y-breathe 2.8s ease-in-out infinite}
+    </style>
+  </defs>
+  <rect width="860" height="920" fill="#0d0000"/>
+  <rect width="860" height="920" fill="url(#grid)"/>
+  <rect x="0" y="0" width="860" height="4" fill="#8b0000"/>
+  <rect x="0" y="0" width="3" height="152" fill="#8b0000" opacity="0.7"/>
+  <rect x="857" y="0" width="3" height="152" fill="#8b0000" opacity="0.7"/>
+  <rect x="0" y="916" width="860" height="4" fill="#8b0000"/>
+  <text x="44" y="50" font-family="'Courier New',monospace" font-size="12" letter-spacing="3" font-weight="bold">
+    <tspan fill="#cc2200">GnomeMan4201  //  </tspan><tspan fill="#f5c518">bad</tspan><tspan fill="#ffffff">BANANA</tspan><tspan fill="#cc2200"> collective</tspan>
+  </text>
+  <text x="44" y="67" font-family="'Courier New',monospace" font-size="9" fill="#8b0000" letter-spacing="2">security researcher · tool developer · building in public</text>
+  <text x="44" y="114" font-family="'Courier New',monospace" font-size="54" font-weight="bold" fill="#ffffff" letter-spacing="-2">GNOME<tspan fill="#f5c518">MAN</tspan><tspan fill="#cc2200">4201</tspan></text>
+  <rect class="cur" x="744" y="72" width="22" height="44" fill="#f5c518" opacity="0.95"/>
+  <text x="44" y="138" font-family="'Courier New',monospace" font-size="11" fill="#cc3300" font-weight="bold" letter-spacing="2">NETWORK DECEPTION  ·  LLM RUNTIME CONTROL  ·  ADVERSARIAL SIMULATION</text>
+  <rect x="0" y="150" width="860" height="30" fill="#110000"/>
+  <rect x="0" y="150" width="860" height="1" fill="#8b0000" opacity="0.6"/>
+  <rect x="0" y="179" width="860" height="1" fill="#8b0000" opacity="0.35"/>
+  <rect x="18"  y="158" width="86" height="14" rx="1" fill="#8b0000" opacity="0.5"/>
+  <text x="61"  y="169" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="1" font-weight="bold">PYTHON</text>
+  <rect x="112" y="158" width="76" height="14" rx="1" fill="#8b0000" opacity="0.5"/>
+  <text x="150" y="169" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="1" font-weight="bold">FASTAPI</text>
+  <rect x="196" y="158" width="68" height="14" rx="1" fill="#8b0000" opacity="0.5"/>
+  <text x="230" y="169" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="1" font-weight="bold">SQLITE</text>
+  <rect x="272" y="158" width="58" height="14" rx="1" fill="#8b0000" opacity="0.5"/>
+  <text x="301" y="169" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="1" font-weight="bold">LINUX</text>
+  <rect x="338" y="158" width="32" height="14" rx="1" fill="#8b0000" opacity="0.5"/>
+  <text x="354" y="169" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="1" font-weight="bold">C</text>
+  <text x="44" y="202" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" letter-spacing="4" font-weight="bold">ECOSYSTEM  GRAPH</text>
+  <line x1="44" y1="208" x2="700" y2="208" stroke="#8b0000" stroke-width="0.8" opacity="0.35"/>
+  <rect x="718" y="214" width="122" height="142" rx="1" fill="#110000" stroke="#8b0000" stroke-width="1"/>
+  <rect x="718" y="214" width="122" height="2" fill="#8b0000" opacity="0.7"/>
+  <text x="779" y="230" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" text-anchor="middle" letter-spacing="3" font-weight="bold">LEGEND</text>
+  <polygon points="728,244 739,244 733,256" fill="none" stroke="#f5c518" stroke-width="1.2"/>
+  <text x="745" y="254" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">subsystem</text>
+  <polygon points="728,266 739,266 733,278" fill="none" stroke="#cc2200" stroke-width="1.2"/>
+  <text x="745" y="276" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" font-weight="bold">offense</text>
+  <polygon points="728,288 739,288 733,300" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.7"/>
+  <text x="745" y="298" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">intel / recon</text>
+  <polygon points="728,310 739,310 733,322" fill="none" stroke="#f5c518" stroke-width="1.6"/>
+  <text x="745" y="320" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">core / control</text>
+  <circle cx="733" cy="337" r="5" fill="none" stroke="#8b0000" stroke-width="1.2"/>
+  <text x="745" y="341" font-family="'Courier New',monospace" font-size="9" fill="#8b0000" font-weight="bold">ops / platform</text>
+  <line class="fa" x1="413" y1="372" x2="200" y2="308" stroke="#c8a000" stroke-width="0.9" opacity="0.5"/>
+  <line class="fb" x1="416" y1="362" x2="218" y2="246" stroke="#c8a000" stroke-width="0.8" opacity="0.45"/>
+  <line class="fd" x1="432" y1="350" x2="392" y2="232" stroke="#f5c518" stroke-width="1.2" opacity="0.65"/>
+  <line class="fc" x1="448" y1="360" x2="630" y2="244" stroke="#cc2200" stroke-width="0.9" opacity="0.6"/>
+  <line class="fe" x1="410" y1="396" x2="172" y2="460" stroke="#cc2200" stroke-width="0.8" opacity="0.5"/>
+  <line class="ff" x1="420" y1="396" x2="212" y2="528" stroke="#cc2200" stroke-width="0.7" opacity="0.4"/>
+  <line class="fa" x1="440" y1="396" x2="575" y2="518" stroke="#cc2200" stroke-width="0.7" opacity="0.35"/>
+  <line class="fb" x1="420" y1="392" x2="313" y2="466" stroke="#cc2200" stroke-width="0.6" opacity="0.3"/>
+  <line class="fc" x1="440" y1="388" x2="490" y2="454" stroke="#cc2200" stroke-width="0.6" opacity="0.3"/>
+  <line class="fd" x1="456" y1="376" x2="514" y2="386" stroke="#cc2200" stroke-width="0.6" opacity="0.3"/>
+  <line class="fe" x1="448" y1="396" x2="642" y2="428" stroke="#ffffff" stroke-width="0.7" opacity="0.25"/>
+  <line class="ff" x1="448" y1="380" x2="658" y2="358" stroke="#ffffff" stroke-width="0.6" opacity="0.22"/>
+  <line class="fd" x1="392" y1="248" x2="428" y2="350" stroke="#f5c518" stroke-width="1.4" opacity="0.7"/>
+  <line class="ff" x1="415" y1="360" x2="308" y2="298" stroke="#5a2020" stroke-width="0.5" opacity="0.5"/>
+  <line class="fa" x1="432" y1="398" x2="467" y2="476" stroke="#5a2020" stroke-width="0.5" opacity="0.4"/>
+  <line class="fb" x1="445" y1="364" x2="508" y2="307" stroke="#5a2020" stroke-width="0.5" opacity="0.4"/>
+  <line class="fe" x1="432" y1="398" x2="358" y2="497" stroke="#c8a000" stroke-width="0.6" opacity="0.3"/>
+  <circle class="pc" cx="430" cy="380" r="38" fill="#8b0000" opacity="0.14"/>
+  <circle class="pi" cx="430" cy="380" r="22" fill="#8b0000" opacity="0.22"/>
+  <polygon points="430,344 464,380 430,416 396,380" fill="none" stroke="#f5c518" stroke-width="2.5" class="yg"/>
+  <polygon points="430,350 458,380 430,410 402,380" fill="#8b0000" opacity="0.35"/>
+  <text x="430" y="376" font-family="'Courier New',monospace" font-size="10" fill="#f5c518" text-anchor="middle" font-weight="bold" letter-spacing="2">SHEN</text>
+  <text x="430" y="391" font-family="'Courier New',monospace" font-size="10" fill="#f5c518" text-anchor="middle" font-weight="bold" letter-spacing="2">RON</text>
+  <polygon points="183,288 220,288 201,316" fill="none" stroke="#f5c518" stroke-width="1.6" opacity="0.95"/>
+  <polygon points="184,289 219,289 201,315" fill="#f5c518" opacity="0.07"/>
+  <text x="201" y="277" font-family="'Courier New',monospace" font-size="10" fill="#f5c518" text-anchor="middle" font-weight="bold">LANimals</text>
+  <text x="201" y="327" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" text-anchor="middle" font-weight="bold">drift: 0.52 ▲</text>
+  <polygon points="200,224 237,224 218,252" fill="none" stroke="#f5c518" stroke-width="1.5" opacity="0.9"/>
+  <polygon points="201,225 236,225 218,251" fill="#f5c518" opacity="0.06"/>
+  <text x="218" y="214" font-family="'Courier New',monospace" font-size="10" fill="#f5c518" text-anchor="middle" font-weight="bold">Lune</text>
+  <text x="218" y="263" font-family="'Courier New',monospace" font-size="8" fill="#8b0000" text-anchor="middle" font-weight="bold">64 modules</text>
+  <polygon points="374,216 414,216 394,246" fill="none" stroke="#f5c518" stroke-width="2.2" class="yg"/>
+  <polygon points="376,218 412,218 394,244" fill="#f5c518" opacity="0.12"/>
+  <text x="394" y="206" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" font-weight="bold">drift_orch</text>
+  <text x="394" y="258" font-family="'Courier New',monospace" font-size="8" fill="#c8a000" text-anchor="middle" font-weight="bold">hysteresis</text>
+  <polygon points="612,226 652,226 632,256" fill="none" stroke="#cc2200" stroke-width="1.6" opacity="0.98"/>
+  <polygon points="614,228 650,228 632,254" fill="#cc2200" opacity="0.12"/>
+  <text x="632" y="216" font-family="'Courier New',monospace" font-size="9" fill="#ff4422" text-anchor="middle" font-weight="bold">zer0DAY</text>
+  <text x="632" y="268" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" text-anchor="middle" font-weight="bold">auth only ⚠</text>
+  <polygon points="156,440 194,440 175,468" fill="none" stroke="#cc2200" stroke-width="1.4" opacity="0.9"/>
+  <polygon points="157,441 193,441 175,467" fill="#cc2200" opacity="0.09"/>
+  <text x="175" y="430" font-family="'Courier New',monospace" font-size="9" fill="#ff4422" text-anchor="middle" font-weight="bold">LANIMORPH</text>
+  <text x="175" y="480" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" text-anchor="middle" font-weight="bold">XOR morph</text>
+  <polygon points="195,508 233,508 214,538" fill="none" stroke="#cc2200" stroke-width="1.4" opacity="0.9"/>
+  <polygon points="196,509 232,509 214,537" fill="#cc2200" opacity="0.09"/>
+  <text x="214" y="498" font-family="'Courier New',monospace" font-size="9" fill="#ff4422" text-anchor="middle" font-weight="bold">bad_BANANA</text>
+  <text x="214" y="550" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" text-anchor="middle" font-weight="bold">Android+Debian</text>
+  <polygon points="560,498 600,498 580,528" fill="none" stroke="#cc2200" stroke-width="1.3" opacity="0.85"/>
+  <polygon points="561,499 599,499 580,527" fill="#cc2200" opacity="0.08"/>
+  <text x="580" y="488" font-family="'Courier New',monospace" font-size="9" fill="#ff4422" text-anchor="middle" font-weight="bold">Blackglass</text>
+  <text x="580" y="540" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" text-anchor="middle" font-weight="bold">offline AI</text>
+  <polygon points="628,410 666,410 647,438" fill="none" stroke="#ffffff" stroke-width="1.4" opacity="0.75"/>
+  <polygon points="629,411 665,411 647,437" fill="#ffffff" opacity="0.04"/>
+  <text x="647" y="400" font-family="'Courier New',monospace" font-size="10" fill="#ffffff" text-anchor="middle" font-weight="bold">OpenSight</text>
+  <text x="647" y="450" font-family="'Courier New',monospace" font-size="8" fill="#888888" text-anchor="middle" font-weight="bold">FBI corpus</text>
+  <polygon points="643,340 681,340 662,368" fill="none" stroke="#ffffff" stroke-width="1.3" opacity="0.7"/>
+  <polygon points="644,341 680,341 662,367" fill="#ffffff" opacity="0.03"/>
+  <text x="662" y="330" font-family="'Courier New',monospace" font-size="10" fill="#ffffff" text-anchor="middle" font-weight="bold">PHANTOM</text>
+  <text x="662" y="380" font-family="'Courier New',monospace" font-size="8" fill="#888888" text-anchor="middle" font-weight="bold">honeypot id</text>
+  <polygon points="338,478 378,478 358,507" fill="none" stroke="#f5c518" stroke-width="1.3" opacity="0.8"/>
+  <polygon points="339,479 377,479 358,506" fill="#f5c518" opacity="0.05"/>
+  <text x="358" y="468" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" font-weight="bold">reflexive-id</text>
+  <text x="358" y="520" font-family="'Courier New',monospace" font-size="8" fill="#8b6000" text-anchor="middle" font-weight="bold">zero-trust</text>
+  <circle cx="310" cy="467" r="5" fill="none" stroke="#cc2200" stroke-width="1.3" opacity="0.7"/>
+  <text x="310" y="456" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" text-anchor="middle" font-weight="bold">pwn</text>
+  <circle cx="490" cy="456" r="5" fill="none" stroke="#cc2200" stroke-width="1.3" opacity="0.7"/>
+  <text x="490" y="445" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" text-anchor="middle" font-weight="bold">chain</text>
+  <circle cx="514" cy="306" r="5" fill="none" stroke="#8b0000" stroke-width="1.2" opacity="0.8"/>
+  <text x="514" y="295" font-family="'Courier New',monospace" font-size="9" fill="#8b0000" text-anchor="middle" font-weight="bold">aliasOS</text>
+  <circle cx="516" cy="386" r="5" fill="none" stroke="#cc2200" stroke-width="1.3" opacity="0.7"/>
+  <text x="516" y="375" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" text-anchor="middle" font-weight="bold">OWN</text>
+  <circle cx="688" cy="386" r="5" fill="none" stroke="#ffffff" stroke-width="1.2" opacity="0.45"/>
+  <text x="688" y="375" font-family="'Courier New',monospace" font-size="8" fill="#aaaaaa" text-anchor="middle" font-weight="bold">Decoy-Hunter</text>
+  <circle cx="306" cy="296" r="5" fill="none" stroke="#8b0000" stroke-width="1.1" opacity="0.7"/>
+  <text x="306" y="285" font-family="'Courier New',monospace" font-size="8" fill="#8b0000" text-anchor="middle" font-weight="bold">botnet-hunter</text>
+  <circle cx="467" cy="478" r="5" fill="none" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
+  <text x="467" y="467" font-family="'Courier New',monospace" font-size="8" fill="#8b0000" text-anchor="middle" font-weight="bold">drift-artifact</text>
+  <line x1="44" y1="578" x2="816" y2="578" stroke="#8b0000" stroke-width="0.8" opacity="0.4"/>
+  <rect x="22" y="587" width="816" height="192" fill="#0f0000" stroke="#8b0000" stroke-width="1"/>
+  <rect x="22" y="587" width="816" height="4" fill="#8b0000" opacity="0.8"/>
+  <text x="44"  y="606" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" letter-spacing="4" font-weight="bold">SIGNALS</text>
+  <text x="816" y="606" font-family="'Courier New',monospace" font-size="9" fill="#8b0000" text-anchor="end" font-weight="bold">every number is verifiable</text>
+  <text x="44"  y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">GITHUB</text>
+  <text x="44"  y="652" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">41<tspan font-size="9" fill="#cc2200"> stars</tspan></text>
+  <text x="44"  y="671" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">102<tspan font-size="9" fill="#cc2200"> followers</tspan></text>
+  <text x="44"  y="690" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">921<tspan font-size="9" fill="#cc2200"> contributions</tspan></text>
+  <text x="44"  y="709" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">26<tspan font-size="9" fill="#cc2200"> public repos</tspan></text>
+  <line x1="224" y1="614" x2="224" y2="757" stroke="#2a0000" stroke-width="1"/>
+  <text x="244" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">DEV.TO</text>
+  <text x="244" y="652" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">2,987<tspan font-size="9" fill="#cc2200"> followers</tspan></text>
+  <text x="244" y="671" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">42<tspan font-size="9" fill="#cc2200"> articles</tspan></text>
+  <text x="244" y="690" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">7,597<tspan font-size="9" fill="#cc2200"> total reads</tspan></text>
+  <line x1="434" y1="614" x2="434" y2="757" stroke="#2a0000" stroke-width="1"/>
+  <text x="454" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">BUILD STATUS</text>
+  <text x="454" y="650" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">LANimals</tspan></text>
+  <text x="454" y="667" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">Lune  (92 tests)</tspan></text>
+  <text x="454" y="684" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">drift_orchestrator</tspan></text>
+  <text x="454" y="701" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">OpenSight (52 tests)</tspan></text>
+  <text x="454" y="718" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">chain · aliasOS · zer0</tspan></text>
+  <line x1="674" y1="614" x2="674" y2="757" stroke="#2a0000" stroke-width="1"/>
+  <text x="694" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">CONTACT</text>
+  <text x="694" y="652" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">preferred:</text>
+  <text x="694" y="667" font-family="'Courier New',monospace" font-size="9" fill="#cc2200">github issues / advisories</text>
+  <text x="694" y="687" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">writing:</text>
+  <text x="694" y="702" font-family="'Courier New',monospace" font-size="9" fill="#cc2200">dev.to/gnomeman4201</text>
+  <text x="694" y="720" font-family="'Courier New',monospace" font-size="8" fill="#5a2020">PGP: 324C 4301 54C2 3C8E</text>
+  <text x="694" y="733" font-family="'Courier New',monospace" font-size="8" fill="#5a2020">3956 1B10 0CFD 6761 AA75</text>
+  <rect x="22" y="777" width="816" height="1" fill="#2a0000"/>
+  <rect x="22" y="786" width="816" height="50" fill="#0f0000" stroke="#cc2200" stroke-width="1"/>
+  <rect x="22" y="786" width="816" height="3" fill="#cc2200" opacity="0.6"/>
+  <text x="430" y="808" font-family="'Courier New',monospace" font-size="10" fill="#ff4422" text-anchor="middle" font-style="italic" font-weight="bold">"Every system has an edge. Stand at the edge long enough and you realize the map was never the territory"</text>
+  <text x="430" y="826" font-family="'Courier New',monospace" font-size="10" fill="#f5c518" text-anchor="middle" font-weight="bold">&#x2014; Korzybski</text>
+  <rect x="634" y="848" width="204" height="36" rx="1" fill="#0f0000" stroke="#cc2200" stroke-width="1.5"/>
+  <rect x="634" y="848" width="204" height="3" fill="#cc2200" opacity="0.8"/>
+  <text x="736" y="864" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="2" font-weight="bold">&#x25C8; SHENRON ECOSYSTEM</text>
+  <text x="736" y="877" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" text-anchor="middle" font-weight="bold">gnomeman4201.github.io &#x2192;</text>
+</svg>
