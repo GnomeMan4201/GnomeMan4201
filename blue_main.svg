@@ -1,0 +1,234 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 1000 920" style="background:#000814;">
+  <defs>
+    <pattern id="bgrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0L0 0 0 40" fill="none" stroke="#023e8a" stroke-width="0.4" opacity="0.18"/>
+    </pattern>
+    <style>
+      @keyframes ring-pulse  { 0%,100%{opacity:.12} 50%{opacity:.28} }
+      @keyframes ring-pulse2 { 0%,100%{opacity:.08} 50%{opacity:.20} }
+      @keyframes ring-pulse3 { 0%,100%{opacity:.05} 50%{opacity:.14} }
+      @keyframes data-flow   { to{stroke-dashoffset:-80} }
+      @keyframes data-flow2  { to{stroke-dashoffset:-60} }
+      @keyframes shen-breathe{ 0%,100%{opacity:.8} 50%{opacity:1} }
+      @keyframes blink-blue  { 0%,88%,100%{opacity:1} 90%{opacity:0} 94%{opacity:1} 96%{opacity:0} }
+      .rp1{animation:ring-pulse  4.0s ease-in-out infinite}
+      .rp2{animation:ring-pulse2 5.2s ease-in-out infinite}
+      .rp3{animation:ring-pulse3 6.8s ease-in-out infinite}
+      .df1{stroke-dasharray:6 14;animation:data-flow  3.2s linear infinite}
+      .df2{stroke-dasharray:4 18;animation:data-flow2 4.1s linear infinite}
+      .df3{stroke-dasharray:3 20;animation:data-flow  5.0s linear infinite reverse}
+      .sb {animation:shen-breathe 3.0s ease-in-out infinite}
+      .cb {animation:blink-blue 4.5s ease-in-out infinite}
+    </style>
+  </defs>
+
+  <!-- background -->
+  <rect width="1000" height="920" fill="#000814"/>
+  <rect width="1000" height="920" fill="url(#bgrid)"/>
+
+  <!-- white border -->
+  <rect x="0" y="0" width="1000" height="3" fill="#ffffff"/>
+  <rect x="0" y="0" width="3" height="920" fill="#ffffff" opacity="0.7"/>
+  <rect x="997" y="0" width="3" height="920" fill="#ffffff" opacity="0.7"/>
+  <rect x="0" y="917" width="1000" height="3" fill="#ffffff"/>
+
+  <!-- header -->
+  <text x="50" y="52" font-family="'Courier New',monospace" font-size="54" font-weight="bold" fill="#caf0f8" letter-spacing="-2">BLUE<tspan fill="#00b4d8">TEAM</tspan><tspan fill="#48cae4" font-size="28"> // DETECTION ENG</tspan></text>
+  <rect class="cb" x="868" y="12" width="18" height="40" fill="#00b4d8" opacity="0.9"/>
+  <text x="50" y="76" font-family="'Courier New',monospace" font-size="10" fill="#023e8a" letter-spacing="3">monitor  ·  detect  ·  attribute  ·  respond</text>
+
+  <!-- status bar -->
+  <rect x="0" y="90" width="1000" height="28" fill="#020d1f"/>
+  <rect x="0" y="90" width="1000" height="1" fill="#00b4d8" opacity="0.3"/>
+  <rect x="0" y="117" width="1000" height="1" fill="#00b4d8" opacity="0.15"/>
+  <rect x="18" y="98" width="90" height="13" rx="1" fill="#023e8a" opacity="0.6"/>
+  <text x="63" y="109" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle" letter-spacing="1" font-weight="bold">OPENSIGHT</text>
+  <rect x="118" y="98" width="90" height="13" rx="1" fill="#023e8a" opacity="0.6"/>
+  <text x="163" y="109" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle" letter-spacing="1" font-weight="bold">PHANTOM</text>
+  <rect x="218" y="98" width="110" height="13" rx="1" fill="#023e8a" opacity="0.6"/>
+  <text x="273" y="109" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle" letter-spacing="1" font-weight="bold">DRIFT MONITOR</text>
+  <rect x="338" y="98" width="120" height="13" rx="1" fill="#023e8a" opacity="0.6"/>
+  <text x="398" y="109" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle" letter-spacing="1" font-weight="bold">ZERO-TRUST AI</text>
+  <rect x="468" y="98" width="110" height="13" rx="1" fill="#023e8a" opacity="0.6"/>
+  <text x="523" y="109" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle" letter-spacing="1" font-weight="bold">THREAT INTEL</text>
+
+  <!-- section label -->
+  <text x="50" y="150" font-family="'Courier New',monospace" font-size="10" fill="#00b4d8" letter-spacing="4" font-weight="bold">DEFENSE  POSTURE  MAP</text>
+  <line x1="50" y1="156" x2="700" y2="156" stroke="#023e8a" stroke-width="0.8" opacity="0.5"/>
+
+  <!-- legend box -->
+  <rect x="748" y="162" width="224" height="178" rx="1" fill="#020d1f" stroke="#00b4d8" stroke-width="0.8" opacity="0.9"/>
+  <rect x="748" y="162" width="224" height="2" fill="#00b4d8" opacity="0.7"/>
+  <text x="860" y="178" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle" letter-spacing="3" font-weight="bold">LEGEND</text>
+  <circle cx="758" cy="196" r="5" fill="none" stroke="#00b4d8" stroke-width="1.2"/>
+  <text x="772" y="200" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" font-weight="bold">identity layer</text>
+  <circle cx="758" cy="216" r="5" fill="none" stroke="#48cae4" stroke-width="1.2"/>
+  <text x="772" y="220" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">detection layer</text>
+  <circle cx="758" cy="236" r="5" fill="none" stroke="#90e0ef" stroke-width="1.2"/>
+  <text x="772" y="240" font-family="'Courier New',monospace" font-size="9" fill="#90e0ef" font-weight="bold">intelligence layer</text>
+  <line x1="758" y1="256" x2="768" y2="256" stroke="#f5c518" stroke-width="1.5"/>
+  <text x="772" y="260" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">SHENRON bridge</text>
+  <line x1="758" y1="276" x2="768" y2="276" stroke="#cc2200" stroke-width="1.2" stroke-dasharray="4 4"/>
+  <text x="772" y="280" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" font-weight="bold">red team feed</text>
+  <line x1="758" y1="296" x2="768" y2="296" stroke="#00b4d8" stroke-width="1.2" stroke-dasharray="6 6"/>
+  <text x="772" y="300" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" font-weight="bold">detection signal</text>
+  <line x1="758" y1="316" x2="768" y2="316" stroke="#48cae4" stroke-width="1" stroke-dasharray="3 8"/>
+  <text x="772" y="320" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">intel feed</text>
+  <circle cx="758" cy="336" r="4" fill="#f5c518" opacity="0.9"/>
+  <text x="772" y="340" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">core / nexus</text>
+
+  <!-- concentric rings -->
+  <circle class="rp3" cx="440" cy="390" r="210" fill="#023e8a" opacity="0.05"/>
+  <circle cx="440" cy="390" r="210" fill="none" stroke="#90e0ef" stroke-width="0.6" opacity="0.2"/>
+  <circle class="rp2" cx="440" cy="390" r="145" fill="#023e8a" opacity="0.08"/>
+  <circle cx="440" cy="390" r="145" fill="none" stroke="#48cae4" stroke-width="0.8" opacity="0.3"/>
+  <circle class="rp1" cx="440" cy="390" r="80"  fill="#023e8a" opacity="0.12"/>
+  <circle cx="440" cy="390" r="80"  fill="none" stroke="#00b4d8" stroke-width="1.0" opacity="0.5"/>
+
+  <!-- SHENRON nexus at center -->
+  <circle class="rp1" cx="440" cy="390" r="32" fill="#023e8a" opacity="0.3"/>
+  <polygon points="440,358 468,390 440,422 412,390" fill="none" stroke="#f5c518" stroke-width="2.2" class="sb"/>
+  <polygon points="440,364 462,390 440,416 418,390" fill="#000814" opacity="0.8"/>
+  <text x="440" y="386" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" font-weight="bold" letter-spacing="1">SHEN</text>
+  <text x="440" y="400" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" font-weight="bold" letter-spacing="1">RON</text>
+
+  <!-- red team feed lines into SHENRON (from left — offensive side) -->
+  <line class="df3" x1="120" y1="390" x2="412" y2="390" stroke="#cc2200" stroke-width="1.2" opacity="0.5"/>
+  <text x="80" y="386" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" text-anchor="middle">RED</text>
+  <text x="80" y="397" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" text-anchor="middle">FEED</text>
+
+  <!-- IDENTITY LAYER — inner ring nodes -->
+  <!-- reflexive-id top -->
+  <line class="df1" x1="440" y1="358" x2="440" y2="314" stroke="#00b4d8" stroke-width="1.0" opacity="0.7"/>
+  <circle cx="440" cy="308" r="6" fill="none" stroke="#00b4d8" stroke-width="1.4"/>
+  <circle cx="440" cy="308" r="2" fill="#00b4d8"/>
+  <text x="440" y="294" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle" font-weight="bold">reflexive-id</text>
+  <text x="440" y="283" font-family="'Courier New',monospace" font-size="7" fill="#023e8a" text-anchor="middle">zero-trust agent</text>
+
+  <!-- zero-trust right inner -->
+  <line class="df1" x1="468" y1="390" x2="514" y2="390" stroke="#00b4d8" stroke-width="1.0" opacity="0.7"/>
+  <circle cx="520" cy="390" r="6" fill="none" stroke="#00b4d8" stroke-width="1.4"/>
+  <circle cx="520" cy="390" r="2" fill="#00b4d8"/>
+  <text x="540" y="387" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" font-weight="bold">priv</text>
+  <text x="540" y="398" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" font-weight="bold">revocation</text>
+
+  <!-- DETECTION LAYER — mid ring nodes -->
+  <!-- PHANTOM top-right -->
+  <line class="df2" x1="543" y1="288" x2="490" y2="340" stroke="#48cae4" stroke-width="0.9" opacity="0.6"/>
+  <circle cx="548" cy="284" r="7" fill="none" stroke="#48cae4" stroke-width="1.3"/>
+  <circle cx="548" cy="284" r="2" fill="#48cae4"/>
+  <text x="570" y="280" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">PHANTOM</text>
+  <text x="570" y="291" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">honeypot id</text>
+
+  <!-- PHANTOM bottom-right -->
+  <line class="df2" x1="543" y1="496" x2="490" y2="444" stroke="#48cae4" stroke-width="0.9" opacity="0.6"/>
+  <circle cx="548" cy="500" r="7" fill="none" stroke="#48cae4" stroke-width="1.3"/>
+  <circle cx="548" cy="500" r="2" fill="#48cae4"/>
+  <text x="570" y="496" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">drift monitor</text>
+  <text x="570" y="507" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">session analysis</text>
+
+  <!-- Decoy-Hunter bottom-left -->
+  <line class="df2" x1="337" y1="496" x2="390" y2="444" stroke="#48cae4" stroke-width="0.9" opacity="0.6"/>
+  <circle cx="332" cy="500" r="7" fill="none" stroke="#48cae4" stroke-width="1.3"/>
+  <circle cx="332" cy="500" r="2" fill="#48cae4"/>
+  <text x="244" y="496" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">Decoy-Hunter</text>
+  <text x="244" y="507" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">attribution engine</text>
+
+  <!-- INTELLIGENCE LAYER — outer ring nodes -->
+  <!-- OpenSight top -->
+  <line class="df3" x1="440" y1="308" x2="440" y2="184" stroke="#90e0ef" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="440" cy="178" r="8" fill="none" stroke="#90e0ef" stroke-width="1.2"/>
+  <circle cx="440" cy="178" r="2" fill="#90e0ef"/>
+  <text x="440" y="162" font-family="'Courier New',monospace" font-size="10" fill="#90e0ef" text-anchor="middle" font-weight="bold">OpenSight</text>
+  <text x="440" y="151" font-family="'Courier New',monospace" font-size="7" fill="#023e8a" text-anchor="middle">OSINT / entity extraction</text>
+
+  <!-- botnet-hunter top-right -->
+  <line class="df3" x1="610" y1="250" x2="548" y2="284" stroke="#90e0ef" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="618" cy="246" r="7" fill="none" stroke="#90e0ef" stroke-width="1.1"/>
+  <circle cx="618" cy="246" r="2" fill="#90e0ef"/>
+  <text x="638" y="242" font-family="'Courier New',monospace" font-size="9" fill="#90e0ef" font-weight="bold">botnet-hunter</text>
+  <text x="638" y="253" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">devto ecosystem</text>
+
+  <!-- INV-003 right -->
+  <line class="df3" x1="648" y1="390" x2="520" y2="390" stroke="#90e0ef" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="654" cy="390" r="7" fill="none" stroke="#90e0ef" stroke-width="1.1"/>
+  <circle cx="654" cy="390" r="2" fill="#90e0ef" opacity="0.5"/>
+  <text x="674" y="386" font-family="'Courier New',monospace" font-size="8" fill="#90e0ef">INV-003</text>
+  <text x="674" y="397" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">CLOSED · 32 repos</text>
+
+  <!-- INV-004 bottom-right -->
+  <line class="df3" x1="610" y1="534" x2="548" y2="500" stroke="#90e0ef" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="618" cy="538" r="7" fill="none" stroke="#48cae4" stroke-width="1.1"/>
+  <circle cx="618" cy="538" r="2" fill="#48cae4"/>
+  <text x="638" y="534" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">INV-004</text>
+  <text x="638" y="545" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">ACTIVE</text>
+
+  <!-- INV-005 bottom -->
+  <line class="df3" x1="440" y1="600" x2="440" y2="470" stroke="#90e0ef" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="440" cy="606" r="8" fill="none" stroke="#48cae4" stroke-width="1.2"/>
+  <circle cx="440" cy="606" r="2" fill="#48cae4"/>
+  <text x="440" y="624" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" text-anchor="middle" font-weight="bold">INV-005</text>
+  <text x="440" y="636" font-family="'Courier New',monospace" font-size="7" fill="#023e8a" text-anchor="middle">PRE-DISCLOSURE</text>
+
+  <!-- Sigma/detection bottom-left -->
+  <line class="df3" x1="270" y1="534" x2="332" y2="500" stroke="#90e0ef" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="262" cy="538" r="7" fill="none" stroke="#90e0ef" stroke-width="1.1"/>
+  <circle cx="262" cy="538" r="2" fill="#90e0ef"/>
+  <text x="170" y="534" font-family="'Courier New',monospace" font-size="9" fill="#90e0ef" font-weight="bold">Sigma rules</text>
+  <text x="170" y="545" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">detection validation</text>
+
+  <!-- FBI corpus left -->
+  <line class="df3" x1="232" y1="390" x2="360" y2="390" stroke="#90e0ef" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="226" cy="390" r="7" fill="none" stroke="#90e0ef" stroke-width="1.1"/>
+  <circle cx="226" cy="390" r="2" fill="#90e0ef"/>
+  <text x="140" y="386" font-family="'Courier New',monospace" font-size="9" fill="#90e0ef" font-weight="bold">FBI corpus</text>
+  <text x="140" y="397" font-family="'Courier New',monospace" font-size="7" fill="#023e8a">OpenSight demo</text>
+
+  <!-- SIGNALS block -->
+  <line x1="50" y1="648" x2="950" y2="648" stroke="#023e8a" stroke-width="0.8" opacity="0.4"/>
+  <rect x="22" y="657" width="956" height="200" fill="#020d1f" stroke="#00b4d8" stroke-width="0.8"/>
+  <rect x="22" y="657" width="956" height="3" fill="#00b4d8" opacity="0.8"/>
+
+  <text x="50" y="676" font-family="'Courier New',monospace" font-size="10" fill="#00b4d8" letter-spacing="4" font-weight="bold">ACTIVE  INVESTIGATIONS</text>
+  <text x="950" y="676" font-family="'Courier New',monospace" font-size="9" fill="#023e8a" text-anchor="end">pre-registration methodology</text>
+
+  <!-- INV-003 -->
+  <rect x="50" y="688" width="8" height="8" fill="#023e8a"/>
+  <text x="66" y="697" font-family="'Courier New',monospace" font-size="9" fill="#90e0ef" font-weight="bold">[ <tspan fill="#023e8a">CLOSED</tspan> ]  <tspan fill="#caf0f8">INV-003</tspan>  <tspan fill="#023e8a">·</tspan>  <tspan fill="#90e0ef">nsboost.xyz / NSBoost v2 network — 32+ repos, 4 disclosure waves to GitHub T&amp;S</tspan></text>
+
+  <!-- INV-004 -->
+  <rect x="50" y="706" width="8" height="8" fill="#00b4d8"/>
+  <text x="66" y="715" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">[ <tspan fill="#00b4d8">ACTIVE</tspan> ]  <tspan fill="#caf0f8">INV-004</tspan>  <tspan fill="#023e8a">·</tspan>  <tspan fill="#48cae4">Chrome extension [fkiaohmee...] — payload extraction, C2 enumeration ongoing</tspan></text>
+
+  <!-- INV-005 -->
+  <rect x="50" y="724" width="8" height="8" fill="#48cae4"/>
+  <text x="66" y="733" font-family="'Courier New',monospace" font-size="9" fill="#48cae4" font-weight="bold">[ <tspan fill="#48cae4">PRE-DISCLOSURE</tspan> ]  <tspan fill="#caf0f8">INV-005</tspan>  <tspan fill="#023e8a">·</tspan>  <tspan fill="#023e8a">[REDACTED]</tspan></text>
+
+  <line x1="50" y1="748" x2="950" y2="748" stroke="#023e8a" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- stats row -->
+  <text x="50" y="768" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" letter-spacing="3" font-weight="bold">DISCLOSURE</text>
+  <text x="50" y="788" font-family="'Courier New',monospace" font-size="14" fill="#caf0f8" font-weight="bold">4<tspan font-size="9" fill="#00b4d8"> waves</tspan></text>
+  <text x="50" y="806" font-family="'Courier New',monospace" font-size="14" fill="#caf0f8" font-weight="bold">32+<tspan font-size="9" fill="#00b4d8"> repos reported</tspan></text>
+  <text x="50" y="824" font-family="'Courier New',monospace" font-size="14" fill="#caf0f8" font-weight="bold">3<tspan font-size="9" fill="#00b4d8"> active investigations</tspan></text>
+
+  <line x1="260" y1="762" x2="260" y2="840" stroke="#023e8a" stroke-width="0.8" opacity="0.4"/>
+
+  <text x="280" y="768" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" letter-spacing="3" font-weight="bold">DETECTION  COVERAGE</text>
+  <text x="280" y="788" font-family="'Courier New',monospace" font-size="14" fill="#caf0f8" font-weight="bold">6+<tspan font-size="9" fill="#00b4d8"> honeypot types identified</tspan></text>
+  <text x="280" y="806" font-family="'Courier New',monospace" font-size="14" fill="#caf0f8" font-weight="bold">49<tspan font-size="9" fill="#00b4d8"> mutation layers (SHENRON)</tspan></text>
+  <text x="280" y="824" font-family="'Courier New',monospace" font-size="14" fill="#caf0f8" font-weight="bold">52<tspan font-size="9" fill="#00b4d8"> OpenSight test cases</tspan></text>
+
+  <line x1="600" y1="762" x2="600" y2="840" stroke="#023e8a" stroke-width="0.8" opacity="0.4"/>
+
+  <text x="620" y="768" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" letter-spacing="3" font-weight="bold">METHODOLOGY</text>
+  <text x="620" y="788" font-family="'Courier New',monospace" font-size="11" fill="#48cae4" font-weight="bold">&#x2713; <tspan fill="#caf0f8">pre-registered investigations</tspan></text>
+  <text x="620" y="806" font-family="'Courier New',monospace" font-size="11" fill="#48cae4" font-weight="bold">&#x2713; <tspan fill="#caf0f8">responsible disclosure</tspan></text>
+  <text x="620" y="824" font-family="'Courier New',monospace" font-size="11" fill="#48cae4" font-weight="bold">&#x2713; <tspan fill="#caf0f8">public evidence packages</tspan></text>
+
+  <!-- SHENRON bridge badge -->
+  <rect x="634" y="858" width="340" height="40" rx="1" fill="#020d1f" stroke="#f5c518" stroke-width="1.5"/>
+  <rect x="634" y="858" width="340" height="3" fill="#f5c518" opacity="0.8"/>
+  <text x="804" y="875" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="2" font-weight="bold">&#x25C8; SHENRON  //  RED &#x2194; BLUE NEXUS</text>
+  <text x="804" y="890" font-family="'Courier New',monospace" font-size="9" fill="#00b4d8" text-anchor="middle">gnomeman4201.github.io &#x2192;</text>
+</svg>
