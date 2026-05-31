@@ -1,135 +1,130 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 1000 640" style="background:#0d0000;">
-  <rect width="100%" height="560" fill="#0d0000"/>
-  <rect x="0" y="0" width="100%" height="3" fill="#8b0000" opacity="0.6"/>
-  <text x="44" y="28" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" letter-spacing="4" font-weight="bold">TOOL DOSSIERS</text>
-  <line x1="44" y1="34" x2="816" y2="34" stroke="#8b0000" stroke-width="0.8" opacity="0.35"/>
-  <rect x="22"  y="44" width="196" height="152" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
-  <rect x="22"  y="44" width="196" height="4" fill="#f5c518" opacity="0.9"/>
-  <text x="36"  y="63" font-family="'Courier New',monospace" font-size="13" fill="#f5c518" font-weight="bold">LANimals</text>
-  <text x="36"  y="76" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">RECON / DECEPTION</text>
-  <line x1="36" y1="82" x2="206" y2="82" stroke="#8b0000" stroke-width="0.6"/>
-  <text x="36"  y="97"  font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Host discovery, behavioral</text>
-  <text x="36"  y="111" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">risk scoring, honeypot</text>
-  <text x="36"  y="125" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">traps, force-directed</text>
-  <text x="36"  y="139" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">graph UI.</text>
-  <text x="36"  y="157" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;7  <tspan fill="#cc2200">drift: 0.52&#x25B2;</tspan></text>
-  <rect x="36"  y="167" width="58" height="12" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
-  <text x="65"  y="177" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
-  <rect x="228" y="44" width="196" height="152" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
-  <rect x="228" y="44" width="196" height="4" fill="#f5c518" opacity="0.9"/>
-  <text x="242" y="63" font-family="'Courier New',monospace" font-size="13" fill="#f5c518" font-weight="bold">Lune</text>
-  <text x="242" y="76" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">ADVERSARY SIM</text>
-  <line x1="242" y1="82" x2="412" y2="82" stroke="#8b0000" stroke-width="0.6"/>
-  <text x="242" y="97"  font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">64-module framework.</text>
-  <text x="242" y="111" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Encrypted C2, LLM</text>
-  <text x="242" y="125" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">mutation engine, unified</text>
-  <text x="242" y="139" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">persona system.</text>
-  <text x="242" y="157" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;7  <tspan fill="#ffffff">92 tests</tspan></text>
-  <rect x="242" y="167" width="58" height="12" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
-  <text x="271" y="177" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
-  <rect x="434" y="44" width="196" height="152" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
-  <rect x="434" y="44" width="196" height="4" fill="#cc2200" opacity="0.9"/>
-  <text x="448" y="63" font-family="'Courier New',monospace" font-size="11" fill="#ff4422" font-weight="bold">zer0DAYSlater</text>
-  <text x="448" y="76" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">POST-EXPLOIT  &#x26A0;</text>
-  <line x1="448" y1="82" x2="618" y2="82" stroke="#8b0000" stroke-width="0.6"/>
-  <text x="448" y="97"  font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">LLM-driven operator,</text>
-  <text x="448" y="111" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">session drift monitoring,</text>
-  <text x="448" y="125" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">mTLS mesh, ephemeral</text>
-  <text x="448" y="139" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">NaCl keypairs.</text>
-  <text x="448" y="157" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;3  <tspan fill="#cc2200">auth envs only</tspan></text>
-  <rect x="448" y="167" width="58" height="12" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
-  <text x="477" y="177" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
-  <rect x="640" y="44" width="198" height="152" fill="#0f0000" stroke="#f5c518" stroke-width="1.8"/>
-  <rect x="640" y="44" width="198" height="4" fill="#f5c518"/>
-  <text x="654" y="63" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">drift_orchestrator</text>
-  <text x="654" y="76" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">CORE / CONTROL</text>
-  <line x1="654" y1="82" x2="826" y2="82" stroke="#8b0000" stroke-width="0.6"/>
-  <text x="654" y="97"  font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Runtime drift control for</text>
-  <text x="654" y="111" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">LLM sessions. SQLite flight</text>
-  <text x="654" y="125" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">recording, embeddings,</text>
-  <text x="654" y="139" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">hysteresis policy engine.</text>
-  <text x="654" y="157" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605; core node</text>
-  <rect x="654" y="167" width="58" height="12" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
-  <text x="683" y="177" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
-  <rect x="22"  y="208" width="196" height="140" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
-  <rect x="22"  y="208" width="196" height="4" fill="#ffffff" opacity="0.7"/>
-  <text x="36"  y="228" font-family="'Courier New',monospace" font-size="13" fill="#ffffff" font-weight="bold">OpenSight</text>
-  <text x="36"  y="241" font-family="'Courier New',monospace" font-size="8" fill="#888888" letter-spacing="2">OSINT / INTEL</text>
-  <line x1="36" y1="247" x2="206" y2="247" stroke="#333333" stroke-width="0.6"/>
-  <text x="36"  y="262" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Entity extraction, typed</text>
-  <text x="36"  y="276" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">knowledge graph, bundles.</text>
-  <text x="36"  y="290" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Demonstrated on</text>
-  <text x="36"  y="304" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">FBI corpus.</text>
-  <text x="36"  y="320" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">52 tests</text>
-  <rect x="36"  y="330" width="58" height="12" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
-  <text x="65"  y="340" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
-  <rect x="228" y="208" width="196" height="140" fill="#0f0000" stroke="#f5c518" stroke-width="2"/>
-  <rect x="228" y="208" width="196" height="4" fill="#f5c518"/>
-  <text x="242" y="228" font-family="'Courier New',monospace" font-size="13" fill="#f5c518" font-weight="bold">SHENRON</text>
-  <text x="242" y="241" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">CORE / PIPELINE</text>
-  <line x1="242" y1="247" x2="412" y2="247" stroke="#8b0000" stroke-width="0.6"/>
-  <text x="242" y="262" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Synthetic adversarial</text>
-  <text x="242" y="276" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">telemetry pipeline. 49-layer</text>
-  <text x="242" y="290" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">mutation, Sigma rule eval,</text>
-  <text x="242" y="304" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">detection validation.</text>
-  <text x="242" y="320" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">center of the graph</text>
-  <rect x="434" y="208" width="196" height="140" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
-  <rect x="434" y="208" width="196" height="4" fill="#ffffff" opacity="0.6"/>
-  <text x="448" y="228" font-family="'Courier New',monospace" font-size="13" fill="#ffffff" font-weight="bold">PHANTOM</text>
-  <text x="448" y="241" font-family="'Courier New',monospace" font-size="8" fill="#888888" letter-spacing="2">DECEPTION / DETECT</text>
-  <line x1="448" y1="247" x2="618" y2="247" stroke="#333333" stroke-width="0.6"/>
-  <text x="448" y="262" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Honeypot fingerprinting.</text>
-  <text x="448" y="276" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Identifies Cowrie, Kippo,</text>
-  <text x="448" y="290" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">OpenCanary, Thinkst +4.</text>
-  <text x="448" y="304" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Extends Decoy-Hunter.</text>
-  <text x="448" y="320" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">fingerprint stack</text>
-  <rect x="640" y="208" width="198" height="140" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
-  <rect x="640" y="208" width="198" height="4" fill="#cc2200" opacity="0.9"/>
-  <text x="654" y="228" font-family="'Courier New',monospace" font-size="13" fill="#ff4422" font-weight="bold">bad_BANANA</text>
-  <text x="654" y="241" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">OFFENSE / MOBILE</text>
-  <line x1="654" y1="247" x2="826" y2="247" stroke="#8b0000" stroke-width="0.6"/>
-  <text x="654" y="262" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Field-ready, no-root</text>
-  <text x="654" y="276" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">offensive toolkit.</text>
-  <text x="654" y="290" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Android (Termux)</text>
-  <text x="654" y="304" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">and Debian.</text>
-  <text x="654" y="320" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;4  field-ready</text>
-  <rect x="22"  y="360" width="154" height="104" fill="#0a0000" stroke="#8b0000" stroke-width="0.8"/>
-  <rect x="22"  y="360" width="154" height="3" fill="#8b0000" opacity="0.6"/>
-  <text x="36"  y="377" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" font-weight="bold">Blackglass</text>
-  <text x="36"  y="390" font-family="'Courier New',monospace" font-size="7" fill="#8b0000" letter-spacing="1">OFFENSE</text>
-  <text x="36"  y="405" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Offline AI payload mut.</text>
-  <text x="36"  y="418" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Termux+Linux. No net.</text>
-  <text x="36"  y="451" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" font-weight="bold">offline · no net</text>
-  <rect x="188" y="360" width="154" height="104" fill="#0a0000" stroke="#8b0000" stroke-width="0.8"/>
-  <rect x="188" y="360" width="154" height="3" fill="#8b0000" opacity="0.6"/>
-  <text x="202" y="377" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" font-weight="bold">LANIMORPH</text>
-  <text x="202" y="390" font-family="'Courier New',monospace" font-size="7" fill="#8b0000" letter-spacing="1">OFFENSE</text>
-  <text x="202" y="405" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">LAN-aware morphing.</text>
-  <text x="202" y="418" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Per-subnet XOR mutation.</text>
-  <text x="202" y="451" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" font-weight="bold">XOR morph</text>
-  <rect x="354" y="360" width="154" height="104" fill="#0a0000" stroke="#8b0000" stroke-width="0.8"/>
-  <rect x="354" y="360" width="154" height="3" fill="#8b0000" opacity="0.6"/>
-  <text x="368" y="377" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" font-weight="bold">reflexive-identity</text>
-  <text x="368" y="390" font-family="'Courier New',monospace" font-size="7" fill="#8b0000" letter-spacing="1">ML / ZERO-TRUST</text>
-  <text x="368" y="405" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Zero-trust AI agent.</text>
-  <text x="368" y="418" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Self-auth, priv revocation.</text>
-  <text x="368" y="451" font-family="'Courier New',monospace" font-size="8" fill="#f5c518" font-weight="bold">autonomous agent</text>
-  <rect x="520" y="360" width="154" height="104" fill="#0a0000" stroke="#8b0000" stroke-width="0.8"/>
-  <rect x="520" y="360" width="154" height="3" fill="#8b0000" opacity="0.6"/>
-  <text x="534" y="377" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" font-weight="bold">OWN</text>
-  <text x="534" y="390" font-family="'Courier New',monospace" font-size="7" fill="#8b0000" letter-spacing="1">OFFENSE</text>
-  <text x="534" y="405" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Adaptive offensive fw.</text>
-  <text x="534" y="418" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Feedback-driven payload.</text>
-  <text x="534" y="451" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" font-weight="bold">adaptive payload</text>
-  <rect x="686" y="360" width="152" height="104" fill="#0a0000" stroke="#8b0000" stroke-width="0.8"/>
-  <rect x="686" y="360" width="152" height="3" fill="#8b0000" opacity="0.6"/>
-  <text x="700" y="377" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" font-weight="bold">aliasOS</text>
-  <text x="700" y="390" font-family="'Courier New',monospace" font-size="7" fill="#8b0000" letter-spacing="1">OPS / PLATFORM</text>
-  <text x="700" y="405" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Textual TUI. 296 aliases.</text>
-  <text x="700" y="418" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Live demo. v1.0.0.</text>
-  <rect x="700" y="434" width="58" height="12" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
-  <text x="729" y="444" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
-  <text x="44"  y="488" font-family="'Courier New',monospace" font-size="9" fill="#8b0000" letter-spacing="2">ALSO BUILT:</text>
-  <text x="44"  y="508" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" font-weight="bold">pwn<tspan fill="#5a2020">  ·  </tspan>chain<tspan fill="#5a2020">  ·  </tspan>Decoy-Hunter<tspan fill="#5a2020">  ·  </tspan>devto-botnet-hunter<tspan fill="#5a2020">  ·  </tspan>drift-artifact</text>
-  <rect x="0" y="557" width="100%" height="3" fill="#8b0000" opacity="0.5"/>
+  <rect width="1000" height="640" fill="#0d0000"/>
+  <rect x="0" y="0" width="1000" height="3" fill="#ffffff"/>
+  <rect x="0" y="0" width="3" height="640" fill="#ffffff" opacity="0.7"/>
+  <rect x="997" y="0" width="3" height="640" fill="#ffffff" opacity="0.7"/>
+  <rect x="0" y="637" width="1000" height="3" fill="#ffffff"/>
+  <text x="50" y="34" font-family="'Courier New',monospace" font-size="11" fill="#cc2200" letter-spacing="4" font-weight="bold">TOOL  DOSSIERS</text>
+  <line x1="50" y1="42" x2="950" y2="42" stroke="#ffffff" stroke-width="0.5" opacity="0.15"/>
+  <rect x="20" y="54" width="228" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="20" y="54" width="228" height="3" fill="#f5c518"/>
+  <text x="34" y="74" font-family="'Courier New',monospace" font-size="14" fill="#f5c518" font-weight="bold">LANimals</text>
+  <text x="34" y="88" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">RECON / DECEPTION</text>
+  <line x1="34" y1="94" x2="234" y2="94" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="34" y="110" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Host discovery, behavioral</text>
+  <text x="34" y="124" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">risk scoring, honeypot traps,</text>
+  <text x="34" y="138" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">force-directed graph UI.</text>
+  <text x="34" y="158" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;7  <tspan fill="#cc2200">drift: 0.52&#x25B2;</tspan></text>
+  <rect x="34" y="168" width="62" height="13" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
+  <text x="65" y="179" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
+  <rect x="260" y="54" width="228" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="260" y="54" width="228" height="3" fill="#f5c518"/>
+  <text x="274" y="74" font-family="'Courier New',monospace" font-size="14" fill="#f5c518" font-weight="bold">Lune</text>
+  <text x="274" y="88" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">ADVERSARY SIM</text>
+  <line x1="274" y1="94" x2="474" y2="94" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="274" y="110" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">64-module framework.</text>
+  <text x="274" y="124" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Encrypted C2, LLM mutation</text>
+  <text x="274" y="138" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">engine, unified persona system.</text>
+  <text x="274" y="158" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;7  <tspan fill="#ffffff">92 tests</tspan></text>
+  <rect x="274" y="168" width="62" height="13" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
+  <text x="305" y="179" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
+  <rect x="500" y="54" width="228" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="500" y="54" width="228" height="3" fill="#cc2200"/>
+  <text x="514" y="74" font-family="'Courier New',monospace" font-size="12" fill="#ff4422" font-weight="bold">zer0DAYSlater</text>
+  <text x="514" y="88" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">POST-EXPLOIT  &#x26A0;</text>
+  <line x1="514" y1="94" x2="714" y2="94" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="514" y="110" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">LLM-driven operator, session</text>
+  <text x="514" y="124" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">drift monitoring, mTLS mesh,</text>
+  <text x="514" y="138" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">ephemeral NaCl keypairs.</text>
+  <text x="514" y="158" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;3  <tspan fill="#cc2200">auth envs only</tspan></text>
+  <rect x="514" y="168" width="62" height="13" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
+  <text x="545" y="179" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
+  <rect x="740" y="54" width="240" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="740" y="54" width="240" height="3" fill="#f5c518"/>
+  <text x="754" y="74" font-family="'Courier New',monospace" font-size="12" fill="#f5c518" font-weight="bold">drift_orchestrator</text>
+  <text x="754" y="88" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">CORE / CONTROL</text>
+  <line x1="754" y1="94" x2="966" y2="94" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="754" y="110" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Runtime drift control for LLM</text>
+  <text x="754" y="124" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">sessions. SQLite flight recording,</text>
+  <text x="754" y="138" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">hysteresis policy engine.</text>
+  <text x="754" y="158" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605; core node</text>
+  <rect x="754" y="168" width="62" height="13" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
+  <text x="785" y="179" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
+  <rect x="20" y="238" width="228" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="20" y="238" width="228" height="3" fill="#ffffff" opacity="0.6"/>
+  <text x="34" y="258" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">OpenSight</text>
+  <text x="34" y="272" font-family="'Courier New',monospace" font-size="8" fill="#888888" letter-spacing="2">OSINT / INTEL</text>
+  <line x1="34" y1="278" x2="234" y2="278" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="34" y="294" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Entity extraction, typed</text>
+  <text x="34" y="308" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">knowledge graph, investigation</text>
+  <text x="34" y="322" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">bundles. FBI corpus demo.</text>
+  <text x="34" y="342" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">52 tests</text>
+  <rect x="34" y="352" width="62" height="13" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
+  <text x="65" y="363" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
+  <rect x="260" y="238" width="228" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="260" y="238" width="228" height="3" fill="#f5c518"/>
+  <text x="274" y="258" font-family="'Courier New',monospace" font-size="14" fill="#f5c518" font-weight="bold">SHENRON</text>
+  <text x="274" y="272" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">CORE / PIPELINE</text>
+  <line x1="274" y1="278" x2="474" y2="278" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="274" y="294" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Synthetic adversarial telemetry.</text>
+  <text x="274" y="308" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">49-layer mutation, Sigma rule</text>
+  <text x="274" y="322" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">eval, detection validation.</text>
+  <text x="274" y="342" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">center of the graph</text>
+  <rect x="500" y="238" width="228" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="500" y="238" width="228" height="3" fill="#ffffff" opacity="0.6"/>
+  <text x="514" y="258" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">PHANTOM</text>
+  <text x="514" y="272" font-family="'Courier New',monospace" font-size="8" fill="#888888" letter-spacing="2">DECEPTION / DETECT</text>
+  <line x1="514" y1="278" x2="714" y2="278" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="514" y="294" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Honeypot fingerprinting.</text>
+  <text x="514" y="308" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Identifies Cowrie, Kippo,</text>
+  <text x="514" y="322" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">OpenCanary, Thinkst +4.</text>
+  <text x="514" y="342" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">fingerprint stack</text>
+  <rect x="740" y="238" width="240" height="168" fill="#0f0000" stroke="#ffffff" stroke-width="0.8"/>
+  <rect x="740" y="238" width="240" height="3" fill="#cc2200"/>
+  <text x="754" y="258" font-family="'Courier New',monospace" font-size="14" fill="#ff4422" font-weight="bold">bad_BANANA</text>
+  <text x="754" y="272" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" letter-spacing="2">OFFENSE / MOBILE</text>
+  <line x1="754" y1="278" x2="966" y2="278" stroke="#ffffff" stroke-width="0.4" opacity="0.2"/>
+  <text x="754" y="294" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">Field-ready, no-root offensive</text>
+  <text x="754" y="308" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">toolkit. Android (Termux)</text>
+  <text x="754" y="322" font-family="'Courier New',monospace" font-size="8.5" fill="#ffffff">and Debian.</text>
+  <text x="754" y="342" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" font-weight="bold">&#x2605;4  field-ready</text>
+  <rect x="20" y="422" width="183" height="108" fill="#0a0000" stroke="#ffffff" stroke-width="0.6"/>
+  <rect x="20" y="422" width="183" height="2" fill="#cc2200"/>
+  <text x="34" y="440" font-family="'Courier New',monospace" font-size="11" fill="#cc2200" font-weight="bold">Blackglass</text>
+  <text x="34" y="453" font-family="'Courier New',monospace" font-size="7" fill="#888888" letter-spacing="1">OFFENSE</text>
+  <text x="34" y="468" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Offline AI payload mutation.</text>
+  <text x="34" y="481" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Termux+Linux. No network.</text>
+  <text x="34" y="516" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" font-weight="bold">offline · no net</text>
+  <rect x="215" y="422" width="183" height="108" fill="#0a0000" stroke="#ffffff" stroke-width="0.6"/>
+  <rect x="215" y="422" width="183" height="2" fill="#cc2200"/>
+  <text x="229" y="440" font-family="'Courier New',monospace" font-size="11" fill="#cc2200" font-weight="bold">LANIMORPH</text>
+  <text x="229" y="453" font-family="'Courier New',monospace" font-size="7" fill="#888888" letter-spacing="1">OFFENSE</text>
+  <text x="229" y="468" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">LAN-aware morphing payload.</text>
+  <text x="229" y="481" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Per-subnet XOR mutation.</text>
+  <text x="229" y="516" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" font-weight="bold">XOR morph</text>
+  <rect x="410" y="422" width="183" height="108" fill="#0a0000" stroke="#ffffff" stroke-width="0.6"/>
+  <rect x="410" y="422" width="183" height="2" fill="#f5c518"/>
+  <text x="424" y="440" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">reflexive-identity</text>
+  <text x="424" y="453" font-family="'Courier New',monospace" font-size="7" fill="#888888" letter-spacing="1">ML / ZERO-TRUST</text>
+  <text x="424" y="468" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Zero-trust AI agent.</text>
+  <text x="424" y="481" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Self-auth, priv revocation.</text>
+  <text x="424" y="516" font-family="'Courier New',monospace" font-size="8" fill="#f5c518" font-weight="bold">autonomous agent</text>
+  <rect x="605" y="422" width="183" height="108" fill="#0a0000" stroke="#ffffff" stroke-width="0.6"/>
+  <rect x="605" y="422" width="183" height="2" fill="#cc2200"/>
+  <text x="619" y="440" font-family="'Courier New',monospace" font-size="11" fill="#cc2200" font-weight="bold">OWN</text>
+  <text x="619" y="453" font-family="'Courier New',monospace" font-size="7" fill="#888888" letter-spacing="1">OFFENSE</text>
+  <text x="619" y="468" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Adaptive offensive framework.</text>
+  <text x="619" y="481" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Feedback-driven payload.</text>
+  <text x="619" y="516" font-family="'Courier New',monospace" font-size="8" fill="#cc2200" font-weight="bold">adaptive payload</text>
+  <rect x="800" y="422" width="180" height="108" fill="#0a0000" stroke="#ffffff" stroke-width="0.6"/>
+  <rect x="800" y="422" width="180" height="2" fill="#ffffff" opacity="0.5"/>
+  <text x="814" y="440" font-family="'Courier New',monospace" font-size="11" fill="#ffffff" font-weight="bold">aliasOS</text>
+  <text x="814" y="453" font-family="'Courier New',monospace" font-size="7" fill="#888888" letter-spacing="1">OPS / PLATFORM</text>
+  <text x="814" y="468" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Textual TUI. 296 aliases.</text>
+  <text x="814" y="481" font-family="'Courier New',monospace" font-size="8" fill="#ffffff">Live demo. v1.0.0.</text>
+  <rect x="814" y="494" width="62" height="13" rx="1" fill="#003300" stroke="#00aa00" stroke-width="0.5"/>
+  <text x="845" y="505" font-family="'Courier New',monospace" font-size="8" fill="#00ff44" text-anchor="middle" font-weight="bold">CI PASS</text>
+  <line x1="20" y1="546" x2="980" y2="546" stroke="#ffffff" stroke-width="0.4" opacity="0.15"/>
+  <text x="50" y="566" font-family="'Courier New',monospace" font-size="9" fill="#8b0000" letter-spacing="2">ALSO BUILT:</text>
+  <text x="50" y="588" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" font-weight="bold">pwn<tspan fill="#3a1a1a">  ·  </tspan>chain<tspan fill="#3a1a1a">  ·  </tspan>Decoy-Hunter<tspan fill="#3a1a1a">  ·  </tspan>devto-botnet-hunter<tspan fill="#3a1a1a">  ·  </tspan>drift-artifact</text>
 </svg>
