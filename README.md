@@ -1,15 +1,15 @@
 <div align="center">
-<img src="profile_main.svg" width="860" alt="GnomeMan4201 — badBANANA collective"/>
+<img src="profile_main.svg" width="100%" alt="GnomeMan4201"/>
 </div>
 
 <div align="center">
-<img src="profile_dossiers.svg" width="860" alt="Tool Dossiers"/>
+<img src="profile_dossiers.svg" width="100%" alt="Tool Dossiers"/>
 </div>
 
 <div align="center">
-<img src="profile_timeline.svg" width="860" alt="Build Timeline"/>
+<img src="profile_timeline.svg" width="100%" alt="Build Timeline"/>
 </div>
 
 <div align="center">
-<img src="profile_eof.svg" width="860" alt="End of File"/>
+<img src="profile_eof.svg" width="100%" alt="End of File"/>
 </div>
