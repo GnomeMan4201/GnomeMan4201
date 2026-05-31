@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" viewBox="0 0 860 320" style="background:#0d0000;">
+  <rect width="860" height="320" fill="#0d0000"/>
+  <rect x="0" y="0" width="860" height="3" fill="#8b0000" opacity="0.6"/>
+  <rect x="180" y="16" width="500" height="288" fill="#0a0000" stroke="#8b0000" stroke-width="1"/>
+  <rect x="180" y="16" width="500" height="3" fill="#8b0000" opacity="0.5"/>
+  <rect x="180" y="301" width="500" height="3" fill="#8b0000" opacity="0.5"/>
+  <image href="assets/bad_banana_end.png" x="180" y="16" width="500" height="288"/>
+  <rect x="0" y="317" width="860" height="3" fill="#8b0000"/>
+</svg>
