@@ -1,62 +1,96 @@
-name: update-stats
+name: Update Profile Stats
+
 on:
   schedule:
-    - cron: "0 6 * * *"
+    - cron: '0 6 * * 0'
   workflow_dispatch:
+
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: fetch stats
-        id: stats
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch stats and patch SVG
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          STARS=$(gh api graphql -f query='query{user(login:"GnomeMan4201"){repositories(first:100,ownerAffiliations:OWNER){nodes{stargazerCount}}}}' --jq '[.data.user.repositories.nodes[].stargazerCount]|add')
-          FOLLOWERS=$(gh api users/GnomeMan4201 --jq '.followers')
-          REPOS=$(gh api users/GnomeMan4201 --jq '.public_repos')
-          CONTRIBUTIONS=$(gh api graphql -f query='query{user(login:"GnomeMan4201"){contributionsCollection{contributionCalendar{totalContributions}}}}' --jq '.data.user.contributionsCollection.contributionCalendar.totalContributions')
-          echo "stars=$STARS" >> $GITHUB_OUTPUT
-          echo "followers=$FOLLOWERS" >> $GITHUB_OUTPUT
-          echo "repos=$REPOS" >> $GITHUB_OUTPUT
-          echo "contributions=$CONTRIBUTIONS" >> $GITHUB_OUTPUT
-          echo "updated=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+          python3 - << 'PY'
+          import urllib.request, json, re, os
 
-      - name: update readme
-        env:
-          STARS: ${{ steps.stats.outputs.stars }}
-          FOLLOWERS: ${{ steps.stats.outputs.followers }}
-          REPOS: ${{ steps.stats.outputs.repos }}
-          CONTRIBUTIONS: ${{ steps.stats.outputs.contributions }}
-          UPDATED: ${{ steps.stats.outputs.updated }}
-        run: |
-          python3 - << 'PYEOF'
-          import re, os
-          from pathlib import Path
-          txt = Path("README.md").read_text()
-          stars = os.environ.get("STARS", "?")
-          followers = os.environ.get("FOLLOWERS", "?")
-          repos = os.environ.get("REPOS", "?")
-          contributions = os.environ.get("CONTRIBUTIONS", "?")
-          updated = os.environ.get("UPDATED", "unknown")
-          txt = re.sub(r"GitHub Stars\s+\d+\s+across \d+ public repos",
-                       f"GitHub Stars          {stars:>8}        across {repos} public repos", txt)
-          txt = re.sub(r"Followers\s+\d+\s+organic",
-                       f"Followers             {followers:>8}        organic", txt)
-          txt = re.sub(r"Contributions\s+\d+\s+last 12 months",
-                       f"Contributions         {contributions:>8}        last 12 months", txt)
-          txt = re.sub(r"last updated: [\d\-T:Z]+",
-                       f"last updated: {updated}", txt)
-          Path("README.md").write_text(txt)
-          print(f"updated: stars={stars} followers={followers} repos={repos}")
-          PYEOF
+          def gh(url):
+              req = urllib.request.Request(url, headers={
+                  'Authorization': f"token {os.environ['GH_TOKEN']}",
+                  'Accept': 'application/vnd.github+json',
+                  'User-Agent': 'profile-updater'
+              })
+              with urllib.request.urlopen(req) as r:
+                  return json.loads(r.read())
 
-      - name: commit
+          user = gh('https://api.github.com/users/GnomeMan4201')
+          gh_followers = user['followers']
+          gh_public_repos = user['public_repos']
+
+          repos = gh('https://api.github.com/users/GnomeMan4201/repos?per_page=100')
+          gh_stars = sum(r['stargazers_count'] for r in repos)
+
+          gql = '{"query":"{ user(login:\\"GnomeMan4201\\") { contributionsCollection { contributionCalendar { totalContributions } } } }"}'
+          req = urllib.request.Request('https://api.github.com/graphql',
+              data=gql.encode(),
+              headers={'Authorization': f"bearer {os.environ['GH_TOKEN']}",
+                       'Content-Type': 'application/json', 'User-Agent': 'profile-updater'})
+          with urllib.request.urlopen(req) as r:
+              gh_contributions = json.loads(r.read())['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions']
+
+          def devto(url):
+              req = urllib.request.Request(url, headers={'User-Agent': 'profile-updater'})
+              with urllib.request.urlopen(req) as r:
+                  return json.loads(r.read())
+
+          dev_user = devto('https://dev.to/api/users/by_username?url=gnomeman4201')
+          dev_followers = dev_user.get('followers_count', 0)
+          articles = devto('https://dev.to/api/articles?username=gnomeman4201&per_page=1000')
+          dev_articles = len(articles)
+          dev_readers = sum(a.get('page_views_count', 0) for a in articles)
+
+          print(f"stars:{gh_stars} gh_followers:{gh_followers} repos:{gh_public_repos} contributions:{gh_contributions}")
+          print(f"dev_followers:{dev_followers} articles:{dev_articles} readers:{dev_readers}")
+
+          with open('profile_main.svg', 'r') as f:
+              svg = f.read()
+
+          svg = re.sub(r'>\d+<tspan font-size="9" fill="#cc2200"> stars</tspan>',
+                       f'>{gh_stars}<tspan font-size="9" fill="#cc2200"> stars</tspan>', svg)
+          svg = re.sub(r'>\d+<tspan font-size="9" fill="#cc2200"> contributions</tspan>',
+                       f'>{gh_contributions}<tspan font-size="9" fill="#cc2200"> contributions</tspan>', svg)
+          svg = re.sub(r'>\d+<tspan font-size="9" fill="#cc2200"> public repos</tspan>',
+                       f'>{gh_public_repos}<tspan font-size="9" fill="#cc2200"> public repos</tspan>', svg)
+          svg = re.sub(r'>\d+<tspan font-size="9" fill="#cc2200"> articles</tspan>',
+                       f'>{dev_articles}<tspan font-size="9" fill="#cc2200"> articles</tspan>', svg)
+          svg = re.sub(r'>\d[\d,]*<tspan font-size="9" fill="#cc2200"> followers</tspan>',
+                       f'>{gh_followers}<tspan font-size="9" fill="#cc2200"> followers</tspan>', svg, count=1)
+          svg = re.sub(r'>\d[\d,]*<tspan font-size="9" fill="#cc2200"> followers</tspan>',
+                       f'>{dev_followers:,}<tspan font-size="9" fill="#cc2200"> followers</tspan>', svg, count=1)
+          svg = re.sub(r'>\d[\d,]*<tspan font-size="9" fill="#cc2200"> readers \(all time\)</tspan>',
+                       f'>{dev_readers:,}<tspan font-size="9" fill="#cc2200"> readers (all time)</tspan>', svg)
+
+          with open('profile_main.svg', 'w') as f:
+              f.write(svg)
+          print("done.")
+          PY
+
+      - name: Commit if changed
         run: |
-          git config user.email "action@github.com"
-          git config user.name "stats-bot"
-          git diff --quiet README.md || (git add README.md && git commit -m "auto: update signals [skip ci]" && git push)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add profile_main.svg
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore: auto-update profile stats [$(date -u +%Y-%m-%d)]"
+            git push
+          fi
