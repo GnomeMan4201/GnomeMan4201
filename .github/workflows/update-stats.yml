@@ -54,7 +54,7 @@ jobs:
                   return json.loads(r.read())
 
           dev_user      = devto('https://dev.to/api/users/me')
-          dev_followers = dev_user.get('followers_count', 0)
+          dev_followers = 4270  # DEV.to API doesn't expose follower count — update manually
           articles      = devto('https://dev.to/api/articles/me/published?per_page=1000')
           dev_articles  = len(articles)
           dev_readers   = sum(a.get('page_views_count', 0) for a in articles)
