@@ -11,5 +11,5 @@
 </div>
 
 <div align="center">
-<img src="assets/bad_banana_end.png" width="860" alt="End of File"/>
+<img src="profile_eof.svg" width="860" alt="End of File"/>
 </div>
