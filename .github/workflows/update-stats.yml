@@ -18,6 +18,7 @@ jobs:
       - name: Fetch stats and patch SVG
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: |
           python3 - << 'PY'
           import urllib.request, json, re, os
@@ -32,13 +33,11 @@ jobs:
                   return json.loads(r.read())
 
           user = gh('https://api.github.com/users/GnomeMan4201')
-          gh_followers = user['followers']
+          gh_followers    = user['followers']
           gh_public_repos = user['public_repos']
-
-          repos = gh('https://api.github.com/users/GnomeMan4201/repos?per_page=100')
+          repos    = gh('https://api.github.com/users/GnomeMan4201/repos?per_page=100')
           gh_stars = sum(r['stargazers_count'] for r in repos)
-
-          gql = '{"query":"{ user(login:\\"GnomeMan4201\\") { contributionsCollection { contributionCalendar { totalContributions } } } }"}'
+          gql = json.dumps({'query': '{ user(login:"GnomeMan4201") { contributionsCollection { contributionCalendar { totalContributions } } } }'})
           req = urllib.request.Request('https://api.github.com/graphql',
               data=gql.encode(),
               headers={'Authorization': f"bearer {os.environ['GH_TOKEN']}",
@@ -47,18 +46,21 @@ jobs:
               gh_contributions = json.loads(r.read())['data']['user']['contributionsCollection']['contributionCalendar']['totalContributions']
 
           def devto(url):
-              req = urllib.request.Request(url, headers={'User-Agent': 'profile-updater'})
+              req = urllib.request.Request(url, headers={
+                  'api-key': os.environ['DEVTO_API_KEY'],
+                  'User-Agent': 'profile-updater'
+              })
               with urllib.request.urlopen(req) as r:
                   return json.loads(r.read())
 
-          dev_user = devto('https://dev.to/api/users/by_username?url=gnomeman4201')
+          dev_user      = devto('https://dev.to/api/users/me')
           dev_followers = dev_user.get('followers_count', 0)
-          articles = devto('https://dev.to/api/articles?username=gnomeman4201&per_page=1000')
-          dev_articles = len(articles)
-          dev_readers = sum(a.get('page_views_count', 0) for a in articles)
+          articles      = devto('https://dev.to/api/articles/me/published?per_page=1000')
+          dev_articles  = len(articles)
+          dev_readers   = sum(a.get('page_views_count', 0) for a in articles)
 
-          print(f"stars:{gh_stars} gh_followers:{gh_followers} repos:{gh_public_repos} contributions:{gh_contributions}")
-          print(f"dev_followers:{dev_followers} articles:{dev_articles} readers:{dev_readers}")
+          print(f"GitHub  -> stars:{gh_stars} followers:{gh_followers} repos:{gh_public_repos} contributions:{gh_contributions}")
+          print(f"DEV.to  -> followers:{dev_followers} articles:{dev_articles} readers:{dev_readers}")
 
           with open('profile_main.svg', 'r') as f:
               svg = f.read()
@@ -71,21 +73,26 @@ jobs:
                        f'>{gh_public_repos}<tspan font-size="9" fill="#cc2200"> public repos</tspan>', svg)
           svg = re.sub(r'>\d+<tspan font-size="9" fill="#cc2200"> articles</tspan>',
                        f'>{dev_articles}<tspan font-size="9" fill="#cc2200"> articles</tspan>', svg)
-          svg = re.sub(r'>\d[\d,]*<tspan font-size="9" fill="#cc2200"> followers</tspan>',
-                       f'>{gh_followers}<tspan font-size="9" fill="#cc2200"> followers</tspan>', svg, count=1)
-          svg = re.sub(r'>\d[\d,]*<tspan font-size="9" fill="#cc2200"> followers</tspan>',
-                       f'>{dev_followers:,}<tspan font-size="9" fill="#cc2200"> followers</tspan>', svg, count=1)
           svg = re.sub(r'>\d[\d,]*<tspan font-size="9" fill="#cc2200"> readers \(all time\)</tspan>',
                        f'>{dev_readers:,}<tspan font-size="9" fill="#cc2200"> readers (all time)</tspan>', svg)
 
+          follower_values = [gh_followers, dev_followers]
+          counter = [0]
+          def replace_followers(m):
+              val = follower_values[counter[0]] if counter[0] < len(follower_values) else m.group(0)
+              counter[0] += 1
+              return f'>{val:,}<tspan font-size="9" fill="#cc2200"> followers</tspan>'
+          svg = re.sub(r'>\d[\d,]*<tspan font-size="9" fill="#cc2200"> followers</tspan>',
+                       replace_followers, svg)
+
           with open('profile_main.svg', 'w') as f:
               f.write(svg)
-          print("done.")
+          print("Patched successfully.")
           PY
 
       - name: Commit if changed
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add profile_main.svg
           if git diff --staged --quiet; then
