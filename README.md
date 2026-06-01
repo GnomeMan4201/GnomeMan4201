@@ -14,6 +14,9 @@
 <img src="https://img.shields.io/badge/Textual-000000?style=for-the-badge&logo=gnometerminal&logoColor=white" alt="Textual TUI"/>
 <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions"/>
 <img src="https://img.shields.io/badge/Pop!_OS-48B9C7?style=for-the-badge&logo=popos&logoColor=white" alt="Pop!_OS"/>
+<img src="https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white" alt="Debian"/>
+<img src="https://img.shields.io/badge/Android-34A853?style=for-the-badge&logo=android&logoColor=white" alt="Android"/>
+<img src="https://img.shields.io/badge/Nano-4A90D9?style=for-the-badge&logo=gnu&logoColor=white" alt="Nano"/>
 
 </div>
 
