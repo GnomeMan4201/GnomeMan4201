@@ -1,53 +1,60 @@
-# Security Policy
+# Security Policy — GnomeMan4201 / badBANANA Research Collective
 
 ## Scope
 
-All public repositories under [GnomeMan4201](https://github.com/GnomeMan4201):
+This policy applies to all repositories under the `GnomeMan4201` namespace,
+including: LANimals, SHENRON, drift_orchestrator, zer0DAYSlater, Lune,
+OpenSight, PHANTOM, bad_BANANA, and all supporting infrastructure.
 
-| Repository | Coverage |
-|------------|----------|
-| [LANimals](https://github.com/GnomeMan4201/LANimals) | full |
-| [drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator) | full |
-| [Lune](https://github.com/GnomeMan4201/Lune) | full |
-| [OpenSight](https://github.com/GnomeMan4201/OpenSight) | full |
-| [chain](https://github.com/GnomeMan4201/chain) | full |
-| [aliasOS](https://github.com/GnomeMan4201/aliasOS) | full |
+## Reporting a Vulnerability
 
-## Reporting
+**Do not open a public GitHub issue for security vulnerabilities.**
 
-**Preferred channel:** [GitHub Security Advisories](https://github.com/GnomeMan4201/GnomeMan4201/security/advisories/new) — private, encrypted channel.
+Submit through GitHub's private security advisory system:
 
-For non-critical issues: open a GitHub issue in the relevant repository.
+**→ https://github.com/GnomeMan4201/GnomeMan4201/security/advisories/new**
+
+Include: affected repo and commit hash, description and impact,
+reproduction steps, suggested mitigations.
+
+PGP-encrypted disclosures preferred for high-severity findings:
+
+    pub   rsa4096
+          324C 4301 54C2 3C8E 3956  1B10 0CFD 6761 AA75
+    uid   GnomeMan4201
 
 ## Response Timeline
 
-| Stage | Window |
-|-------|--------|
-| Acknowledgement | 72 hours |
-| Initial assessment | 7 days |
-| Fix or mitigation | 30 days |
-| Public disclosure | 90 days after report |
+| Severity | Initial Response | Resolution Target |
+|----------|-----------------|-------------------|
+| Critical | 24 hours        | 7 days            |
+| High     | 48 hours        | 14 days           |
+| Medium   | 5 days          | 30 days           |
+| Low      | 14 days         | 90 days           |
 
-## Policy
+This is a solo independent research operation. Timelines reflect real capacity.
 
-Coordinated disclosure. 90-day window before public release of findings.
+## Responsible Disclosure Policy
 
-Findings reported in good faith will receive:
-- Credit in release notes
-- Acknowledgement in repository README
-- Direct communication throughout resolution
+- Allow reasonable time for remediation before public disclosure
+- CVE assignment requested for qualifying vulnerabilities
+- Credit given to reporters unless anonymity requested
+- No legal action against good-faith researchers
 
-## Out of Scope
+## Offensive Tool Notice
 
-- Social engineering attacks
-- Physical access attacks
-- Denial of service
-- Attacks against infrastructure not owned by GnomeMan4201
+Tools in this repository are designed for authorized security research
+in controlled environments only. Use against systems you do not own
+or have explicit written authorization to test is illegal and unethical.
+The author assumes no liability for misuse.
 
-## Notes
+## Active Investigation Protocol
 
-These tools are built for **authorized environments only**. Lune, LANimals, and related offensive tooling are explicitly scoped to controlled lab simulation and authorized red team operations. Misuse is outside scope and not the researcher's responsibility.
+Investigations are pre-registered and conducted under strict methodology.
+Evidence packages preserved and available to verified researchers and
+platform trust & safety teams upon request.
+
+Current investigation status reflected in profile README.
 
 ---
-
-*GnomeMan4201 // LANimals collective*
+*GnomeMan4201 / badBANANA Research Collective · Updated 2026-05*
