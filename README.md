@@ -49,7 +49,7 @@
 > *"Every system has an edge. Stand at the edge long enough and you realize the map was never the territory"*
 > — Korzybski
 
-<div align="center"><code><a href="https://gnomeman4201.github.io">◈ SHENRON ECOSYSTEM →</a></code></div>
+<div align="center"><code><a href="https://github.com/GnomeMan4201">◈ SHENRON ECOSYSTEM →</a></code></div>
 
 ---
 
@@ -235,6 +235,6 @@ Adaptive offensive fw. · Textual TUI, 296 aliases, v1.0.0.<br/>
 
 </tr></table>
 
-<div align="center"><code><a href="https://gnomeman4201.github.io">◈ SHENRON // RED ↔ BLUE NEXUS →</a></code></div>
+<div align="center"><code><a href="https://github.com/GnomeMan4201">◈ SHENRON // RED ↔ BLUE NEXUS →</a></code></div>
 
 </details>
