@@ -20,8 +20,8 @@ reproduction steps, suggested mitigations.
 PGP-encrypted disclosures preferred for high-severity findings:
 
     pub   rsa4096
-          324C 4301 54C2 3C8E 3956  1B10 0CFD 6761 AA75
-    uid   GnomeMan4201
+          D6BB 6A66 78D1 AC8F 9234  3982 C6A7 2EB5 BAB2 262E
+    uid   GnomeMan4201 (badBANANA Research Collective)
 
 ## Response Timeline
 
