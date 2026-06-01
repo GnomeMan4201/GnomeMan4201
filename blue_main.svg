@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 1000 920" style="background:#000814;">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 1000 920">
   <defs>
     <pattern id="bgrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0L0 0 0 40" fill="none" stroke="#023e8a" stroke-width="0.4" opacity="0.18"/>
@@ -23,7 +23,6 @@
   </defs>
 
   <!-- background -->
-  <rect width="1000" height="920" fill="#000814"/>
   <rect width="1000" height="920" fill="url(#bgrid)"/>
 
   <!-- white border -->
