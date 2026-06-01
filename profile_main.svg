@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 920">
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 860 580">
   <defs>
     <pattern id="grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
       <path d="M40 0L0 0 0 40" fill="none" stroke="#8b0000" stroke-width="0.4" opacity="0.12"/>
@@ -136,43 +136,4 @@
   <text x="306" y="285" font-family="'Courier New',monospace" font-size="8" fill="#8b0000" text-anchor="middle" font-weight="bold">botnet-hunter</text>
   <circle cx="467" cy="478" r="5" fill="none" stroke="#8b0000" stroke-width="1" opacity="0.5"/>
   <text x="467" y="467" font-family="'Courier New',monospace" font-size="8" fill="#8b0000" text-anchor="middle" font-weight="bold">drift-artifact</text>
-  <line x1="44" y1="578" x2="816" y2="578" stroke="#8b0000" stroke-width="0.8" opacity="0.4"/>
-  <rect x="22" y="587" width="816" height="192" fill="#0f0000" stroke="#ffffff" stroke-width="1"/>
-  <rect x="22" y="587" width="816" height="4" fill="#ffffff" opacity="0.8"/>
-  <text x="44"  y="606" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" letter-spacing="4" font-weight="bold">SIGNALS</text>
-  <text x="816" y="606" font-family="'Courier New',monospace" font-size="9" fill="#8b0000" text-anchor="end" font-weight="bold">every number is verifiable</text>
-  <text x="44"  y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">GITHUB</text>
-  <text x="44"  y="652" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">41<tspan font-size="9" fill="#cc2200"> stars</tspan></text>
-  <text x="44"  y="671" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">102<tspan font-size="9" fill="#cc2200"> followers</tspan></text>
-  <text x="44"  y="690" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">953<tspan font-size="9" fill="#cc2200"> contributions</tspan></text>
-  <text x="44"  y="709" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">27<tspan font-size="9" fill="#cc2200"> public repos</tspan></text>
-  <line x1="224" y1="614" x2="224" y2="757" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
-  <text x="244" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">DEV.TO</text>
-  <text x="244" y="652" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">4,270<tspan font-size="9" fill="#cc2200"> followers</tspan></text>
-  <text x="244" y="671" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">43<tspan font-size="9" fill="#cc2200"> articles</tspan></text>
-  <text x="244" y="690" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">8,150<tspan font-size="9" fill="#cc2200"> readers (all time)</tspan></text>
-  <line x1="434" y1="614" x2="434" y2="757" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
-  <text x="454" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">BUILD STATUS</text>
-  <text x="454" y="650" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">LANimals</tspan></text>
-  <text x="454" y="667" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">Lune  (92 tests)</tspan></text>
-  <text x="454" y="684" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">drift_orchestrator</tspan></text>
-  <text x="454" y="701" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">OpenSight (52 tests)</tspan></text>
-  <text x="454" y="718" font-family="'Courier New',monospace" font-size="11" fill="#f5c518" font-weight="bold">&#x2713; <tspan fill="#ffffff">chain · aliasOS · zer0</tspan></text>
-  <line x1="674" y1="614" x2="674" y2="757" stroke="#ffffff" stroke-width="0.5" opacity="0.2"/>
-  <text x="694" y="630" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" letter-spacing="3" font-weight="bold">CONTACT</text>
-  <text x="694" y="652" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">preferred:</text>
-  <text x="694" y="667" font-family="'Courier New',monospace" font-size="9" fill="#cc2200">github issues / advisories</text>
-  <text x="694" y="687" font-family="'Courier New',monospace" font-size="9" fill="#ffffff" font-weight="bold">writing:</text>
-  <text x="694" y="702" font-family="'Courier New',monospace" font-size="9" fill="#cc2200">dev.to/gnomeman4201</text>
-  <text x="694" y="720" font-family="'Courier New',monospace" font-size="8" fill="#5a2020">PGP: 324C 4301 54C2 3C8E</text>
-  <text x="694" y="733" font-family="'Courier New',monospace" font-size="8" fill="#5a2020">3956 1B10 0CFD 6761 AA75</text>
-  <rect x="22" y="777" width="816" height="1" fill="#ffffff" opacity="0.2"/>
-  <rect x="22" y="786" width="816" height="50" fill="#0f0000" stroke="#ffffff" stroke-width="1"/>
-  <rect x="22" y="786" width="816" height="3" fill="#ffffff" opacity="0.6"/>
-  <text x="430" y="808" font-family="'Courier New',monospace" font-size="10" fill="#ff4422" text-anchor="middle" font-style="italic" font-weight="bold">"Every system has an edge. Stand at the edge long enough and you realize the map was never the territory"</text>
-  <text x="430" y="826" font-family="'Courier New',monospace" font-size="10" fill="#f5c518" text-anchor="middle" font-weight="bold">&#x2014; Korzybski</text>
-  <rect x="634" y="848" width="204" height="36" rx="1" fill="#0f0000" stroke="#ffffff" stroke-width="1.5"/>
-  <rect x="634" y="848" width="204" height="3" fill="#ffffff" opacity="0.8"/>
-  <text x="736" y="864" font-family="'Courier New',monospace" font-size="9" fill="#f5c518" text-anchor="middle" letter-spacing="2" font-weight="bold">&#x25C8; SHENRON ECOSYSTEM</text>
-  <text x="736" y="877" font-family="'Courier New',monospace" font-size="9" fill="#cc2200" text-anchor="middle" font-weight="bold">gnomeman4201.github.io &#x2192;</text>
 </svg>
