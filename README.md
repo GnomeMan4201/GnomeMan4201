@@ -2,6 +2,8 @@
 <img src="profile_main.svg" width="100%" alt="GnomeMan4201 — badBANANA collective"/>
 </div>
 
+---
+
 <div align="center">
 
 <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
@@ -19,6 +21,7 @@
 <img src="https://img.shields.io/badge/Nano-4A90D9?style=for-the-badge&logo=gnu&logoColor=white" alt="Nano"/>
 
 </div>
+
 
 ---
 
