@@ -1,19 +1,7 @@
 <div align="center">
-<<<<<<< HEAD
 <img src="profile_main.svg" width="100%" alt="GnomeMan4201 — badBANANA collective"/>
-=======
-
-<div align="center">
 
 ![](https://komarev.com/ghpvc/?username=GnomeMan4201&style=for-the-badge&color=green)
-
-*the work speaks first. identity follows.*
-
-[![Ecosystem Graph](https://img.shields.io/badge/SHENRON-Ecosystem_Graph-00ff9d?style=for-the-badge)](https://gnomeman4201.github.io/GnomeMan4201/)
-
-</div>
-
->>>>>>> 36b1423 (add: profile view counter badge)
 </div>
 
 ---
