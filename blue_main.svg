@@ -1,0 +1,181 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" viewBox="0 0 1000 780">
+  <defs>
+    <pattern id="bgrid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0L0 0 0 40" fill="none" stroke="#023e8a" stroke-width="0.4" opacity="0.18"/>
+    </pattern>
+    <style>
+      @keyframes status-pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+      @keyframes inv-blink { 0%,85%,100%{opacity:1} 90%{opacity:.2} }
+      @keyframes shenron-glow { 0%,100%{opacity:.6} 50%{opacity:1} }
+      @keyframes scan-line { 0%{stroke-dashoffset:0} 100%{stroke-dashoffset:-40} }
+      .sp{animation:status-pulse 2.8s ease-in-out infinite}
+      .ib{animation:inv-blink 3.2s ease-in-out infinite}
+      .sg{animation:shenron-glow 2.4s ease-in-out infinite}
+      .sl{stroke-dasharray:4 8;animation:scan-line 3s linear infinite}
+      a text { text-decoration: none; }
+      a:hover text { fill: #ffffff; }
+    </style>
+  </defs>
+
+  <rect width="1000" height="780" fill="#000814"/>
+  <rect width="1000" height="780" fill="url(#bgrid)"/>
+  <rect x="0" y="0" width="1000" height="3" fill="#ffffff"/>
+  <rect x="0" y="0" width="3" height="780" fill="#ffffff" opacity="0.7"/>
+  <rect x="997" y="0" width="3" height="780" fill="#ffffff" opacity="0.7"/>
+  <rect x="0" y="777" width="1000" height="3" fill="#ffffff"/>
+
+  <!-- header -->
+  <text x="50" y="38" font-family="'Courier New',monospace" font-size="13" fill="#00b4d8" letter-spacing="4" font-weight="bold">BLUE TEAM  //  LAYERED DEFENSE ARCHITECTURE</text>
+  <text x="50" y="58" font-family="'Courier New',monospace" font-size="9" fill="#6699bb" letter-spacing="2">cut-away cross-section  ·  read bottom to top  ·  SHENRON feeds all layers  ·  click tools to navigate</text>
+  <line x1="50" y1="68" x2="950" y2="68" stroke="#00b4d8" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- depth guide -->
+  <text x="22" y="180" font-family="'Courier New',monospace" font-size="7" fill="#6699bb" transform="rotate(-90,22,180)">SURFACE</text>
+  <text x="22" y="590" font-family="'Courier New',monospace" font-size="7" fill="#6699bb" transform="rotate(-90,22,590)">FOUNDATION</text>
+  <line x1="18" y1="84" x2="18" y2="740" stroke="#023e8a" stroke-width="0.8" opacity="0.4"/>
+  <polygon points="18,80 21,88 15,88" fill="#00b4d8" opacity="0.6"/>
+
+  <!-- ═══ LAYER 0 — IDENTITY ═══ -->
+  <polygon points="30,84 980,84 980,188 30,188 46,136" fill="#020d1f" opacity="0.95"/>
+  <polygon points="30,84 46,84 46,188 30,188" fill="#00b4d8" opacity="0.08"/>
+  <rect x="30" y="84" width="950" height="3" fill="#00b4d8" opacity="0.9"/>
+  <line x1="46" y1="84" x2="46" y2="188" stroke="#00b4d8" stroke-width="0.6" opacity="0.4"/>
+  <line x1="30" y1="136" x2="46" y2="136" stroke="#00b4d8" stroke-width="1.0" opacity="0.6"/>
+
+  <text x="60" y="106" font-family="'Courier New',monospace" font-size="10" fill="#00b4d8" letter-spacing="4" font-weight="bold">LAYER 0</text>
+  <text x="60" y="124" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">IDENTITY &amp; ZERO-TRUST</text>
+  <line x1="60" y1="130" x2="340" y2="130" stroke="#00b4d8" stroke-width="0.5" opacity="0.4"/>
+
+  <a xlink:href="https://github.com/GnomeMan4201/reflexive-identity">
+    <text x="60" y="150" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" font-weight="bold">reflexive-identity</text>
+  </a>
+  <text x="230" y="150" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">zero-trust AI agent · self-auth · priv revocation</text>
+
+  <a xlink:href="https://github.com/GnomeMan4201/aliasOS">
+    <text x="60" y="172" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" font-weight="bold">aliasOS</text>
+  </a>
+  <text x="230" y="172" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">296 aliases · session isolation · operator hygiene</text>
+
+  <circle cx="955" cy="118" r="5" fill="#00b4d8" class="sp"/>
+  <text x="940" y="138" font-family="'Courier New',monospace" font-size="7" fill="#00b4d8" text-anchor="middle" letter-spacing="1">ACTIVE</text>
+
+  <!-- ═══ LAYER 1 — DETECTION ═══ -->
+  <polygon points="30,196 980,196 980,320 30,320 46,258" fill="#020d1f" opacity="0.9"/>
+  <polygon points="30,196 46,196 46,320 30,320" fill="#48cae4" opacity="0.06"/>
+  <rect x="30" y="196" width="950" height="3" fill="#48cae4" opacity="0.7"/>
+  <line x1="46" y1="196" x2="46" y2="320" stroke="#48cae4" stroke-width="0.6" opacity="0.4"/>
+  <line x1="30" y1="258" x2="46" y2="258" stroke="#48cae4" stroke-width="1.0" opacity="0.6"/>
+
+  <text x="60" y="218" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" letter-spacing="4" font-weight="bold">LAYER 1</text>
+  <text x="60" y="236" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">DETECTION &amp; HONEYPOT</text>
+  <line x1="60" y1="242" x2="360" y2="242" stroke="#48cae4" stroke-width="0.5" opacity="0.4"/>
+
+  <a xlink:href="https://github.com/GnomeMan4201/PHANTOM">
+    <text x="60" y="262" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" font-weight="bold">PHANTOM</text>
+  </a>
+  <text x="230" y="262" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">fingerprints Cowrie · Kippo · OpenCanary · Thinkst +4</text>
+
+  <a xlink:href="https://github.com/GnomeMan4201/Decoy-Hunter">
+    <text x="60" y="282" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" font-weight="bold">Decoy-Hunter</text>
+  </a>
+  <text x="230" y="282" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">attribution engine · honeypot identification</text>
+
+  <a xlink:href="https://github.com/GnomeMan4201/drift_orchestrator">
+    <text x="60" y="302" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" font-weight="bold">drift_orchestrator</text>
+  </a>
+  <text x="230" y="302" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">session drift monitoring · behavioral baseline</text>
+
+  <circle cx="955" cy="230" r="5" fill="#48cae4" class="sp"/>
+  <text x="940" y="250" font-family="'Courier New',monospace" font-size="7" fill="#48cae4" text-anchor="middle" letter-spacing="1">ACTIVE</text>
+
+  <!-- ═══ LAYER 2 — INTELLIGENCE ═══ -->
+  <polygon points="30,328 980,328 980,448 30,448 46,388" fill="#020d1f" opacity="0.88"/>
+  <polygon points="30,328 46,328 46,448 30,448" fill="#90e0ef" opacity="0.05"/>
+  <rect x="30" y="328" width="950" height="3" fill="#90e0ef" opacity="0.6"/>
+  <line x1="46" y1="328" x2="46" y2="448" stroke="#90e0ef" stroke-width="0.6" opacity="0.4"/>
+  <line x1="30" y1="388" x2="46" y2="388" stroke="#90e0ef" stroke-width="1.0" opacity="0.6"/>
+
+  <text x="60" y="350" font-family="'Courier New',monospace" font-size="10" fill="#90e0ef" letter-spacing="4" font-weight="bold">LAYER 2</text>
+  <text x="60" y="368" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">THREAT INTELLIGENCE</text>
+  <line x1="60" y1="374" x2="330" y2="374" stroke="#90e0ef" stroke-width="0.5" opacity="0.4"/>
+
+  <a xlink:href="https://github.com/GnomeMan4201/OpenSight">
+    <text x="60" y="394" font-family="'Courier New',monospace" font-size="10" fill="#90e0ef" font-weight="bold">OpenSight</text>
+  </a>
+  <text x="230" y="394" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">entity extraction · typed knowledge graph · FBI corpus</text>
+
+  <a xlink:href="https://github.com/GnomeMan4201/devto-botnet-hunter">
+    <text x="60" y="414" font-family="'Courier New',monospace" font-size="10" fill="#90e0ef" font-weight="bold">botnet-hunter</text>
+  </a>
+  <text x="230" y="414" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">devto ecosystem · fake follower networks · attribution</text>
+
+  <a xlink:href="https://github.com/GnomeMan4201/SHENRON">
+    <text x="60" y="434" font-family="'Courier New',monospace" font-size="10" fill="#90e0ef" font-weight="bold">Sigma rules</text>
+  </a>
+  <text x="230" y="434" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">detection validation · SHENRON eval pipeline</text>
+
+  <circle cx="955" cy="362" r="5" fill="#90e0ef" class="sp"/>
+  <text x="940" y="382" font-family="'Courier New',monospace" font-size="7" fill="#90e0ef" text-anchor="middle" letter-spacing="1">ACTIVE</text>
+
+  <!-- ═══ LAYER 3 — SHENRON ═══ -->
+  <polygon points="30,456 980,456 980,546 30,546 46,501" fill="#0a0a00" opacity="0.95"/>
+  <polygon points="30,456 46,456 46,546 30,546" fill="#f5c518" opacity="0.1"/>
+  <rect x="30" y="456" width="950" height="4" fill="#f5c518" opacity="0.9"/>
+  <line x1="46" y1="456" x2="46" y2="546" stroke="#f5c518" stroke-width="0.8" opacity="0.6"/>
+  <line x1="30" y1="501" x2="46" y2="501" stroke="#f5c518" stroke-width="1.4" opacity="0.9"/>
+
+  <text x="60" y="478" font-family="'Courier New',monospace" font-size="10" fill="#f5c518" letter-spacing="4" font-weight="bold">LAYER 3  ◈  NEXUS</text>
+  <text x="60" y="496" font-family="'Courier New',monospace" font-size="14" fill="#f5c518" font-weight="bold">SHENRON — ADVERSARIAL TELEMETRY CORE</text>
+  <line x1="60" y1="502" x2="560" y2="502" stroke="#f5c518" stroke-width="0.5" opacity="0.5"/>
+
+  <a xlink:href="https://github.com/GnomeMan4201/SHENRON">
+    <text x="60" y="520" font-family="'Courier New',monospace" font-size="10" fill="#c8a000" font-weight="bold">49-layer mutation engine</text>
+  </a>
+  <text x="280" y="520" font-family="'Courier New',monospace" font-size="9" fill="#c8a000">synthetic telemetry · Sigma eval · detection validation</text>
+  <text x="60" y="538" font-family="'Courier New',monospace" font-size="9" fill="#c8a000">feeds RED offensive payloads  ←→  feeds BLUE detection layers</text>
+
+  <circle cx="955" cy="488" r="7" fill="#f5c518" class="sg"/>
+  <text x="940" y="512" font-family="'Courier New',monospace" font-size="7" fill="#f5c518" text-anchor="middle" letter-spacing="1">NEXUS</text>
+  <line x1="60" y1="530" x2="900" y2="530" stroke="#f5c518" stroke-width="0.4" opacity="0.15" class="sl"/>
+
+  <!-- ═══ LAYER 4 — INVESTIGATIONS ═══ -->
+  <polygon points="30,554 980,554 980,740 30,740 46,647" fill="#010d08" opacity="0.95"/>
+  <polygon points="30,554 46,554 46,740 30,740" fill="#cc2200" opacity="0.04"/>
+  <rect x="30" y="554" width="950" height="3" fill="#cc2200" opacity="0.7"/>
+  <line x1="46" y1="554" x2="46" y2="740" stroke="#cc2200" stroke-width="0.6" opacity="0.4"/>
+  <line x1="30" y1="647" x2="46" y2="647" stroke="#cc2200" stroke-width="1.0" opacity="0.6"/>
+
+  <text x="60" y="576" font-family="'Courier New',monospace" font-size="10" fill="#cc2200" letter-spacing="4" font-weight="bold">LAYER 4  //  FIELD OPS</text>
+  <text x="60" y="594" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">ACTIVE INVESTIGATIONS</text>
+  <text x="940" y="576" font-family="'Courier New',monospace" font-size="8" fill="#6699bb" text-anchor="end">pre-registration methodology</text>
+  <line x1="60" y1="602" x2="940" y2="602" stroke="#cc2200" stroke-width="0.4" opacity="0.3"/>
+
+  <!-- INV-003 -->
+  <rect x="60" y="612" width="9" height="9" fill="#6699bb"/>
+  <text x="78" y="621" font-family="'Courier New',monospace" font-size="10" fill="#90e0ef" font-weight="bold">[ <tspan fill="#6699bb">CLOSED</tspan> ]</text>
+  <text x="190" y="621" font-family="'Courier New',monospace" font-size="10" fill="#ffffff" font-weight="bold">INV-003</text>
+  <text x="270" y="621" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">nsboost.xyz / NSBoost v2  ·  32+ repos  ·  4 disclosure waves → GitHub T&amp;S</text>
+
+  <!-- INV-004 -->
+  <rect x="60" y="638" width="9" height="9" fill="#00b4d8" class="sp"/>
+  <text x="78" y="647" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" font-weight="bold">[ <tspan fill="#00b4d8">ACTIVE</tspan> ]</text>
+  <text x="190" y="647" font-family="'Courier New',monospace" font-size="10" fill="#ffffff" font-weight="bold">INV-004</text>
+  <text x="270" y="647" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">Chrome extension [fkiaohmee...]  ·  payload extraction  ·  C2 enumeration ongoing</text>
+
+  <!-- INV-005 -->
+  <rect x="60" y="664" width="9" height="9" fill="#48cae4" class="ib"/>
+  <text x="78" y="673" font-family="'Courier New',monospace" font-size="10" fill="#48cae4" font-weight="bold">[ <tspan fill="#48cae4">PRE-DISCLOSURE</tspan> ]</text>
+  <text x="190" y="673" font-family="'Courier New',monospace" font-size="10" fill="#ffffff" font-weight="bold">INV-005</text>
+  <text x="270" y="673" font-family="'Courier New',monospace" font-size="10" fill="#023e8a" font-weight="bold">[REDACTED]</text>
+
+  <line x1="60" y1="686" x2="940" y2="686" stroke="#cc2200" stroke-width="0.3" opacity="0.2"/>
+
+  <!-- stats -->
+  <text x="60" y="706" font-family="'Courier New',monospace" font-size="10" fill="#00b4d8" font-weight="bold">DISCLOSURE</text>
+  <text x="60" y="724" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">4 <tspan font-size="9" fill="#00b4d8">waves</tspan>   32+ <tspan font-size="9" fill="#00b4d8">repos</tspan>   3 <tspan font-size="9" fill="#00b4d8">active</tspan></text>
+
+  <text x="420" y="706" font-family="'Courier New',monospace" font-size="10" fill="#00b4d8" font-weight="bold">DETECTION COVERAGE</text>
+  <text x="420" y="724" font-family="'Courier New',monospace" font-size="14" fill="#ffffff" font-weight="bold">6+ <tspan font-size="9" fill="#00b4d8">honeypot types</tspan>   49 <tspan font-size="9" fill="#00b4d8">mutation layers</tspan>   52 <tspan font-size="9" fill="#00b4d8">test cases</tspan></text>
+
+  <text x="60" y="738" font-family="'Courier New',monospace" font-size="9" fill="#6699bb">✓ pre-registered   ✓ responsible disclosure   ✓ public evidence packages</text>
+</svg>
