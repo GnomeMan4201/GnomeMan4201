@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>gnome // mission control</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@700;800&display=swap');
+:root {
+  --bg:    #08080d;
+  --s1:    #0e0e16;
+  --s2:    #13131e;
+  --s3:    #1a1a28;
+  --rule:  rgba(255,255,255,.05);
+  --rule2: rgba(255,255,255,.09);
+  --text:  #d8d8e8;
+  --dim:   #5a5a72;
+  --faint: #2e2e42;
+  --green: #3ecf8e;
+  --gd:    rgba(62,207,142,.1);
+  --amber: #f59e0b;
+  --ad:    rgba(245,158,11,.1);
+  --red:   #ef4444;
+  --rd:    rgba(239,68,68,.1);
+  --blue:  #60a5fa;
+  --bd:    rgba(96,165,250,.1);
+  --purple:#a78bfa;
+  --pd:    rgba(167,139,250,.1);
+  --mono:  'JetBrains Mono', monospace;
+  --head:  'Syne', sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:12px;line-height:1.5;min-height:100vh}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 24px;height:44px;border-bottom:1px solid var(--rule2);background:var(--s1)}
+.logo{font-family:var(--head);font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--text)}
+.logo em{color:var(--green);font-style:normal}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.ts{font-size:10px;color:var(--dim)}
+.pulse{display:flex;align-items:center;gap:6px;font-size:10px}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.refresh{background:none;border:1px solid var(--rule2);border-radius:4px;color:var(--dim);padding:3px 9px;font-size:10px;cursor:pointer;font-family:var(--mono);transition:all .12s}
+.refresh:hover{color:var(--text);border-color:var(--green)}
+
+.grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto auto;gap:1px;background:var(--rule);min-height:calc(100vh - 44px)}
+
+.panel{background:var(--bg);padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+.panel-wide{grid-column:span 2}
+.panel-full{grid-column:span 3}
+
+.panel-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px}
+.panel-title{font-family:var(--head);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.status-pill{font-size:9px;padding:2px 8px;border-radius:20px;font-family:var(--mono);letter-spacing:.04em}
+.pill-green{background:var(--gd);color:var(--green);border:1px solid rgba(62,207,142,.2)}
+.pill-amber{background:var(--ad);color:var(--amber);border:1px solid rgba(245,158,11,.2)}
+.pill-red{background:var(--rd);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.pill-dim{background:var(--s2);color:var(--dim);border:1px solid var(--rule2)}
+
+.big-num{font-size:36px;font-weight:600;line-height:1;font-family:var(--mono)}
+.big-label{font-size:10px;color:var(--dim);margin-top:3px}
+
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--rule)}
+.stat-row:last-child{border-bottom:none}
+.stat-key{color:var(--dim);font-size:11px}
+.stat-val{font-size:11px;font-weight:500}
+
+.ip-badge{display:inline-block;background:var(--s2);border:1px solid var(--rule2);border-radius:4px;padding:2px 8px;font-size:11px;font-family:var(--mono);color:var(--text);margin:2px}
+
+.alert-row{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--rule);font-size:11px;align-items:baseline}
+.alert-row:last-child{border-bottom:none}
+.alert-ts{color:var(--dim);min-width:130px;flex-shrink:0;font-size:10px}
+.alert-type{color:var(--amber);min-width:90px;flex-shrink:0}
+.alert-detail{color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.inv-row{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--rule)}
+.inv-row:last-child{border-bottom:none}
+.inv-id{font-size:11px;color:var(--purple);min-width:60px;font-weight:500}
+.inv-risk{min-width:28px}
+.risk-bar{height:4px;border-radius:2px;background:var(--s3);overflow:hidden;width:40px}
+.risk-fill{height:100%;border-radius:2px}
+.inv-status{font-size:10px;padding:1px 7px;border-radius:3px}
+.st-active{background:var(--ad);color:var(--amber)}
+.st-disclosed{background:var(--gd);color:var(--green)}
+.st-closed{background:var(--s2);color:var(--dim)}
+.inv-title{font-size:11px;color:var(--text);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.inv-threat{font-size:10px;color:var(--dim);min-width:80px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.health-row{display:flex;align-items:center;gap:8px;padding:4px 0}
+.hd{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.hd-pass{background:var(--green);box-shadow:0 0 4px var(--green)}
+.hd-fail{background:var(--red)}
+.h-name{color:var(--dim);font-size:11px;flex:1}
+
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini-card{background:var(--s2);border:1px solid var(--rule);border-radius:6px;padding:12px 14px}
+.mini-label{font-size:9px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.mini-val{font-size:20px;font-weight:600;font-family:var(--mono);line-height:1}
+.mini-sub{font-size:10px;color:var(--dim);margin-top:2px}
+
+.nightly-row{font-size:10px;color:var(--dim);padding:3px 0;border-bottom:1px solid var(--rule);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nightly-row:last-child{border-bottom:none}
+.nightly-ts{color:var(--faint);margin-right:8px}
+.nightly-path{color:var(--text)}
+
+.section-sep{font-size:9px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;padding:6px 0 2px;border-top:1px solid var(--rule);margin-top:4px}
+
+.canary-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--rule);font-size:11px}
+.canary-row:last-child{border-bottom:none}
+.canary-name{color:var(--dim)}
+.canary-val{color:var(--text);font-family:var(--mono)}
+.canary-ok{color:var(--green)}
+.canary-warn{color:var(--amber)}
+
+.loading{display:flex;align-items:center;justify-content:center;flex:1;color:var(--dim);font-size:11px;gap:8px}
+.spinner{width:12px;height:12px;border:1.5px solid var(--rule2);border-top-color:var(--green);border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.error-msg{color:var(--red);font-size:11px;background:var(--rd);border:1px solid rgba(239,68,68,.2);border-radius:5px;padding:8px 10px}
+</style>
+</head>
+<body>
+<h1 style="position:absolute;left:-9999px">gnome mission control — operator status dashboard</h1>
+
+<div class="topbar">
+  <div class="logo"><em>gnome</em> // mission control</div>
+  <div class="topbar-right">
+    <div class="pulse"><div class="pulse-dot"></div><span id="pulse-label" style="color:var(--dim)">loading</span></div>
+    <span class="ts" id="ts">—</span>
+    <button class="refresh" onclick="refresh()">refresh</button>
+  </div>
+</div>
+
+<div class="grid" id="grid">
+  <div class="panel" style="grid-column:span 3;align-items:center;justify-content:center;min-height:200px">
+    <div class="loading"><div class="spinner"></div>collecting system state...</div>
+  </div>
+</div>
+
+<script>
+let D = null;
+
+function fmt(n) { return n != null ? Number(n).toLocaleString() : '—'; }
+function esc(s) { return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c])); }
+function ago(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts.replace(' ','T')+'Z').getTime();
+  if (isNaN(d)) return ts.slice(0,16);
+  const mins = Math.floor((Date.now()-d)/60000);
+  if (mins < 2) return 'just now';
+  if (mins < 60) return mins+'m ago';
+  if (mins < 1440) return Math.floor(mins/60)+'h ago';
+  return Math.floor(mins/1440)+'d ago';
+}
+function pill(label, cls) { return `<span class="status-pill ${cls}">${esc(label)}</span>`; }
+
+async function load() {
+  try {
+    const r = await fetch('/api/data');
+    D = await r.json();
+    render();
+  } catch(e) {
+    document.getElementById('grid').innerHTML =
+      '<div class="panel" style="grid-column:span 3"><div class="error-msg">Failed to connect: '+esc(e.message)+'<br>Run: python3 gnome_control.py</div></div>';
+  }
+}
+
+async function refresh() {
+  document.getElementById('pulse-label').textContent = 'refreshing...';
+  await fetch('/api/refresh');
+  await load();
+}
+
+function render() {
+  if (!D) return;
+  const b  = D.banana       || {};
+  const iv = D.investigations|| {};
+  const sh = D.shenron      || {};
+  const pb = D.publishing   || {};
+
+  const ts = D.generated_at ? new Date(D.generated_at).toLocaleTimeString() : '—';
+  document.getElementById('ts').textContent = ts;
+  document.getElementById('pulse-label').textContent = 'live';
+  document.getElementById('pulse-label').style.color = 'var(--green)';
+
+  document.getElementById('grid').innerHTML = `
+    ${panelBanana(b)}
+    ${panelInvestigations(iv)}
+    ${panelShenron(sh)}
+    ${panelPublishing(pb)}
+    ${panelCanary(b)}
+    ${panelNightly(b)}
+  `;
+}
+
+function panelBanana(b) {
+  if (!b.ok) return `<div class="panel"><div class="panel-header"><span class="panel-title">badBANANA monitor</span>${pill('offline','pill-red')}</div><div class="error-msg">${esc(b.error||'unavailable')}</div></div>`;
+
+  const monPill = b.monitor_status === 'active' ? pill('active','pill-green') : pill(b.monitor_status||'?','pill-amber');
+  const alerts  = (b.recent_alerts||[]).slice(0,6).map(a => `
+    <div class="alert-row">
+      <span class="alert-ts">${esc(a.ts||'')}</span>
+      <span class="alert-type">${esc(a.type||'')}</span>
+      <span class="alert-detail" title="${esc(a.detail||'')}">${esc(a.detail||'')}</span>
+    </div>`).join('');
+
+  const nsboostIps = (b.nsboost_ips||'').split(',').filter(Boolean).map(ip =>
+    `<span class="ip-badge">${esc(ip.trim())}</span>`).join('');
+  const upvoteIps = (b.upvote_ips||'').split(',').filter(Boolean).map(ip =>
+    `<span class="ip-badge">${esc(ip.trim())}</span>`).join('');
+
+  return `<div class="panel">
+    <div class="panel-header"><span class="panel-title">badBANANA monitor</span>${monPill}</div>
+    <div class="mini-grid">
+      <div class="mini-card">
+        <div class="mini-label">total alerts</div>
+        <div class="mini-val" style="color:var(--amber)">${fmt(b.total_alerts)}</div>
+        <div class="mini-sub">${ago(b.last_alert)}</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-label">infra snapshots</div>
+        <div class="mini-val" style="color:var(--blue)">${fmt(b.snap_count)}</div>
+        <div class="mini-sub">dns + headers</div>
+      </div>
+    </div>
+    <div class="section-sep">current ips</div>
+    <div>
+      <div style="font-size:10px;color:var(--dim);margin-bottom:4px">nsboost.xyz</div>
+      <div>${nsboostIps||'<span style="color:var(--dim)">—</span>'}</div>
+      <div style="font-size:10px;color:var(--dim);margin:6px 0 4px">upvote.club</div>
+      <div>${upvoteIps||'<span style="color:var(--dim)">—</span>'}</div>
+    </div>
+    <div class="section-sep">recent alerts</div>
+    <div>${alerts||'<span style="color:var(--dim);font-size:11px">no alerts</span>'}</div>
+  </div>`;
+}
+
+function panelInvestigations(iv) {
+  if (!iv.ok) return `<div class="panel"><div class="panel-header"><span class="panel-title">investigations</span>${pill('error','pill-red')}</div><div class="error-msg">${esc(iv.error||'')}</div></div>`;
+
+  const invs = (iv.investigations||[]);
+  const active = invs.filter(i=>i.status==='active').length;
+  const activePill = active > 0 ? pill(active+' active','pill-amber') : pill('all closed','pill-green');
+
+  const rows = invs.map(inv => {
+    const riskPct = (inv.risk/10*100).toFixed(0);
+    const riskColor = inv.risk >= 8 ? 'var(--red)' : inv.risk >= 6 ? 'var(--amber)' : 'var(--green)';
+    const stClass = inv.status === 'active' ? 'st-active' : inv.status === 'disclosed' ? 'st-disclosed' : 'st-closed';
+    return `<div class="inv-row">
+      <span class="inv-id">${esc(inv.id)}</span>
+      <div>
+        <div class="risk-bar"><div class="risk-fill" style="width:${riskPct}%;background:${riskColor}"></div></div>
+        <div style="font-size:9px;color:${riskColor};margin-top:1px">${inv.risk}/10</div>
+      </div>
+      <span class="inv-status ${stClass}">${esc(inv.status)}</span>
+      <span class="inv-title" title="${esc(inv.title)}">${esc(inv.title)}</span>
+      <span class="inv-threat">${esc(inv.threat||'')}</span>
+    </div>`;
+  }).join('');
+
+  return `<div class="panel">
+    <div class="panel-header"><span class="panel-title">investigations</span>${activePill}</div>
+    <div class="stat-row"><span class="stat-key">total</span><span class="stat-val">${invs.length}</span></div>
+    <div class="stat-row"><span class="stat-key">timeline events</span><span class="stat-val">${esc(iv.timeline_events||'—')}</span></div>
+    <div class="section-sep">active operations</div>
+    <div>${rows||'<span style="color:var(--dim);font-size:11px">no investigations loaded</span>'}</div>
+  </div>`;
+}
+
+function panelShenron(sh) {
+  if (!sh.ok) return `<div class="panel"><div class="panel-header"><span class="panel-title">SHENRON</span>${pill('offline','pill-dim')}</div><div class="error-msg">${esc(sh.error||'')}</div></div>`;
+
+  const verdictPill = sh.verdict === 'healthy' ? pill('healthy','pill-green') : sh.verdict === 'degraded' ? pill('degraded','pill-amber') : pill('unknown','pill-dim');
+
+  const checks = (sh.health||[]).map(h => `
+    <div class="health-row">
+      <div class="hd ${h.pass?'hd-pass':'hd-fail'}"></div>
+      <span class="h-name">${esc(h.name)}</span>
+      <span style="font-size:10px;color:${h.pass?'var(--green)':'var(--red)'}">${h.pass?'PASS':'FAIL'}</span>
+    </div>`).join('');
+
+  return `<div class="panel">
+    <div class="panel-header"><span class="panel-title">SHENRON</span>${verdictPill}</div>
+    <div class="mini-grid">
+      <div class="mini-card">
+        <div class="mini-label">layers</div>
+        <div class="mini-val" style="color:var(--green)">${fmt(sh.layers)}</div>
+        <div class="mini-sub">simulation</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-label">mutations</div>
+        <div class="mini-val" style="color:var(--purple)">${fmt(sh.mutations)}</div>
+        <div class="mini-sub">${ago(sh.last_mutation)}</div>
+      </div>
+    </div>
+    <div class="stat-row"><span class="stat-key">unique payloads</span><span class="stat-val">${fmt(sh.unique_payloads)}</span></div>
+    <div class="stat-row"><span class="stat-key">detection coverage</span><span class="stat-val" style="color:var(--green)">${esc(sh.detection||'—')}</span></div>
+    <div class="section-sep">health checks</div>
+    <div>${checks||'<span style="color:var(--dim);font-size:11px">run health check</span>'}</div>
+  </div>`;
+}
+
+function panelPublishing(pb) {
+  if (!pb.ok) return `<div class="panel"><div class="panel-header"><span class="panel-title">publishing / reach</span></div></div>`;
+
+  return `<div class="panel">
+    <div class="panel-header"><span class="panel-title">publishing / reach</span></div>
+    <div class="mini-grid">
+      <div class="mini-card">
+        <div class="mini-label">DEV.to followers</div>
+        <div class="mini-val" style="color:var(--blue)">${esc(pb.followers||'—')}</div>
+        <div class="mini-sub">gnomeman4201</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-label">GitHub stars</div>
+        <div class="mini-val" style="color:var(--amber)">${esc(pb.gh_stars||'—')}</div>
+        <div class="mini-sub">across all repos</div>
+      </div>
+    </div>
+    <div class="stat-row"><span class="stat-key">GitHub forks</span><span class="stat-val">${esc(pb.gh_forks||'—')}</span></div>
+    <div class="stat-row"><span class="stat-key">GitHub watchers</span><span class="stat-val">${esc(pb.gh_watchers||'—')}</span></div>
+    <div class="stat-row"><span class="stat-key">14d views (total)</span><span class="stat-val">${esc(pb.views_total||'—')}</span></div>
+    <div class="stat-row"><span class="stat-key">14d views (unique)</span><span class="stat-val">${esc(pb.views_unique||'—')}</span></div>
+    <div class="stat-row"><span class="stat-key">14d clones (total)</span><span class="stat-val">${esc(pb.clones_total||'—')}</span></div>
+    <div class="stat-row"><span class="stat-key">last pushed</span><span class="stat-val" style="color:var(--dim)">${esc(pb.gh_pushed||'—')}</span></div>
+  </div>`;
+}
+
+function panelCanary(b) {
+  const crxChange = (b.crx_last_check||'').includes('no change');
+  const crxColor = crxChange ? 'canary-ok' : 'canary-warn';
+
+  return `<div class="panel">
+    <div class="panel-header"><span class="panel-title">canary watchdogs</span></div>
+    <div class="canary-row"><span class="canary-name">crx version</span><span class="canary-val ${crxColor}">${esc(b.crx_version||'unknown')}</span></div>
+    <div class="canary-row"><span class="canary-name">crx last check</span><span class="canary-val" style="color:var(--dim)">${ago((b.crx_last_check||'').split(' - ')[0])}</span></div>
+    <div class="canary-row"><span class="canary-name">operator repos</span><span class="canary-val">${esc(b.operator_repos||'—')}</span></div>
+    <div class="canary-row"><span class="canary-name">operator followers</span><span class="canary-val">${esc(b.operator_followers||'—')}</span></div>
+    <div class="canary-row"><span class="canary-name">operator last check</span><span class="canary-val" style="color:var(--dim)">${ago((b.operator_last||'').split(' - ')[0])}</span></div>
+    <div class="canary-row"><span class="canary-name">carox last check</span><span class="canary-val" style="color:var(--dim)">${ago((b.carox_last||'').split(' - ')[0])}</span></div>
+    <div class="canary-row"><span class="canary-name">ozon last check</span><span class="canary-val" style="color:var(--dim)">${ago((b.ozon_last||'').split(' - ')[0])}</span></div>
+    <div class="canary-row"><span class="canary-name">api status</span><span class="canary-val ${(b.ozon_last||'').includes('404')?'canary-warn':'canary-ok'}">${(b.ozon_last||'').includes('404')?'404 / offline':'ok'}</span></div>
+  </div>`;
+}
+
+function panelNightly(b) {
+  const entries = (b.nightly||[]).map(e => {
+    const ts  = (e.ts||'').slice(0,16).replace('T',' ');
+    const path= (e.path||'').split('/').slice(-2).join('/');
+    const sha = (e.sha256||'').slice(0,12);
+    return `<div class="nightly-row"><span class="nightly-ts">${esc(ts)}</span><span class="nightly-path">${esc(path)}</span><span style="color:var(--faint);margin-left:8px">${esc(sha)}</span></div>`;
+  }).join('');
+
+  return `<div class="panel">
+    <div class="panel-header"><span class="panel-title">nightly log</span><span class="status-pill pill-dim">last 5 entries</span></div>
+    <div>${entries||'<span style="color:var(--dim);font-size:11px">no nightly log entries</span>'}</div>
+  </div>`;
+}
+
+load();
+setInterval(load, 30000);
+</script>
+</body>
+</html>
