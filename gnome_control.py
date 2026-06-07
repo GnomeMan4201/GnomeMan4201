@@ -21,6 +21,8 @@ SHENRON_DIR  = Path.home() / "research_hub/repos/shenron"
 NIGHTLY_LOG  = Path.home() / "research_hub/logs/nightly.log"
 PRAXIS_BIN   = Path.home() / "research_hub/praxis/bin/praxis"
 DEVTO_KEY    = os.environ.get("DEVTO_API_KEY", "")
+SHODAN_KEY   = os.environ.get("SHODAN_API_KEY", "iTkWIByObYAHQMeSMrajlvuN9TTHGcaH")
+GH_TOKEN     = os.environ.get("GITHUB_TOKEN", open(str(Path.home()/".config/canary/gh_token")).read().strip() if (Path.home()/".config/canary/gh_token").exists() else "")
 
 # ── helpers ───────────────────────────────────────────────────────────────────
 def db(path, query, params=()):
@@ -268,30 +270,32 @@ def get_canary():
     }
 
 # ── devto (cached) ────────────────────────────────────────────────────────────
-def get_open_iocs():
-    # count targets linked to active investigations
-    rows = db(INVHUB_DB, """
-        SELECT COUNT(DISTINCT it.target_id) as n,
-               GROUP_CONCAT(DISTINCT i.threat_class) as cats
-        FROM inv_targets it
-        JOIN investigations i ON i.id = it.inv_id
-        WHERE i.status = 'active'
-    """)
-    if not rows or rows[0]["n"] is None:
-        return {"open_iocs": 0, "ioc_breakdown": "no active investigations"}
-    n = rows[0]["n"]
-    # also get per-investigation breakdown
-    by_inv = db(INVHUB_DB, """
-        SELECT i.inv_id, COUNT(it.target_id) as n
-        FROM inv_targets it
-        JOIN investigations i ON i.id = it.inv_id
-        WHERE i.status = 'active'
-        GROUP BY i.inv_id ORDER BY n DESC
-    """)
-    breakdown = " · ".join(f"{r['inv_id']}:{r['n']}" for r in by_inv[:4])
-    return {"open_iocs": n, "ioc_breakdown": breakdown}
+_devto_cache = {"followers": "—", "ts": 0}
+def get_devto_followers():
+    global _devto_cache
+    if time.time() - _devto_cache["ts"] < 300:
+        return {"followers": _devto_cache["followers"], "username": "gnomeman4201"}
+    if not DEVTO_KEY:
+        return {"followers": "—", "username": "gnomeman4201"}
+    try:
+        total = 0; page = 1
+        while True:
+            req = urllib.request.Request(
+                f"https://dev.to/api/followers/users?per_page=1000&page={page}",
+                headers={"api-key": DEVTO_KEY, "User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(req, timeout=10) as r:
+                batch = json.loads(r.read())
+            total += len(batch)
+            if len(batch) < 1000: break
+            page += 1
+            if page > 20: break
+        _devto_cache = {"followers": total, "ts": time.time()}
+        return {"followers": total, "username": "gnomeman4201"}
+    except:
+        return {"followers": _devto_cache["followers"], "username": "gnomeman4201"}
 
-# ── enrichment # ── enrichment ────────────────────────────────────────────────────────────────
+# ── enrichment ────────────────────────────────────────────────────────────────
 def enrich_target(target):
     results = {}
     try:
@@ -434,10 +438,8 @@ HTML = r"""<!DOCTYPE html>
   .panel { background:var(--bg2); padding:14px; display:flex; flex-direction:column; gap:10px; }
 
   .section-label { font-size:9px; letter-spacing:3px; color:var(--dim); text-transform:uppercase;
-    padding-bottom:6px; border-bottom:1px solid var(--border); margin-bottom:6px;
+    padding-bottom:8px; border-bottom:1px solid var(--border); margin-bottom:4px;
     display:flex; align-items:center; justify-content:space-between; }
-  .section-label::before { content:''; display:inline-block; width:2px; height:10px;
-    background:var(--green3); margin-right:8px; flex-shrink:0; opacity:.6; }
   .badge { background:var(--green3); color:#000; font-size:8px; padding:1px 6px; letter-spacing:1px; }
   .badge.orange { background:var(--orange); }
   .badge.red    { background:var(--red); }
@@ -464,7 +466,7 @@ HTML = r"""<!DOCTYPE html>
   .alert-ts   { color:var(--text3); font-size:9px; }
   .alert-type { color:var(--orange); font-size:9px; letter-spacing:1px; }
   .alert-val  { color:var(--text2); font-size:9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .alert-count { background:var(--dimmer); border:1px solid var(--border2); color:var(--text2); font-size:8px; padding:1px 5px; white-space:nowrap; letter-spacing:1px; }
+  .alert-count { color:var(--dim); font-size:8px; white-space:nowrap; }
   .triage-btns { display:flex; gap:3px; opacity:0; transition:opacity .15s; }
   .alert-item:hover .triage-btns { opacity:1; }
   .tbtn { border:none; cursor:pointer; padding:2px 5px; font-family:inherit; font-size:8px; transition:all .15s; }
@@ -476,6 +478,38 @@ HTML = r"""<!DOCTYPE html>
   .tbtn-tag:hover { background:var(--blue); color:#000; }
 
   /* investigations */
+  /* identity resolver */
+  .resolve-source { background:var(--bg3); border:1px solid var(--border); margin-bottom:6px; overflow:hidden; }
+  .resolve-source-header { display:flex; align-items:center; justify-content:space-between;
+    padding:6px 10px; cursor:pointer; user-select:none; transition:background .15s; }
+  .resolve-source-header:hover { background:var(--bg2); }
+  .resolve-source-title { font-size:9px; letter-spacing:2px; text-transform:uppercase; font-weight:600; }
+  .resolve-source-status { font-size:8px; padding:1px 6px; }
+  .resolve-source-body { padding:8px 10px; border-top:1px solid var(--border); font-size:9px;
+    color:var(--text2); display:none; line-height:1.7; }
+  .resolve-source-body.open { display:block; }
+  .resolve-field { display:flex; gap:8px; margin-bottom:3px; flex-wrap:wrap; }
+  .resolve-key { color:var(--text3); flex-shrink:0; min-width:80px; }
+  .resolve-val { color:var(--text); word-break:break-all; }
+  .resolve-tag { display:inline-block; background:var(--dimmer); border:1px solid var(--border2);
+    padding:1px 6px; margin:2px 2px 0 0; font-size:8px; color:var(--text2); cursor:pointer; }
+  .resolve-tag:hover { border-color:var(--green3); color:var(--green); }
+  .resolve-inv-link { display:flex; gap:6px; align-items:center; padding:3px 0;
+    border-bottom:1px solid var(--border); cursor:pointer; }
+  .resolve-inv-link:hover { color:var(--green); }
+  .resolve-loading { color:var(--blue); font-size:9px; animation:pulse 1.5s infinite; }
+  .resolve-error { color:var(--red); font-size:9px; padding:4px; }
+  .resolve-actions { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+
+  /* source color coding */
+  .src-github { border-left:2px solid #58a6ff; }
+  .src-devto  { border-left:2px solid var(--green2); }
+  .src-npm    { border-left:2px solid #cc3534; }
+  .src-shodan { border-left:2px solid var(--orange); }
+  .src-certs  { border-left:2px solid var(--yellow); }
+  .src-whois  { border-left:2px solid var(--dim); }
+  .src-inv_links { border-left:2px solid var(--blue); }
+
   /* sortable headers */
   .inv-table th.sortable { cursor:pointer; user-select:none; }
   .inv-table th.sortable:hover { color:var(--green2); }
@@ -521,15 +555,12 @@ HTML = r"""<!DOCTYPE html>
   .inv-row:hover .inv-arrow { color:var(--green); }
 
   /* correlations */
-  .corr-edge { padding:8px 10px; background:var(--bg3); border-left:3px solid var(--blue);
-               margin-bottom:5px; cursor:pointer; transition:all .15s; }
-  .corr-edge:hover { border-left-color:var(--green); background:var(--bg2); }
-  .corr-ids   { font-size:10px; color:var(--blue); margin-bottom:4px; font-weight:500; letter-spacing:1px; }
-  .corr-shared { font-size:9px; color:var(--text2); line-height:1.6; }
-  .corr-shared span { background:var(--dimmer); border:1px solid var(--border2); padding:1px 5px;
-                      margin-right:4px; margin-bottom:3px; display:inline-block; color:var(--text); }
-  .corr-strength { float:right; font-size:8px; color:var(--blue); background:#001a3d;
-                   border:1px solid #1a3d5c; padding:1px 6px; letter-spacing:1px; }
+  .corr-edge { padding:6px 8px; background:var(--bg3); border-left:2px solid var(--blue);
+               margin-bottom:4px; cursor:pointer; }
+  .corr-edge:hover { border-left-color:var(--green); }
+  .corr-ids   { font-size:9px; color:var(--blue); margin-bottom:3px; }
+  .corr-shared { font-size:8px; color:var(--text3); }
+  .corr-strength { float:right; font-size:8px; color:var(--dim); }
 
   /* SHENRON */
   .shenron-stats { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
@@ -713,12 +744,17 @@ HTML = r"""<!DOCTYPE html>
     pointer-events:none; }
   .toast.show { opacity:1; }
   .toast.err { border-color:var(--red); color:var(--red); }
+
+  .mlabel { background:#8b0000; color:#fff !important; padding:1px 8px; display:inline; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo" style="font-size:28px;font-weight:700;letter-spacing:6px;color:#8b0000;font-family:'Share Tech Mono'">GNOME</div>
+  <div class="logo"><div style="position:relative;display:flex;align-items:center;justify-content:center;height:54px;min-width:220px">
+  <img src="/flames.png" style="position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);width:280px;height:130px;object-fit:cover;object-position:center 60%;pointer-events:none;opacity:0.9;z-index:0">
+  <div style="position:relative;z-index:2;font-size:28px;font-weight:700;letter-spacing:6px;color:#fff;background:#8b0000;padding:4px 16px;font-family:'Share Tech Mono',monospace">GNOME</div>
+</div></div>
   <div class="status-bar">
     <div class="live-dot"></div>
     <span id="clock">—</span>
@@ -750,7 +786,7 @@ HTML = r"""<!DOCTYPE html>
 <div class="grid">
 <!-- LEFT -->
 <div class="panel">
-  <div class="section-label"><span class="badge" id="monitor-badge" style="background:#00ff44;color:#000;font-size:9px;letter-spacing:3px;padding:3px 10px">ACTIVE</span></div>
+  <div class="section-label">badBANANA monitor <span class="badge" id="monitor-badge">active</span></div>
   <div class="stat-row">
     <div class="stat"><div class="stat-label">total alerts</div>
       <div class="stat-val" id="total-alerts">—</div><div class="stat-sub" id="alerts-ago">—</div></div>
@@ -761,20 +797,20 @@ HTML = r"""<!DOCTYPE html>
   <div class="section-label">recent alerts <span id="alert-dedup-note" style="font-size:8px;color:var(--dim)"></span></div>
   <div class="alert-list" id="alert-list"></div>
 
-  <div class="section-label" style="margin-top:8px">open IOCs</div>
+  <div class="section-label" style="margin-top:8px"><span class="mlabel">publishing / reach</span></div>
   <div class="stat-row">
-    <div class="stat"><div class="stat-label">targets / active inv</div>
-      <div class="pub-followers" id="open-iocs">—</div>
-      <div class="pub-sub" id="ioc-breakdown">across active investigations</div></div>
+    <div class="stat"><div class="stat-label">dev.to followers</div>
+      <div class="pub-followers" id="devto-followers">—</div>
+      <div class="pub-sub" id="devto-user">gnomeman4201</div></div>
   </div>
 
-  <div class="section-label" style="margin-top:4px">nightly log</div>
+  <div class="section-label" style="margin-top:4px"><span class="mlabel">nightly log</span></div>
   <div class="log-feed" id="nightly-log"></div>
 </div>
 
 <!-- MID -->
 <div class="panel">
-  <div class="section-label">investigations
+  <div class="section-label"><span class="mlabel">investigations</span>
     <span style="display:flex;align-items:center;gap:8px">
       <span class="badge orange" id="inv-active-badge">— active</span>
     </span>
@@ -826,7 +862,7 @@ HTML = r"""<!DOCTYPE html>
 
   <!-- correlations -->
   <div class="section-label" style="margin-top:14px">
-    infrastructure correlations
+    <span class="mlabel">infrastructure correlations</span>
     <span style="display:flex;align-items:center;gap:6px">
       <span class="badge blue" id="corr-badge">—</span>
       <button class="hbtn" id="corr-view-btn" onclick="toggleCorrView()"
@@ -847,20 +883,24 @@ HTML = r"""<!DOCTYPE html>
   </div>
 </div>
 
-<!-- RIGHT -->
-<div class="panel">
-  <div class="section-label">SHENRON</div>
-  <div class="shenron-stats" id="shenron-stats"></div>
-  <div class="section-label" style="margin-top:8px">health checks</div>
-  <div class="health-grid" id="shenron-health"></div>
+<!-- RIGHT: Identity Resolver -->
+<div class="panel" style="min-width:260px">
+  <div class="section-label"><span class="mlabel">⬡ identity resolver</span></div>
 
-  <div class="section-label" style="margin-top:12px">canary watchdogs</div>
-  <div id="canary-rows"></div>
+  <div style="display:flex;gap:6px;margin-bottom:8px">
+    <input class="form-input" id="resolve-input" placeholder="handle · domain · email · IP…"
+      style="flex:1;font-size:10px" onkeydown="if(event.key==='Enter')runResolve()">
+    <button class="btn btn-blue" onclick="runResolve()" style="white-space:nowrap;padding:6px 10px">resolve</button>
+  </div>
 
-  <div class="section-label" style="margin-top:12px">quick enrich</div>
-  <div style="display:flex;flex-direction:column;gap:4px">
-    <input class="form-input" id="quick-enrich-input" placeholder="domain or IP…" style="width:100%">
-    <button class="btn btn-blue" style="width:100%" onclick="quickEnrich()">⬡ run enrichment</button>
+  <!-- query type indicator -->
+  <div id="resolve-type" style="font-size:8px;color:var(--text3);margin-bottom:8px;letter-spacing:1px"></div>
+
+  <!-- results -->
+  <div id="resolve-results" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px">
+    <div style="color:var(--text3);font-size:9px;text-align:center;padding:20px 0">
+      enter a target to resolve identity across all sources
+    </div>
   </div>
 </div>
 </div><!-- /grid -->
@@ -1062,6 +1102,269 @@ HTML = r"""<!DOCTYPE html>
 </div>
 
 <script>
+// ── identity resolver ─────────────────────────────────────────────────────────
+function detectQueryType(q) {
+  if (!q) return '';
+  if (/@/.test(q) && /\./.test(q.split('@')[1]||'')) return 'email';
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(q)) return 'ip';
+  if (/\./.test(q) && !/\s/.test(q)) return 'domain';
+  return 'handle';
+}
+
+document.getElementById('resolve-input').addEventListener('input', function() {
+  const t = detectQueryType(this.value.trim());
+  const labels = {handle:'github · devto · npm',domain:'shodan · certs · whois · npm',
+    email:'github · devto · shodan · certs',ip:'shodan · certs · whois','':('')}; 
+  document.getElementById('resolve-type').textContent = t ? `${t} → querying: ${labels[t]||''}` : '';
+});
+
+async function runResolve() {
+  const query = document.getElementById('resolve-input').value.trim();
+  if (!query) return;
+  const res = document.getElementById('resolve-results');
+  res.innerHTML = `<div class="resolve-loading">⬡ resolving ${query} across all sources…</div>`;
+  try {
+    const d = await api('/api/resolve','POST',{query});
+    renderIdentityCard(d);
+  } catch(e) {
+    res.innerHTML = `<div class="resolve-error">error: ${e.message}</div>`;
+  }
+}
+
+function resolveWith(query) {
+  document.getElementById('resolve-input').value = query;
+  document.getElementById('resolve-input').dispatchEvent(new Event('input'));
+  runResolve();
+  // scroll right panel into view
+  document.getElementById('resolve-results').scrollIntoView({behavior:'smooth'});
+}
+
+function renderIdentityCard(d) {
+  const res = document.getElementById('resolve-results');
+  const srcs = d.sources || {};
+  let html = `<div style="font-size:8px;color:var(--text3);margin-bottom:6px">
+    resolved: <span style="color:var(--green)">${d.query}</span>
+    <span style="color:var(--dim);margin-left:6px">${d.query_type}</span>
+    <span style="color:var(--text3);margin-left:6px">${(d.resolved_at||'').slice(11,19)}</span>
+  </div>`;
+
+  // inv links first — most important
+  if (srcs.inv_links && !srcs.inv_links.error) {
+    const il = srcs.inv_links;
+    const invs = il.investigations||[];
+    html += renderSourceBlock('inv_links', 'investigation links',
+      invs.length > 0 ? `${invs.length} investigation${invs.length>1?'s':''} reference this target` : 'no investigation links',
+      invs.length > 0 ? 'blue' : 'dim',
+      `${invs.map(i=>`
+        <div class="resolve-inv-link" onclick="previewInv('${i.inv_id}')">
+          <span>${riskBadge(i.risk)}</span>
+          <span>${statusChip(i.status)}</span>
+          <span style="color:var(--text)">${i.inv_id}</span>
+          <span style="color:var(--text3);font-size:8px">${i.role||i.type}</span>
+        </div>`).join('')}
+      ${il.alert_count>0?`<div style="margin-top:6px;color:var(--orange);font-size:8px">
+        ${il.alert_count} alerts matching this target · last: ${(il.last_alert||'').slice(0,10)}</div>`:''}
+      `, true);
+  }
+
+  // GitHub
+  if (srcs.github) {
+    const g = srcs.github;
+    if (g.error) {
+      html += renderSourceBlock('github','GitHub',g.error,'dim','',false);
+    } else {
+      const body = `
+        ${field('login', g.login)} ${field('name', g.name)} ${field('email', g.email||'—')}
+        ${field('bio', g.bio)} ${field('company', g.company)} ${field('location', g.location)}
+        ${field('followers', g.followers+' followers · '+g.following+' following')}
+        ${field('repos', g.public_repos+' public')} ${field('joined', (g.created_at||'').slice(0,10))}
+        ${field('blog', g.blog)}
+        ${g.commit_emails?.length?`<div class="resolve-field"><span class="resolve-key">commit emails</span>
+          <span class="resolve-val">${g.commit_emails.map(e=>`<span class="resolve-tag" onclick="resolveWith('${e}')">${e}</span>`).join('')}</span></div>`:''}
+        ${g.recent_repos?.length?`<div style="margin-top:6px;font-size:8px;color:var(--text3);letter-spacing:1px;margin-bottom:4px">RECENT REPOS</div>
+          ${g.recent_repos.map(r=>`<div class="resolve-field">
+            <span class="resolve-tag" onclick="resolveWith('${g.login}/${r.name}')">${r.name}</span>
+            <span style="color:var(--dim);font-size:8px">${r.language||'?'} · ★${r.stars} · ${r.updated}</span>
+          </div>`).join('')}`:''}`;
+      html += renderSourceBlock('github','GitHub',
+        `${g.login||'—'} · ${g.public_repos||0} repos · ${g.followers||0} followers`,
+        'green', body, false);
+    }
+  }
+
+  // dev.to
+  if (srcs.devto) {
+    const dv = srcs.devto;
+    if (dv.error) {
+      html += renderSourceBlock('devto','DEV.TO',dv.error,'dim','',false);
+    } else {
+      const body = `
+        ${field('username', dv.username)} ${field('name', dv.name)}
+        ${field('joined', (dv.joined_at||'').slice(0,10))} ${field('github', dv.github)}
+        ${field('website', dv.website)} ${field('summary', dv.summary)}
+        ${dv.articles?.length?`<div style="margin-top:6px;font-size:8px;color:var(--text3);letter-spacing:1px;margin-bottom:4px">ARTICLES</div>
+          ${dv.articles.map(a=>`<div style="margin-bottom:4px">
+            <div style="color:var(--text);font-size:9px">${a.title}</div>
+            <div style="color:var(--text3);font-size:8px">❤ ${a.reactions} · 💬 ${a.comments} · ${a.published}</div>
+          </div>`).join('')}`:''}`;
+      html += renderSourceBlock('devto','DEV.TO',
+        `${dv.username||'—'} · ${dv.total_articles||0} articles`,
+        'green', body, false);
+    }
+  }
+
+  // npm
+  if (srcs.npm) {
+    const n = srcs.npm;
+    if (n.error) {
+      html += renderSourceBlock('npm','NPM',n.error,'dim','',false);
+    } else {
+      const dp = n.direct_package;
+      const body = `
+        ${dp?`${field('package', dp.name)} ${field('description', dp.description)}
+        ${field('author', typeof dp.author==='object'?dp.author?.name:dp.author||'—')}
+        ${field('maintainers', (dp.maintainers||[]).join(', '))}
+        ${field('homepage', dp.homepage)} ${field('created', dp.created)} ${field('modified', dp.modified)}
+        ${field('recent versions', (dp.versions||[]).join(' · '))}`:''
+        }
+        ${n.packages?.length?`<div style="margin-top:6px;font-size:8px;color:var(--text3);letter-spacing:1px;margin-bottom:4px">PACKAGES BY MAINTAINER</div>
+          ${n.packages.map(p=>`<div class="resolve-field">
+            <span class="resolve-tag" onclick="resolveWith('${p.name}')">${p.name}</span>
+            <span style="color:var(--dim);font-size:8px">v${p.version} · ${p.date}</span>
+          </div>`).join('')}`:''}`;
+      const summary = dp ? `${dp.name} · ${dp.modified}` : `${n.total||0} packages`;
+      html += renderSourceBlock('npm','NPM', summary, n.total>0||dp?'orange':'dim', body, false);
+    }
+  }
+
+  // Shodan
+  if (srcs.shodan) {
+    const sh = srcs.shodan;
+    if (sh.error) {
+      html += renderSourceBlock('shodan','SHODAN',sh.error,'dim','',false);
+    } else {
+      const body = `
+        ${field('ip', sh.resolved_ip)} ${field('org', sh.org)} ${field('isp', sh.isp)}
+        ${field('asn', sh.asn)} ${field('location', [sh.city,sh.country].filter(Boolean).join(', '))}
+        ${field('last seen', sh.last_update)}
+        ${sh.ports?.length?field('open ports', sh.ports.join(' · ')):''}
+        ${sh.vulns?.length?`<div class="resolve-field"><span class="resolve-key">vulns</span>
+          <span class="resolve-val">${sh.vulns.map(v=>`<span class="resolve-tag" style="color:var(--red);border-color:#600">${v}</span>`).join('')}</span></div>`:''}
+        ${sh.tags?.length?field('tags', sh.tags.join(', ')):''}
+        ${sh.hostnames?.length?`<div class="resolve-field"><span class="resolve-key">hostnames</span>
+          <span class="resolve-val">${sh.hostnames.map(h=>`<span class="resolve-tag" onclick="resolveWith('${h}')">${h}</span>`).join('')}</span></div>`:''}
+        ${sh.services?.length?`<div style="margin-top:6px;font-size:8px;color:var(--text3);letter-spacing:1px;margin-bottom:4px">SERVICES</div>
+          ${sh.services.map(s=>`<div style="margin-bottom:5px;padding:4px;background:var(--bg2);border-left:1px solid var(--border2)">
+            <span style="color:var(--orange)">${s.port}/${s.transport}</span>
+            ${s.product?`<span style="color:var(--text);margin-left:6px">${s.product} ${s.version||''}</span>`:''}
+            ${s.banner?`<div style="color:var(--text3);font-size:8px;margin-top:2px;white-space:pre-wrap">${s.banner.slice(0,100)}</div>`:''}
+          </div>`).join('')}`:''}`;
+      html += renderSourceBlock('shodan','SHODAN',
+        `${sh.org||'—'} · ${(sh.ports||[]).length} ports · ASN ${sh.asn||'—'}`,
+        sh.vulns?.length?'red':'orange', body, false);
+    }
+  }
+
+  // Certs
+  if (srcs.certs) {
+    const ct = srcs.certs;
+    if (ct.error) {
+      html += renderSourceBlock('certs','CERT TRANSPARENCY',ct.error,'dim','',false);
+    } else {
+      const body = `
+        ${field('total certs', ct.total_certs)} ${field('earliest', ct.earliest_cert)}
+        ${field('latest expiry', ct.latest_cert)} ${field('issuers', (ct.issuers||[]).join(', '))}
+        ${ct.subdomains?.length?`<div style="margin-top:6px;font-size:8px;color:var(--text3);letter-spacing:1px;margin-bottom:4px">SUBDOMAINS (${ct.subdomains.length})</div>
+          ${ct.subdomains.map(s=>`<span class="resolve-tag" onclick="resolveWith('${s}')">${s}</span>`).join('')}`:''}`;
+      html += renderSourceBlock('certs','CERT TRANSPARENCY',
+        `${ct.total_certs||0} certs · ${ct.subdomains?.length||0} subdomains`,
+        'yellow', body, false);
+    }
+  }
+
+  // Whois
+  if (srcs.whois) {
+    const w = srcs.whois;
+    if (w.error) {
+      html += renderSourceBlock('whois','WHOIS',w.error,'dim','',false);
+    } else {
+      const parsed = w.parsed||{};
+      const body = Object.entries(parsed).slice(0,15).map(([k,v])=>field(k,v)).join('') +
+        (w.raw?`<details style="margin-top:6px"><summary style="cursor:pointer;color:var(--text3);font-size:8px">raw whois</summary>
+        <pre style="font-size:8px;color:var(--text3);white-space:pre-wrap;margin-top:4px">${w.raw.slice(0,1000)}</pre></details>`:'');
+      const reg = parsed.registrant_organization || parsed.registrar || parsed.registrant_name || '—';
+      html += renderSourceBlock('whois','WHOIS', reg, 'dim', body, false);
+    }
+  }
+
+  // action buttons
+  html += `<div class="resolve-actions">
+    <button class="btn btn-blue" style="font-size:8px;padding:4px 8px"
+      onclick="captureResolveToPraxis('${d.query}')">→ praxis capture</button>
+    ${currentInvId?`<button class="btn" style="font-size:8px;padding:4px 8px"
+      onclick="addResolvedToInv('${d.query}')">+ add to ${currentInvId}</button>`:''}
+    <button class="btn btn-ghost" style="font-size:8px;padding:4px 8px"
+      onclick="copyResolve()">copy json</button>
+  </div>`;
+
+  res.innerHTML = html;
+  window._lastResolve = d;
+
+  // auto-expand inv_links if there are hits
+  if ((srcs.inv_links?.investigations?.length||0) > 0) {
+    document.querySelector('.src-inv_links .resolve-source-body')?.classList.add('open');
+  }
+}
+
+function field(k, v) {
+  if (!v || v==='—' || v==='' || v===null || v===undefined) return '';
+  return `<div class="resolve-field">
+    <span class="resolve-key">${k}</span>
+    <span class="resolve-val">${v}</span>
+  </div>`;
+}
+
+function renderSourceBlock(cls, title, summary, color, body, startOpen) {
+  const colors = {green:'var(--green2)',orange:'var(--orange)',yellow:'var(--yellow)',
+    blue:'var(--blue)',red:'var(--red)',dim:'var(--dim)'};
+  const col = colors[color]||'var(--dim)';
+  const id = 'rsrc-'+cls+'-'+Math.random().toString(36).slice(2,6);
+  return `<div class="resolve-source src-${cls}">
+    <div class="resolve-source-header" onclick="document.getElementById('${id}').classList.toggle('open')">
+      <span class="resolve-source-title" style="color:${col}">${title}</span>
+      <span class="resolve-source-status" style="color:${col}">${summary}</span>
+    </div>
+    <div class="resolve-source-body ${startOpen?'open':''}" id="${id}">${body}</div>
+  </div>`;
+}
+
+function copyResolve() {
+  if (window._lastResolve)
+    navigator.clipboard.writeText(JSON.stringify(window._lastResolve,null,2))
+      .then(()=>toast('copied'));
+}
+
+async function captureResolveToPraxis(query) {
+  const r = await api('/api/praxis/capture','POST',{
+    text:`Identity resolved: ${query}`,
+    inv_id: currentInvId, tags:'identity,osint', confidence:3
+  });
+  toast(r.ok?'captured: '+r.praxis_id:'error: '+r.error, !r.ok);
+}
+
+async function addResolvedToInv(query) {
+  if (!currentInvId) return;
+  const d = window._lastResolve;
+  const type = d?.query_type||'other';
+  const r = await api('/api/inv/evidence','POST',{
+    inv_id: currentInvId,
+    title: `Identity resolve: ${query}`,
+    evidence_type: 'json',
+    notes: `Cross-platform identity resolution via GNOME mission control. Sources: ${Object.keys(d?.sources||{}).join(', ')}`
+  });
+  toast(r.ok?'added to '+currentInvId:'error', !r.ok);
+}
+
 // ── state ──────────────────────────────────────────────────────────────────
 let currentInvId = null;
 let activeTab    = 'timeline';
@@ -1287,170 +1590,26 @@ function highlightCorrelated(invId) {
   });
 }
 
-let _corrData = null;
-let _corrViewMode = 'list';
-
 function renderCorrelations(corr) {
   if (!corr) return;
-  _corrData = corr;
-  window._corrEdges = corr.edges||[];
   const edges = corr.edges||[];
   const shared = corr.shared_targets||[];
-  const totalLinks = edges.length + shared.filter(t=>!edges.find(e=>e.shared.some(s=>s.value===t.value))).length;
-  document.getElementById('corr-badge').textContent = totalLinks+' links';
-
-  if (_corrViewMode==='graph') {
-    drawCorrGraph(corr);
-  } else {
-    drawCorrList(corr);
-  }
-}
-
-function toggleCorrView() {
-  _corrViewMode = _corrViewMode==='list' ? 'graph' : 'list';
-  document.getElementById('corr-view-btn').textContent = _corrViewMode==='list' ? 'graph' : 'list';
-  document.getElementById('corr-list').style.display  = _corrViewMode==='list'  ? 'block' : 'none';
-  document.getElementById('corr-graph').style.display = _corrViewMode==='graph' ? 'block' : 'none';
-  if (_corrData) renderCorrelations(_corrData);
-}
-
-function drawCorrList(corr) {
-  const edges = corr.edges||[];
-  const shared = corr.shared_targets||[];
+  document.getElementById('corr-badge').textContent = edges.length + ' links';
   const el = document.getElementById('corr-list');
   if (!edges.length && !shared.length) {
-    el.innerHTML='<div style="color:var(--text3);font-size:9px;padding:8px">no shared infrastructure detected</div>';
+    el.innerHTML = '<div style="color:var(--text3);font-size:9px">no shared infrastructure detected</div>';
     return;
   }
-  el.innerHTML = edges.map(e=>`
-    <div class="corr-edge" onclick="previewInv('${e.a}')">
-      <div class="corr-ids">
-        <span onclick="event.stopPropagation();previewInv('${e.a}')" style="cursor:pointer">${e.a}</span>
-        <span style="color:var(--dim);margin:0 6px">↔</span>
-        <span onclick="event.stopPropagation();previewInv('${e.b}')" style="cursor:pointer">${e.b}</span>
-        <span class="corr-strength">${e.strength} shared</span>
-      </div>
-      <div class="corr-shared">
-        ${e.shared.map(s=>`
-          <span onclick="event.stopPropagation();openEnrichWith('${s.value}')" title="click to enrich">
-            ${s.value}
-            <span style="color:var(--dim);font-size:7px">${s.kind}</span>
-          </span>`).join('')}
-      </div>
+  el.innerHTML = edges.map(e => `
+    <div class="corr-edge" onclick="openInv('${e.a}')">
+      <div class="corr-ids">${e.a} ↔ ${e.b} <span class="corr-strength">${e.strength} shared</span></div>
+      <div class="corr-shared">${e.shared.slice(0,3).map(s=>`${s.value} (${s.kind})`).join(' · ')}</div>
     </div>`).join('') +
     shared.filter(t=>!edges.find(e=>e.shared.some(s=>s.value===t.value))).map(t=>`
     <div class="corr-edge" style="border-left-color:var(--yellow)">
-      <div class="corr-ids" style="color:var(--yellow)">
-        ${t.value}
-        <span style="color:var(--dim);font-size:8px;margin-left:6px">${t.type||''}</span>
-        <span class="corr-strength" style="background:#2d2500;border-color:#5c4a00;color:var(--yellow)">shared</span>
-      </div>
-      <div class="corr-shared" style="color:var(--text3)">
-        ${(t.inv_ids||'').split(' · ').map(id=>`<span onclick="previewInv('${id.trim()}')" style="cursor:pointer">${id.trim()}</span>`).join('')}
-      </div>
+      <div class="corr-ids" style="color:var(--yellow)">${t.value}</div>
+      <div class="corr-shared">shared across: ${t.inv_ids}</div>
     </div>`).join('');
-}
-
-function drawCorrGraph(corr) {
-  const svg = document.getElementById('corr-svg');
-  const W = svg.clientWidth || 600;
-  const H = 260;
-
-  // collect all investigation nodes
-  const invNodes = {};
-  invList.forEach(inv => {
-    invNodes[inv.inv_id||inv.id] = {
-      id: inv.inv_id||inv.id, type:'inv',
-      risk: inv.risk_score||0, status: inv.status,
-      title: inv.title||''
-    };
-  });
-
-  // collect shared target nodes
-  const targetNodes = {};
-  (corr.edges||[]).forEach(e => {
-    e.shared.forEach(s => {
-      if (!targetNodes[s.value]) targetNodes[s.value] = {id:s.value, type:'target', kind:s.kind};
-    });
-  });
-  (corr.shared_targets||[]).forEach(t => {
-    if (!targetNodes[t.value]) targetNodes[t.value] = {id:t.value, type:'target', kind:t.type};
-  });
-
-  // layout: investigations in a circle, targets in center cluster
-  const invIds = Object.keys(invNodes);
-  const targIds = Object.keys(targetNodes);
-  const cx = W/2, cy = H/2;
-  const r = Math.min(cx,cy) - 40;
-
-  invIds.forEach((id,i) => {
-    const angle = (2*Math.PI*i/invIds.length) - Math.PI/2;
-    invNodes[id].x = cx + r*Math.cos(angle);
-    invNodes[id].y = cy + r*Math.sin(angle);
-  });
-  targIds.forEach((id,i) => {
-    const angle = (2*Math.PI*i/Math.max(targIds.length,1));
-    const tr = Math.min(60, r*0.35);
-    targetNodes[id].x = cx + tr*Math.cos(angle);
-    targetNodes[id].y = cy + tr*Math.sin(angle);
-  });
-
-  // build SVG
-  const riskColor = r => r>=8?'var(--red)':r>=5?'var(--orange)':'var(--green3)';
-  const ns = 'http://www.w3.org/2000/svg';
-
-  let svgContent = `<defs>
-    <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/>
-    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  </defs>`;
-
-  // edges: inv↔target
-  (corr.edges||[]).forEach(e => {
-    e.shared.forEach(s => {
-      const a = invNodes[e.a], b = invNodes[e.b], t = targetNodes[s.value];
-      if (a && t) svgContent += `<line x1="${a.x}" y1="${a.y}" x2="${t.x}" y2="${t.y}"
-        stroke="var(--blue)" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="4,3"/>`;
-      if (b && t) svgContent += `<line x1="${b.x}" y1="${b.y}" x2="${t.x}" y2="${t.y}"
-        stroke="var(--blue)" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="4,3"/>`;
-    });
-  });
-  // direct inv↔inv edges
-  (corr.edges||[]).forEach(e => {
-    const a = invNodes[e.a], b = invNodes[e.b];
-    if (a && b) svgContent += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"
-      stroke="var(--blue)" stroke-width="${1+e.strength}" stroke-opacity="0.6"/>`;
-  });
-
-  // target nodes
-  targIds.forEach(id => {
-    const n = targetNodes[id];
-    const kindColor = n.kind==='domain'?'var(--yellow)':n.kind==='email'?'var(--orange)':'var(--blue)';
-    const label = id.length>16 ? id.slice(0,14)+'…' : id;
-    svgContent += `<g class="corr-node" onclick="openEnrichWith('${id.replace(/'/g,"\'")}')">
-      <circle cx="${n.x}" cy="${n.y}" r="8" fill="${kindColor}" fill-opacity="0.2"
-        stroke="${kindColor}" stroke-width="1.5" filter="url(#glow)"/>
-      <text x="${n.x}" y="${n.y+13}" text-anchor="middle" font-size="7"
-        fill="${kindColor}">${label}</text>
-    </g>`;
-  });
-
-  // investigation nodes
-  invIds.forEach(id => {
-    const n = invNodes[id];
-    const col = riskColor(n.risk);
-    const shortTitle = n.title.length>20 ? n.title.slice(0,18)+'…' : n.title;
-    svgContent += `<g class="corr-node" onclick="previewInv('${id}')">
-      <circle cx="${n.x}" cy="${n.y}" r="18" fill="${col}" fill-opacity="0.15"
-        stroke="${col}" stroke-width="2" filter="url(#glow)"/>
-      <text x="${n.x}" y="${n.y-3}" text-anchor="middle" font-size="9" font-weight="700"
-        fill="${col}">${id}</text>
-      <text x="${n.x}" y="${n.y+9}" text-anchor="middle" font-size="7"
-        fill="var(--text3)">${shortTitle}</text>
-    </g>`;
-  });
-
-  svg.innerHTML = svgContent;
-  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 }
 
 function renderShenron(s) {
@@ -1487,10 +1646,8 @@ function renderCanary(c) {
 }
 
 function renderPublishing(p) {
-  // open IOCs — total targets across active investigations
-  const iocs = p.open_iocs ?? '—';
-  document.getElementById('open-iocs').textContent = typeof iocs === 'number' ? iocs.toLocaleString() : iocs;
-  document.getElementById('ioc-breakdown').textContent = p.ioc_breakdown || 'across active investigations';
+  document.getElementById('devto-followers').textContent = (p.followers||'—').toLocaleString?.() ?? p.followers;
+  document.getElementById('devto-user').textContent = p.username||'gnomeman4201';
 }
 
 function renderNightlyLog(entries) {
@@ -1919,6 +2076,299 @@ setInterval(loadAll,30000);
 </body>
 </html>"""
 
+
+# ── identity resolver ─────────────────────────────────────────────────────────
+import concurrent.futures
+
+def resolve_github(query):
+    """Query GitHub for user/org/repo info"""
+    results = {}
+    headers = {"User-Agent": "Mozilla/5.0"}
+    if GH_TOKEN:
+        headers["Authorization"] = f"Bearer {GH_TOKEN}"
+    try:
+        # try as user
+        req = urllib.request.Request(f"https://api.github.com/users/{query}", headers=headers)
+        with urllib.request.urlopen(req, timeout=8) as r:
+            u = json.loads(r.read())
+        results["type"]       = u.get("type","User")
+        results["login"]      = u.get("login","")
+        results["name"]       = u.get("name","")
+        results["email"]      = u.get("email","")
+        results["bio"]        = u.get("bio","")
+        results["company"]    = u.get("company","")
+        results["location"]   = u.get("location","")
+        results["followers"]  = u.get("followers",0)
+        results["following"]  = u.get("following",0)
+        results["public_repos"]= u.get("public_repos",0)
+        results["created_at"] = u.get("created_at","")
+        results["blog"]       = u.get("blog","")
+        results["avatar_url"] = u.get("avatar_url","")
+        # get recent repos
+        req2 = urllib.request.Request(
+            f"https://api.github.com/users/{query}/repos?sort=updated&per_page=5",
+            headers=headers)
+        with urllib.request.urlopen(req2, timeout=8) as r2:
+            repos = json.loads(r2.read())
+        results["recent_repos"] = [{"name":r.get("name"),"stars":r.get("stargazers_count",0),
+            "language":r.get("language"),"updated":r.get("updated_at","")[:10]} for r in repos]
+        # get commit emails
+        emails = set()
+        for repo in repos[:3]:
+            try:
+                req3 = urllib.request.Request(
+                    f"https://api.github.com/repos/{query}/{repo['name']}/commits?per_page=10",
+                    headers=headers)
+                with urllib.request.urlopen(req3, timeout=5) as r3:
+                    commits = json.loads(r3.read())
+                for c in commits:
+                    e = c.get("commit",{}).get("author",{}).get("email","")
+                    if e and not e.endswith("noreply.github.com"):
+                        emails.add(e)
+            except: pass
+        results["commit_emails"] = list(emails)
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+def resolve_devto(query):
+    """Query dev.to for user articles and profile"""
+    results = {}
+    try:
+        req = urllib.request.Request(
+            f"https://dev.to/api/users/by_username?url={query}",
+            headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=8) as r:
+            u = json.loads(r.read())
+        results["name"]       = u.get("name","")
+        results["username"]   = u.get("username","")
+        results["summary"]    = u.get("summary","")
+        results["joined_at"]  = u.get("joined_at","")
+        results["github"]     = u.get("github_username","")
+        results["twitter"]    = u.get("twitter_username","")
+        results["website"]    = u.get("website_url","")
+        results["user_id"]    = u.get("id","")
+        # get their articles
+        req2 = urllib.request.Request(
+            f"https://dev.to/api/articles?username={query}&per_page=5",
+            headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req2, timeout=8) as r2:
+            articles = json.loads(r2.read())
+        results["articles"] = [{"title":a.get("title"),"reactions":a.get("positive_reactions_count",0),
+            "comments":a.get("comments_count",0),"published":a.get("published_timestamp","")[:10],
+            "url":a.get("url","")} for a in articles]
+        results["total_articles"] = len(articles)
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+def resolve_npm(query):
+    """Query npm for packages by author/maintainer"""
+    results = {}
+    try:
+        req = urllib.request.Request(
+            f"https://registry.npmjs.org/-/v1/search?text=maintainer:{query}&size=10",
+            headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = json.loads(r.read())
+        pkgs = data.get("objects",[])
+        results["packages"] = [{"name":p.get("package",{}).get("name",""),
+            "version":p.get("package",{}).get("version",""),
+            "description":p.get("package",{}).get("description","")[:80],
+            "date":p.get("package",{}).get("date","")[:10],
+            "downloads":p.get("downloads",{}).get("monthly",0)} for p in pkgs]
+        results["total"] = data.get("total",0)
+        # also try direct package lookup if query looks like a package name
+        try:
+            req2 = urllib.request.Request(
+                f"https://registry.npmjs.org/{query}",
+                headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req2, timeout=5) as r2:
+                pkg = json.loads(r2.read())
+            results["direct_package"] = {
+                "name": pkg.get("name",""),
+                "description": pkg.get("description","")[:100],
+                "author": pkg.get("author",{}),
+                "maintainers": [m.get("name") for m in pkg.get("maintainers",[])[:5]],
+                "homepage": pkg.get("homepage",""),
+                "repository": pkg.get("repository",{}).get("url","") if isinstance(pkg.get("repository"),dict) else "",
+                "versions": list(pkg.get("versions",{}).keys())[-5:],
+                "created": pkg.get("time",{}).get("created","")[:10],
+                "modified": pkg.get("time",{}).get("modified","")[:10],
+            }
+        except: pass
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+def resolve_shodan(query):
+    """Query Shodan for IP/domain info"""
+    results = {}
+    if not SHODAN_KEY:
+        return {"error": "no Shodan key"}
+    try:
+        import socket
+        # resolve to IP if domain
+        try:
+            ip = socket.gethostbyname(query)
+        except:
+            ip = query
+        results["resolved_ip"] = ip
+        # Shodan host lookup
+        req = urllib.request.Request(
+            f"https://api.shodan.io/shodan/host/{ip}?key={SHODAN_KEY}",
+            headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read())
+        results["org"]        = data.get("org","")
+        results["isp"]        = data.get("isp","")
+        results["country"]    = data.get("country_name","")
+        results["city"]       = data.get("city","")
+        results["asn"]        = data.get("asn","")
+        results["hostnames"]  = data.get("hostnames",[])[:10]
+        results["domains"]    = data.get("domains",[])[:10]
+        results["last_update"]= data.get("last_update","")[:10]
+        results["ports"]      = data.get("ports",[])
+        results["vulns"]      = list(data.get("vulns",{}).keys())[:10]
+        results["tags"]       = data.get("tags",[])
+        # service banners
+        services = []
+        for svc in data.get("data",[])[:8]:
+            services.append({
+                "port":    svc.get("port"),
+                "transport": svc.get("transport",""),
+                "product": svc.get("product",""),
+                "version": svc.get("version",""),
+                "banner":  (svc.get("data","") or "")[:120],
+            })
+        results["services"] = services
+        # Shodan search for domain
+        if query != ip:
+            req2 = urllib.request.Request(
+                f"https://api.shodan.io/shodan/host/search?key={SHODAN_KEY}&query=hostname:{query}&facets=port,org&minify=true",
+                headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req2, timeout=10) as r2:
+                search = json.loads(r2.read())
+            results["domain_results"] = search.get("total",0)
+            results["domain_facets"]  = search.get("facets",{})
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+def resolve_certs(query):
+    """Query crt.sh for certificate transparency logs"""
+    results = {}
+    try:
+        # strip leading wildcard/www
+        domain = re.sub(r'^\*\.', '', query)
+        req = urllib.request.Request(
+            f"https://crt.sh/?q=%.{domain}&output=json",
+            headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            certs = json.loads(r.read())
+        # extract unique SANs
+        sans = set()
+        issuers = set()
+        for c in certs[:100]:
+            name = c.get("name_value","")
+            for san in name.split("\n"):
+                san = san.strip().lstrip("*.")
+                if san and domain in san:
+                    sans.add(san)
+            issuers.add(c.get("issuer_name","").split("CN=")[-1].split(",")[0].strip())
+        results["subdomains"]    = sorted(sans)[:30]
+        results["total_certs"]   = len(certs)
+        results["issuers"]       = list(issuers)[:5]
+        results["earliest_cert"] = min((c.get("not_before","") for c in certs if c.get("not_before")), default="")[:10]
+        results["latest_cert"]   = max((c.get("not_after","")  for c in certs if c.get("not_after")),  default="")[:10]
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+def resolve_inv_links(query):
+    """Find which investigations reference this target"""
+    results = {}
+    try:
+        rows = db(INVHUB_DB, """
+            SELECT i.inv_id, i.title, i.status, i.risk_score, t.type, it.role
+            FROM targets t
+            JOIN inv_targets it ON it.target_id = t.id
+            JOIN investigations i ON i.id = it.inv_id
+            WHERE t.value LIKE ? OR t.value LIKE ?
+        """, (f"%{query}%", f"%{query.split('@')[-1]}%"))
+        results["investigations"] = [{"inv_id":r["inv_id"],"title":r["title"],
+            "status":r["status"],"risk":r["risk_score"],"type":r["type"],"role":r["role"]} for r in rows]
+        # also check alert details
+        alerts = db(MONITOR_DB, """
+            SELECT COUNT(*) as n, MAX(timestamp) as last
+            FROM alerts WHERE details LIKE ?
+        """, (f"%{query}%",))
+        results["alert_count"] = alerts[0]["n"] if alerts else 0
+        results["last_alert"]  = alerts[0]["last"] if alerts else None
+    except Exception as e:
+        results["error"] = str(e)
+    return results
+
+def resolve_whois_full(query):
+    """Full whois lookup"""
+    try:
+        r = subprocess.run(["whois", query], capture_output=True, text=True, timeout=10)
+        raw = r.stdout
+        # parse key fields
+        parsed = {}
+        for line in raw.splitlines():
+            if ":" not in line: continue
+            k, _, v = line.partition(":")
+            k = k.strip().lower().replace(" ","_")
+            v = v.strip()
+            if not v or k in parsed: continue
+            if any(x in k for x in ["registrant","registrar","creation","updated","expiry",
+                                      "name_server","status","organisation","country","email"]):
+                parsed[k] = v
+        return {"raw": raw[:2000], "parsed": parsed}
+    except Exception as e:
+        return {"error": str(e)}
+
+def resolve_identity(query):
+    """Run all resolvers in parallel and return unified identity card"""
+    query = query.strip()
+    result = {"query": query, "resolved_at": now_iso(), "sources": {}}
+
+    # determine query type
+    is_email  = "@" in query and "." in query.split("@")[-1]
+    is_domain = not is_email and "." in query and not query.startswith("http")
+    is_ip     = re.match(r"^\d{1,3}(\.\d{1,3}){3}$", query) is not None
+    is_handle = not is_email and not is_domain and not is_ip
+
+    result["query_type"] = "email" if is_email else "ip" if is_ip else "domain" if is_domain else "handle"
+
+    # build task list based on query type
+    tasks = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+        if is_handle or is_email:
+            handle = query.split("@")[0] if is_email else query
+            tasks["github"] = ex.submit(resolve_github, handle)
+            tasks["devto"]  = ex.submit(resolve_devto,  handle)
+            tasks["npm"]    = ex.submit(resolve_npm,    handle)
+        if is_domain or is_ip:
+            tasks["shodan"] = ex.submit(resolve_shodan, query)
+            tasks["certs"]  = ex.submit(resolve_certs,  query)
+            tasks["whois"]  = ex.submit(resolve_whois_full, query)
+            tasks["npm"]    = ex.submit(resolve_npm,    query)
+        if is_email:
+            tasks["shodan"] = ex.submit(resolve_shodan, query.split("@")[-1])
+            tasks["certs"]  = ex.submit(resolve_certs,  query.split("@")[-1])
+        # always check inv links
+        tasks["inv_links"] = ex.submit(resolve_inv_links, query)
+
+        for name, future in tasks.items():
+            try:
+                result["sources"][name] = future.result(timeout=15)
+            except Exception as e:
+                result["sources"][name] = {"error": str(e)}
+
+    return result
+
 # ── HTTP handler ──────────────────────────────────────────────────────────────
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, fmt, *args): pass
@@ -1959,9 +2409,26 @@ class Handler(BaseHTTPRequestHandler):
                 "correlations":   get_correlations(),
                 "shenron":        get_shenron(),
                 "canary":         get_canary(),
-                "publishing":     get_open_iocs(),
+                "publishing":     get_devto_followers(),
                 "nightly_log":    get_nightly_log(15),
             })
+        elif path == "/flames.png" or path == "/risingsun.png":
+            fname = path[1:]
+            for candidate in [
+                Path(__file__).parent / fname,
+                Path.home() / "research_hub/repos" / fname,
+                Path.home() / "research_hub/repos/GnomeMan4201" / fname,
+            ]:
+                if candidate.exists():
+                    data = candidate.read_bytes()
+                    self.send_response(200)
+                    self.send_header("Content-Type","image/png")
+                    self.send_header("Content-Length",len(data))
+                    self.end_headers()
+                    self.wfile.write(data)
+                    return
+            self.send_response(404); self.end_headers()
+
         elif path.startswith("/api/inv/"):
             inv_id = path[len("/api/inv/"):]
             self.send_json(get_inv_detail(inv_id))
@@ -2062,6 +2529,16 @@ class Handler(BaseHTTPRequestHandler):
             except Exception as e:
                 self.send_json({"error":str(e)},500)
 
+        elif path == "/api/resolve":
+            query = body.get("query","").strip()
+            if not query: return self.send_json({"error":"no query"},400)
+            try:
+                log_event("enrich",f"Identity resolve: {query}")
+                result = resolve_identity(query)
+                self.send_json(result)
+            except Exception as e:
+                self.send_json({"error":str(e)},500)
+
         elif path == "/api/praxis/capture":
             text  = body.get("text","").strip()
             inv_id = body.get("inv_id")
@@ -2109,7 +2586,9 @@ if __name__ == "__main__":
     PORT = 7333
     NIGHTLY_LOG.parent.mkdir(parents=True, exist_ok=True)
     server = HTTPServer(("", PORT), Handler)
-    print(f"gnome // mission control v10")
+    print(f"gnome // mission control v10 — FINAL")
+    print(f"SHODAN     : {'set' if SHODAN_KEY else 'not set'}")
+    print(f"GH TOKEN   : {'set' if GH_TOKEN else 'not set'}")
     print(f"http://localhost:{PORT}")
     print(f"monitor db : {MONITOR_DB}")
     print(f"inv-hub db : {INVHUB_DB}")
