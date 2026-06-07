@@ -179,9 +179,32 @@ def get_canary():
         "_raw": s,
     }
 
+_devto_cache = {"followers": "—", "ts": 0}
+
 def get_devto_followers():
+    import time
+    global _devto_cache
+    if time.time() - _devto_cache["ts"] < 300:
+        return {"followers": _devto_cache["followers"], "username": "gnomeman4201"}
     if not DEVTO_KEY:
         return {"followers": "—", "username": "gnomeman4201"}
+    try:
+        total = 0; page = 1
+        while True:
+            req = urllib.request.Request(
+                f"https://dev.to/api/followers/users?per_page=1000&page={page}",
+                headers={"api-key": DEVTO_KEY, "User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(req, timeout=10) as r:
+                batch = json.loads(r.read())
+            total += len(batch)
+            if len(batch) < 1000: break
+            page += 1
+            if page > 20: break
+        _devto_cache = {"followers": total, "ts": time.time()}
+        return {"followers": total, "username": "gnomeman4201"}
+    except:
+        return {"followers": _devto_cache["followers"], "username": "gnomeman4201"}
     try:
         req = urllib.request.Request(
             "https://dev.to/api/users/by_username?url=gnomeman4201",
