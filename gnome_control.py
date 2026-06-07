@@ -268,32 +268,30 @@ def get_canary():
     }
 
 # ── devto (cached) ────────────────────────────────────────────────────────────
-_devto_cache = {"followers": "—", "ts": 0}
-def get_devto_followers():
-    global _devto_cache
-    if time.time() - _devto_cache["ts"] < 300:
-        return {"followers": _devto_cache["followers"], "username": "gnomeman4201"}
-    if not DEVTO_KEY:
-        return {"followers": "—", "username": "gnomeman4201"}
-    try:
-        total = 0; page = 1
-        while True:
-            req = urllib.request.Request(
-                f"https://dev.to/api/followers/users?per_page=1000&page={page}",
-                headers={"api-key": DEVTO_KEY, "User-Agent": "Mozilla/5.0"}
-            )
-            with urllib.request.urlopen(req, timeout=10) as r:
-                batch = json.loads(r.read())
-            total += len(batch)
-            if len(batch) < 1000: break
-            page += 1
-            if page > 20: break
-        _devto_cache = {"followers": total, "ts": time.time()}
-        return {"followers": total, "username": "gnomeman4201"}
-    except:
-        return {"followers": _devto_cache["followers"], "username": "gnomeman4201"}
+def get_open_iocs():
+    # count targets linked to active investigations
+    rows = db(INVHUB_DB, """
+        SELECT COUNT(DISTINCT it.target_id) as n,
+               GROUP_CONCAT(DISTINCT i.threat_class) as cats
+        FROM inv_targets it
+        JOIN investigations i ON i.id = it.inv_id
+        WHERE i.status = 'active'
+    """)
+    if not rows or rows[0]["n"] is None:
+        return {"open_iocs": 0, "ioc_breakdown": "no active investigations"}
+    n = rows[0]["n"]
+    # also get per-investigation breakdown
+    by_inv = db(INVHUB_DB, """
+        SELECT i.inv_id, COUNT(it.target_id) as n
+        FROM inv_targets it
+        JOIN investigations i ON i.id = it.inv_id
+        WHERE i.status = 'active'
+        GROUP BY i.inv_id ORDER BY n DESC
+    """)
+    breakdown = " · ".join(f"{r['inv_id']}:{r['n']}" for r in by_inv[:4])
+    return {"open_iocs": n, "ioc_breakdown": breakdown}
 
-# ── enrichment ────────────────────────────────────────────────────────────────
+# ── enrichment # ── enrichment ────────────────────────────────────────────────────────────────
 def enrich_target(target):
     results = {}
     try:
@@ -436,8 +434,10 @@ HTML = r"""<!DOCTYPE html>
   .panel { background:var(--bg2); padding:14px; display:flex; flex-direction:column; gap:10px; }
 
   .section-label { font-size:9px; letter-spacing:3px; color:var(--dim); text-transform:uppercase;
-    padding-bottom:8px; border-bottom:1px solid var(--border); margin-bottom:4px;
+    padding-bottom:6px; border-bottom:1px solid var(--border); margin-bottom:6px;
     display:flex; align-items:center; justify-content:space-between; }
+  .section-label::before { content:''; display:inline-block; width:2px; height:10px;
+    background:var(--green3); margin-right:8px; flex-shrink:0; opacity:.6; }
   .badge { background:var(--green3); color:#000; font-size:8px; padding:1px 6px; letter-spacing:1px; }
   .badge.orange { background:var(--orange); }
   .badge.red    { background:var(--red); }
@@ -464,7 +464,7 @@ HTML = r"""<!DOCTYPE html>
   .alert-ts   { color:var(--text3); font-size:9px; }
   .alert-type { color:var(--orange); font-size:9px; letter-spacing:1px; }
   .alert-val  { color:var(--text2); font-size:9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .alert-count { color:var(--dim); font-size:8px; white-space:nowrap; }
+  .alert-count { background:var(--dimmer); border:1px solid var(--border2); color:var(--text2); font-size:8px; padding:1px 5px; white-space:nowrap; letter-spacing:1px; }
   .triage-btns { display:flex; gap:3px; opacity:0; transition:opacity .15s; }
   .alert-item:hover .triage-btns { opacity:1; }
   .tbtn { border:none; cursor:pointer; padding:2px 5px; font-family:inherit; font-size:8px; transition:all .15s; }
@@ -476,6 +476,23 @@ HTML = r"""<!DOCTYPE html>
   .tbtn-tag:hover { background:var(--blue); color:#000; }
 
   /* investigations */
+  /* sortable headers */
+  .inv-table th.sortable { cursor:pointer; user-select:none; }
+  .inv-table th.sortable:hover { color:var(--green2); }
+  .inv-table th.sort-active { color:var(--green); }
+
+  /* row coloring by risk */
+  .inv-row.risk-high  { border-left:2px solid var(--red); }
+  .inv-row.risk-med   { border-left:2px solid var(--orange); }
+  .inv-row.risk-low   { border-left:2px solid var(--green3); }
+  .inv-row.highlighted { background:rgba(77,184,255,.06) !important; outline:1px solid var(--blue); }
+
+  /* corr graph nodes */
+  .corr-node { cursor:pointer; }
+  .corr-node circle { transition:r .15s; }
+  .corr-node:hover circle { r:14; }
+  .corr-node text { pointer-events:none; font-family:"JetBrains Mono",monospace; }
+
   .inv-table { width:100%; border-collapse:collapse; }
   .inv-table thead th { font-size:8px; letter-spacing:2px; color:var(--dim); text-align:left;
     padding:4px 8px; border-bottom:1px solid var(--border2); font-weight:400; }
@@ -504,12 +521,15 @@ HTML = r"""<!DOCTYPE html>
   .inv-row:hover .inv-arrow { color:var(--green); }
 
   /* correlations */
-  .corr-edge { padding:6px 8px; background:var(--bg3); border-left:2px solid var(--blue);
-               margin-bottom:4px; cursor:pointer; }
-  .corr-edge:hover { border-left-color:var(--green); }
-  .corr-ids   { font-size:9px; color:var(--blue); margin-bottom:3px; }
-  .corr-shared { font-size:8px; color:var(--text3); }
-  .corr-strength { float:right; font-size:8px; color:var(--dim); }
+  .corr-edge { padding:8px 10px; background:var(--bg3); border-left:3px solid var(--blue);
+               margin-bottom:5px; cursor:pointer; transition:all .15s; }
+  .corr-edge:hover { border-left-color:var(--green); background:var(--bg2); }
+  .corr-ids   { font-size:10px; color:var(--blue); margin-bottom:4px; font-weight:500; letter-spacing:1px; }
+  .corr-shared { font-size:9px; color:var(--text2); line-height:1.6; }
+  .corr-shared span { background:var(--dimmer); border:1px solid var(--border2); padding:1px 5px;
+                      margin-right:4px; margin-bottom:3px; display:inline-block; color:var(--text); }
+  .corr-strength { float:right; font-size:8px; color:var(--blue); background:#001a3d;
+                   border:1px solid #1a3d5c; padding:1px 6px; letter-spacing:1px; }
 
   /* SHENRON */
   .shenron-stats { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
@@ -698,7 +718,7 @@ HTML = r"""<!DOCTYPE html>
 <body>
 
 <header>
-  <div class="logo">gnome <span>//</span> mission control</div>
+  <div class="logo" style="font-size:28px;font-weight:700;letter-spacing:6px;color:#8b0000;font-family:'Share Tech Mono'">GNOME</div>
   <div class="status-bar">
     <div class="live-dot"></div>
     <span id="clock">—</span>
@@ -730,7 +750,7 @@ HTML = r"""<!DOCTYPE html>
 <div class="grid">
 <!-- LEFT -->
 <div class="panel">
-  <div class="section-label">badBANANA monitor <span class="badge" id="monitor-badge">active</span></div>
+  <div class="section-label"><span class="badge" id="monitor-badge" style="background:#00ff44;color:#000;font-size:9px;letter-spacing:3px;padding:3px 10px">ACTIVE</span></div>
   <div class="stat-row">
     <div class="stat"><div class="stat-label">total alerts</div>
       <div class="stat-val" id="total-alerts">—</div><div class="stat-sub" id="alerts-ago">—</div></div>
@@ -741,11 +761,11 @@ HTML = r"""<!DOCTYPE html>
   <div class="section-label">recent alerts <span id="alert-dedup-note" style="font-size:8px;color:var(--dim)"></span></div>
   <div class="alert-list" id="alert-list"></div>
 
-  <div class="section-label" style="margin-top:8px">publishing / reach</div>
+  <div class="section-label" style="margin-top:8px">open IOCs</div>
   <div class="stat-row">
-    <div class="stat"><div class="stat-label">dev.to followers</div>
-      <div class="pub-followers" id="devto-followers">—</div>
-      <div class="pub-sub" id="devto-user">gnomeman4201</div></div>
+    <div class="stat"><div class="stat-label">targets / active inv</div>
+      <div class="pub-followers" id="open-iocs">—</div>
+      <div class="pub-sub" id="ioc-breakdown">across active investigations</div></div>
   </div>
 
   <div class="section-label" style="margin-top:4px">nightly log</div>
@@ -755,22 +775,76 @@ HTML = r"""<!DOCTYPE html>
 <!-- MID -->
 <div class="panel">
   <div class="section-label">investigations
-    <span class="badge orange" id="inv-active-badge">— active</span></div>
-  <div style="display:flex;gap:16px;margin-bottom:8px;font-size:9px;color:var(--text3)">
-    <span>total: <span id="inv-total" style="color:var(--green2)">—</span></span>
-    <span>timeline events: <span id="inv-events" style="color:var(--green2)">—</span></span>
+    <span style="display:flex;align-items:center;gap:8px">
+      <span class="badge orange" id="inv-active-badge">— active</span>
+    </span>
   </div>
-  <table class="inv-table">
-    <thead><tr><th>id</th><th>risk</th><th>status</th><th>title</th><th>cat</th><th>age</th><th></th></tr></thead>
+
+  <!-- filter + sort bar -->
+  <div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">
+    <input class="form-input" id="inv-filter" placeholder="filter investigations…"
+      style="flex:1;padding:4px 8px;font-size:9px" oninput="filterInvestigations()">
+    <select class="form-select" id="inv-sort" onchange="sortInvestigations()" style="font-size:9px;padding:4px 6px">
+      <option value="risk">↓ risk</option>
+      <option value="age">↓ age</option>
+      <option value="status">status</option>
+      <option value="id">id</option>
+    </select>
+    <span style="font-size:8px;color:var(--text3)">
+      total: <span id="inv-total" style="color:var(--green2)">—</span>
+    </span>
+  </div>
+
+  <table class="inv-table" id="inv-table">
+    <thead>
+      <tr>
+        <th onclick="setSortCol('id')"    class="sortable" id="th-id">id</th>
+        <th onclick="setSortCol('risk')"  class="sortable" id="th-risk">risk ↓</th>
+        <th onclick="setSortCol('status')"class="sortable" id="th-status">status</th>
+        <th>title</th>
+        <th onclick="setSortCol('cat')"   class="sortable" id="th-cat">cat</th>
+        <th onclick="setSortCol('age')"   class="sortable" id="th-age">age</th>
+        <th></th>
+      </tr>
+    </thead>
     <tbody id="inv-tbody"></tbody>
   </table>
 
-  <!-- correlations -->
-  <div class="section-label" style="margin-top:12px">
-    infrastructure correlations
-    <span class="badge blue" id="corr-badge">—</span>
+  <!-- inline preview -->
+  <div id="inv-preview" style="display:none;margin-top:8px;padding:10px;background:var(--bg3);
+    border-left:2px solid var(--green3);font-size:9px;color:var(--text2)">
+    <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+      <span id="preview-id" style="color:var(--green);font-weight:700"></span>
+      <span id="preview-meta" style="color:var(--text3)"></span>
+    </div>
+    <div id="preview-last-events" style="line-height:1.8"></div>
+    <div style="margin-top:6px;display:flex;gap:6px">
+      <button class="btn" style="font-size:8px;padding:3px 8px" onclick="openInv(previewInvId)">open full drawer</button>
+      <button class="btn btn-blue" style="font-size:8px;padding:3px 8px" onclick="switchToTab('briefing')">briefing</button>
+    </div>
   </div>
-  <div id="corr-list" style="max-height:180px;overflow-y:auto"></div>
+
+  <!-- correlations -->
+  <div class="section-label" style="margin-top:14px">
+    infrastructure correlations
+    <span style="display:flex;align-items:center;gap:6px">
+      <span class="badge blue" id="corr-badge">—</span>
+      <button class="hbtn" id="corr-view-btn" onclick="toggleCorrView()"
+        style="font-size:8px;padding:2px 6px">graph</button>
+    </span>
+  </div>
+
+  <!-- list view -->
+  <div id="corr-list" style="max-height:200px;overflow-y:auto"></div>
+
+  <!-- graph view -->
+  <div id="corr-graph" style="display:none">
+    <svg id="corr-svg" width="100%" height="260"
+      style="background:var(--bg3);border:1px solid var(--border)"></svg>
+    <div style="font-size:8px;color:var(--text3);margin-top:4px;text-align:center">
+      drag nodes · click to open · shared targets shown as edges
+    </div>
+  </div>
 </div>
 
 <!-- RIGHT -->
@@ -1084,49 +1158,299 @@ function renderMonitor(m) {
   }).join('');
 }
 
+let sortCol = 'risk';
+let sortDir = -1; // -1 = desc
+let filterStr = '';
+let previewInvId = null;
+
 function renderInvestigations(invs) {
   invList = invs||[];
-  const active = invList.filter(i=>i.status==='active').length;
-  document.getElementById('inv-active-badge').textContent = active+' active';
+  document.getElementById('inv-active-badge').textContent =
+    invList.filter(i=>i.status==='active').length+' active';
   document.getElementById('inv-total').textContent = invList.length;
+  drawInvTable();
+}
 
-  document.getElementById('inv-tbody').innerHTML = invList.map((inv,idx) => {
+function setSortCol(col) {
+  if (sortCol === col) sortDir *= -1;
+  else { sortCol = col; sortDir = col==='risk'||col==='age' ? -1 : 1; }
+  // update header indicators
+  ['id','risk','status','cat','age'].forEach(c => {
+    const th = document.getElementById('th-'+c);
+    if (th) th.className = c===sortCol ? 'sortable sort-active' : 'sortable';
+  });
+  drawInvTable();
+}
+
+function sortInvestigations() {
+  setSortCol(document.getElementById('inv-sort').value);
+}
+
+function filterInvestigations() {
+  filterStr = document.getElementById('inv-filter').value.toLowerCase();
+  drawInvTable();
+}
+
+function drawInvTable() {
+  let list = [...invList];
+  // filter
+  if (filterStr) list = list.filter(inv =>
+    (inv.title||'').toLowerCase().includes(filterStr) ||
+    (inv.inv_id||'').toLowerCase().includes(filterStr) ||
+    (inv.category||'').toLowerCase().includes(filterStr) ||
+    (inv.status||'').toLowerCase().includes(filterStr)
+  );
+  // sort
+  list.sort((a,b) => {
+    let av, bv;
+    if (sortCol==='risk')   { av=a.risk_score||0;   bv=b.risk_score||0; }
+    else if (sortCol==='age')   { av=a.days_stale??999; bv=b.days_stale??999; }
+    else if (sortCol==='status'){ av=a.status||'';   bv=b.status||''; }
+    else if (sortCol==='id')    { av=a.inv_id||'';   bv=b.inv_id||''; }
+    else if (sortCol==='cat')   { av=a.category||''; bv=b.category||''; }
+    else return 0;
+    return av < bv ? -sortDir : av > bv ? sortDir : 0;
+  });
+
+  const riskClass = r => r>=8?'risk-high':r>=5?'risk-med':'risk-low';
+
+  document.getElementById('inv-tbody').innerHTML = list.map((inv,idx) => {
+    const realIdx = invList.indexOf(inv);
     const stale = inv.days_stale;
     const ageBadge = stale > 7
       ? `<span class="age-badge age-stale">${stale}d</span>`
       : stale !== null ? `<span class="age-badge age-active">${stale}d</span>` : '—';
-    return `<tr class="inv-row" id="inv-row-${idx}" onclick="openInv('${inv.inv_id||inv.id}',${idx})">
+    return `<tr class="inv-row ${riskClass(inv.risk_score||0)}" id="inv-row-${realIdx}"
+      onclick="previewInv('${inv.inv_id||inv.id}',${realIdx})"
+      ondblclick="openInv('${inv.inv_id||inv.id}',${realIdx})">
       <td class="inv-id">${inv.inv_id||inv.id}</td>
       <td>${riskBadge(inv.risk_score||0)}</td>
       <td>${statusChip(inv.status)}</td>
       <td class="inv-title">${inv.title||'—'}</td>
-      <td class="inv-cat">${(inv.category||'').slice(0,16)}</td>
+      <td class="inv-cat">${(inv.category||'').slice(0,14)}</td>
       <td>${ageBadge}</td>
       <td class="inv-arrow">›</td>
     </tr>`;
   }).join('');
 }
 
+async function previewInv(invId, idx) {
+  // single click = inline preview; double click = full drawer
+  focusedInvIdx = idx;
+  highlightInvRow(idx);
+  previewInvId = invId;
+  const panel = document.getElementById('inv-preview');
+  panel.style.display='block';
+  document.getElementById('preview-id').textContent = invId;
+  document.getElementById('preview-meta').textContent = 'loading…';
+  document.getElementById('preview-last-events').textContent = '';
+  try {
+    const d = await api('/api/inv/'+encodeURIComponent(invId));
+    const inv = d.investigation||{};
+    document.getElementById('preview-meta').innerHTML =
+      riskBadge(inv.risk_score||0)+' '+statusChip(inv.status)+
+      ` <span style="color:var(--text3);font-size:8px;margin-left:6px">${inv.category||''}</span>`;
+    const events = (d.timeline||[]).slice(0,4);
+    document.getElementById('preview-last-events').innerHTML = events.length===0
+      ? '<span style="color:var(--text3)">no timeline events</span>'
+      : events.map(e=>`<div>
+          <span style="color:var(--text3)">${(e.event_time||'').slice(0,10)}</span>
+          <span style="color:var(--dim);margin:0 4px">${e.event_type||''}</span>
+          <span>${(e.event||'').slice(0,80)}</span>
+        </div>`).join('');
+    // highlight correlated investigations
+    highlightCorrelated(invId);
+  } catch(e) {
+    document.getElementById('preview-meta').textContent = 'error: '+e.message;
+  }
+}
+
+function switchToTab(tab) {
+  if (previewInvId) openInv(previewInvId);
+  setTimeout(()=>switchTab(tab), 300);
+}
+
+function highlightCorrelated(invId) {
+  document.querySelectorAll('.inv-row').forEach(r=>r.classList.remove('highlighted'));
+  // find correlated inv IDs from the correlation data
+  const edges = window._corrEdges||[];
+  edges.forEach(e => {
+    if (e.a===invId||e.b===invId) {
+      const other = e.a===invId?e.b:e.a;
+      invList.forEach((inv,idx)=>{
+        if((inv.inv_id||inv.id)===other) {
+          const row=document.getElementById('inv-row-'+idx);
+          if(row) row.classList.add('highlighted');
+        }
+      });
+    }
+  });
+}
+
+let _corrData = null;
+let _corrViewMode = 'list';
+
 function renderCorrelations(corr) {
   if (!corr) return;
+  _corrData = corr;
+  window._corrEdges = corr.edges||[];
   const edges = corr.edges||[];
   const shared = corr.shared_targets||[];
-  document.getElementById('corr-badge').textContent = edges.length + ' links';
+  const totalLinks = edges.length + shared.filter(t=>!edges.find(e=>e.shared.some(s=>s.value===t.value))).length;
+  document.getElementById('corr-badge').textContent = totalLinks+' links';
+
+  if (_corrViewMode==='graph') {
+    drawCorrGraph(corr);
+  } else {
+    drawCorrList(corr);
+  }
+}
+
+function toggleCorrView() {
+  _corrViewMode = _corrViewMode==='list' ? 'graph' : 'list';
+  document.getElementById('corr-view-btn').textContent = _corrViewMode==='list' ? 'graph' : 'list';
+  document.getElementById('corr-list').style.display  = _corrViewMode==='list'  ? 'block' : 'none';
+  document.getElementById('corr-graph').style.display = _corrViewMode==='graph' ? 'block' : 'none';
+  if (_corrData) renderCorrelations(_corrData);
+}
+
+function drawCorrList(corr) {
+  const edges = corr.edges||[];
+  const shared = corr.shared_targets||[];
   const el = document.getElementById('corr-list');
   if (!edges.length && !shared.length) {
-    el.innerHTML = '<div style="color:var(--text3);font-size:9px">no shared infrastructure detected</div>';
+    el.innerHTML='<div style="color:var(--text3);font-size:9px;padding:8px">no shared infrastructure detected</div>';
     return;
   }
-  el.innerHTML = edges.map(e => `
-    <div class="corr-edge" onclick="openInv('${e.a}')">
-      <div class="corr-ids">${e.a} ↔ ${e.b} <span class="corr-strength">${e.strength} shared</span></div>
-      <div class="corr-shared">${e.shared.slice(0,3).map(s=>`${s.value} (${s.kind})`).join(' · ')}</div>
+  el.innerHTML = edges.map(e=>`
+    <div class="corr-edge" onclick="previewInv('${e.a}')">
+      <div class="corr-ids">
+        <span onclick="event.stopPropagation();previewInv('${e.a}')" style="cursor:pointer">${e.a}</span>
+        <span style="color:var(--dim);margin:0 6px">↔</span>
+        <span onclick="event.stopPropagation();previewInv('${e.b}')" style="cursor:pointer">${e.b}</span>
+        <span class="corr-strength">${e.strength} shared</span>
+      </div>
+      <div class="corr-shared">
+        ${e.shared.map(s=>`
+          <span onclick="event.stopPropagation();openEnrichWith('${s.value}')" title="click to enrich">
+            ${s.value}
+            <span style="color:var(--dim);font-size:7px">${s.kind}</span>
+          </span>`).join('')}
+      </div>
     </div>`).join('') +
     shared.filter(t=>!edges.find(e=>e.shared.some(s=>s.value===t.value))).map(t=>`
     <div class="corr-edge" style="border-left-color:var(--yellow)">
-      <div class="corr-ids" style="color:var(--yellow)">${t.value}</div>
-      <div class="corr-shared">shared across: ${t.inv_ids}</div>
+      <div class="corr-ids" style="color:var(--yellow)">
+        ${t.value}
+        <span style="color:var(--dim);font-size:8px;margin-left:6px">${t.type||''}</span>
+        <span class="corr-strength" style="background:#2d2500;border-color:#5c4a00;color:var(--yellow)">shared</span>
+      </div>
+      <div class="corr-shared" style="color:var(--text3)">
+        ${(t.inv_ids||'').split(' · ').map(id=>`<span onclick="previewInv('${id.trim()}')" style="cursor:pointer">${id.trim()}</span>`).join('')}
+      </div>
     </div>`).join('');
+}
+
+function drawCorrGraph(corr) {
+  const svg = document.getElementById('corr-svg');
+  const W = svg.clientWidth || 600;
+  const H = 260;
+
+  // collect all investigation nodes
+  const invNodes = {};
+  invList.forEach(inv => {
+    invNodes[inv.inv_id||inv.id] = {
+      id: inv.inv_id||inv.id, type:'inv',
+      risk: inv.risk_score||0, status: inv.status,
+      title: inv.title||''
+    };
+  });
+
+  // collect shared target nodes
+  const targetNodes = {};
+  (corr.edges||[]).forEach(e => {
+    e.shared.forEach(s => {
+      if (!targetNodes[s.value]) targetNodes[s.value] = {id:s.value, type:'target', kind:s.kind};
+    });
+  });
+  (corr.shared_targets||[]).forEach(t => {
+    if (!targetNodes[t.value]) targetNodes[t.value] = {id:t.value, type:'target', kind:t.type};
+  });
+
+  // layout: investigations in a circle, targets in center cluster
+  const invIds = Object.keys(invNodes);
+  const targIds = Object.keys(targetNodes);
+  const cx = W/2, cy = H/2;
+  const r = Math.min(cx,cy) - 40;
+
+  invIds.forEach((id,i) => {
+    const angle = (2*Math.PI*i/invIds.length) - Math.PI/2;
+    invNodes[id].x = cx + r*Math.cos(angle);
+    invNodes[id].y = cy + r*Math.sin(angle);
+  });
+  targIds.forEach((id,i) => {
+    const angle = (2*Math.PI*i/Math.max(targIds.length,1));
+    const tr = Math.min(60, r*0.35);
+    targetNodes[id].x = cx + tr*Math.cos(angle);
+    targetNodes[id].y = cy + tr*Math.sin(angle);
+  });
+
+  // build SVG
+  const riskColor = r => r>=8?'var(--red)':r>=5?'var(--orange)':'var(--green3)';
+  const ns = 'http://www.w3.org/2000/svg';
+
+  let svgContent = `<defs>
+    <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/>
+    <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>`;
+
+  // edges: inv↔target
+  (corr.edges||[]).forEach(e => {
+    e.shared.forEach(s => {
+      const a = invNodes[e.a], b = invNodes[e.b], t = targetNodes[s.value];
+      if (a && t) svgContent += `<line x1="${a.x}" y1="${a.y}" x2="${t.x}" y2="${t.y}"
+        stroke="var(--blue)" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="4,3"/>`;
+      if (b && t) svgContent += `<line x1="${b.x}" y1="${b.y}" x2="${t.x}" y2="${t.y}"
+        stroke="var(--blue)" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="4,3"/>`;
+    });
+  });
+  // direct inv↔inv edges
+  (corr.edges||[]).forEach(e => {
+    const a = invNodes[e.a], b = invNodes[e.b];
+    if (a && b) svgContent += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}"
+      stroke="var(--blue)" stroke-width="${1+e.strength}" stroke-opacity="0.6"/>`;
+  });
+
+  // target nodes
+  targIds.forEach(id => {
+    const n = targetNodes[id];
+    const kindColor = n.kind==='domain'?'var(--yellow)':n.kind==='email'?'var(--orange)':'var(--blue)';
+    const label = id.length>16 ? id.slice(0,14)+'…' : id;
+    svgContent += `<g class="corr-node" onclick="openEnrichWith('${id.replace(/'/g,"\'")}')">
+      <circle cx="${n.x}" cy="${n.y}" r="8" fill="${kindColor}" fill-opacity="0.2"
+        stroke="${kindColor}" stroke-width="1.5" filter="url(#glow)"/>
+      <text x="${n.x}" y="${n.y+13}" text-anchor="middle" font-size="7"
+        fill="${kindColor}">${label}</text>
+    </g>`;
+  });
+
+  // investigation nodes
+  invIds.forEach(id => {
+    const n = invNodes[id];
+    const col = riskColor(n.risk);
+    const shortTitle = n.title.length>20 ? n.title.slice(0,18)+'…' : n.title;
+    svgContent += `<g class="corr-node" onclick="previewInv('${id}')">
+      <circle cx="${n.x}" cy="${n.y}" r="18" fill="${col}" fill-opacity="0.15"
+        stroke="${col}" stroke-width="2" filter="url(#glow)"/>
+      <text x="${n.x}" y="${n.y-3}" text-anchor="middle" font-size="9" font-weight="700"
+        fill="${col}">${id}</text>
+      <text x="${n.x}" y="${n.y+9}" text-anchor="middle" font-size="7"
+        fill="var(--text3)">${shortTitle}</text>
+    </g>`;
+  });
+
+  svg.innerHTML = svgContent;
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
 }
 
 function renderShenron(s) {
@@ -1163,8 +1487,10 @@ function renderCanary(c) {
 }
 
 function renderPublishing(p) {
-  document.getElementById('devto-followers').textContent = (p.followers||'—').toLocaleString?.() ?? p.followers;
-  document.getElementById('devto-user').textContent = p.username||'gnomeman4201';
+  // open IOCs — total targets across active investigations
+  const iocs = p.open_iocs ?? '—';
+  document.getElementById('open-iocs').textContent = typeof iocs === 'number' ? iocs.toLocaleString() : iocs;
+  document.getElementById('ioc-breakdown').textContent = p.ioc_breakdown || 'across active investigations';
 }
 
 function renderNightlyLog(entries) {
@@ -1633,7 +1959,7 @@ class Handler(BaseHTTPRequestHandler):
                 "correlations":   get_correlations(),
                 "shenron":        get_shenron(),
                 "canary":         get_canary(),
-                "publishing":     get_devto_followers(),
+                "publishing":     get_open_iocs(),
                 "nightly_log":    get_nightly_log(15),
             })
         elif path.startswith("/api/inv/"):
