@@ -242,19 +242,32 @@ def collect_shenron():
     verdict = "unknown"
     for line in health_out.splitlines():
         line = line.strip()
-        # Skip interim progress lines [~]
-        if line.startswith("[~]") or "  [~]" in line:
+        if '[~]' in line:
+            # Interim line — completed result is appended after the last [~] block
+            parts = re.split(r'\[~\][^\[]+', line)
+            remainder = parts[-1].strip() if len(parts) > 1 else ''
+            if remainder.startswith('[✓]') or remainder.startswith('[✗]'):
+                passed = remainder.startswith('[✓]')
+                rest   = remainder[3:].strip()
+                name   = rest.split()[0] if rest.split() else rest
+                if name and len(name) < 30:
+                    checks.append({"name": name, "pass": passed})
             continue
-        if "[✓]" in line or "[✗]" in line:
-            passed = "[✓]" in line and "[✗]" not in line
-            rest   = re.sub(r'\[.\]\s*', '', line).strip()
+        if line.startswith('[✓]') or line.startswith('[✗]'):
+            passed = line.startswith('[✓]')
+            rest   = line[3:].strip()
             name   = rest.split()[0] if rest.split() else rest
-            if name and len(name) < 30:
+            if name and len(name) < 30 and name != 'VERDICT:':
                 checks.append({"name": name, "pass": passed})
-        if "HEALTHY" in line and "VERDICT" in line:
-            verdict = "healthy"
-        elif ("DEGRADED" in line or "UNHEALTHY" in line) and "VERDICT" in line:
-            verdict = "degraded"
+        if 'HEALTHY' in line and 'VERDICT' in line:
+            verdict = 'healthy'
+        elif ('DEGRADED' in line or 'UNHEALTHY' in line) and 'VERDICT' in line:
+            verdict = 'degraded'
+        elif 'VERDICT' in line and '[✓]' in line:
+            verdict = 'healthy'
+        elif 'VERDICT' in line and '[✗]' in line:
+            verdict = 'degraded'
+
 
     return {
         "ok":              True,
