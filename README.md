@@ -1,12 +1,3 @@
-<div align="center">
-<img src="profile_main.svg" width="100%" alt="GnomeMan4201 — badBANANA collective"/>
-
-![](https://komarev.com/ghpvc/?username=GnomeMan4201&style=for-the-badge&color=green)
-</div>
-
----
-
-
 ---
 
 <div align="center">
