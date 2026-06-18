@@ -59,13 +59,13 @@ Independent research operation running three tracks:
 ## Corpus
 
 Assembled via eight-script scraper pipeline (CDP, GitHub miner, onion harvester, dedup ranker):
+
+```
 53,869  verified live URLs (security / OSINT / research)
-
-864  verified onion addresses
-
+   864  verified onion addresses
    738  consensus security tools
-
 16,577  unique URLs indexed in hub.db (FTS5)
+```
 ---
 
 ## Published
