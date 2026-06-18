@@ -1,194 +1,76 @@
----
-
 <div align="center">
+R E S E A R C H   C O L L E C T I V E
+**Independent security research · OSINT tooling · CIB investigations**
 
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
-<img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
-<img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite"/>
-<img src="https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black" alt="Linux"/>
-<img src="https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white" alt="Bash"/>
-<img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black" alt="C"/>
-<img src="https://img.shields.io/badge/Termux-000000?style=for-the-badge&logo=android&logoColor=white" alt="Termux"/>
-<img src="https://img.shields.io/badge/Textual-000000?style=for-the-badge&logo=gnometerminal&logoColor=white" alt="Textual TUI"/>
-<img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white" alt="GitHub Actions"/>
-<img src="https://img.shields.io/badge/Pop!_OS-48B9C7?style=for-the-badge&logo=popos&logoColor=white" alt="Pop!_OS"/>
-<img src="https://img.shields.io/badge/Debian-A81D33?style=for-the-badge&logo=debian&logoColor=white" alt="Debian"/>
-<img src="https://img.shields.io/badge/Android-34A853?style=for-the-badge&logo=android&logoColor=white" alt="Android"/>
-<img src="https://img.shields.io/badge/Nano-4A90D9?style=for-the-badge&logo=gnu&logoColor=white" alt="Nano"/>
+[![r4b1t](https://img.shields.io/badge/r4b1t-live-cc1111?style=flat-square)](https://gnomeman4201.github.io/r4b1t)
+[![dev.to](https://img.shields.io/badge/dev.to-writings-0A0A0A?style=flat-square&logo=devdotto)](https://dev.to/gnomeman4201)
+[![license](https://img.shields.io/badge/license-MIT-444?style=flat-square)](https://github.com/GnomeMan4201/r4b1t/blob/main/LICENSE)
 
-</div>
-
-
----
-
-<table width="100%"><tr>
-<td width="25%" valign="top" style="font-family:monospace;">
-
-<code style="color:#cc2200;font-weight:bold;">GITHUB</code><br/>
-<code><strong>41</strong> <span style="color:#cc2200;">stars</span></code><br/>
-<code><strong>102</strong> <span style="color:#cc2200;">followers</span></code><br/>
-<code><strong>953</strong> <span style="color:#cc2200;">contributions</span></code><br/>
-<code><strong>27</strong> <span style="color:#cc2200;">public repos</span></code>
-
-</td>
-<td width="25%" valign="top" style="font-family:monospace;">
-
-<code style="color:#cc2200;font-weight:bold;">DEV.TO</code><br/>
-<code><strong>4,270</strong> <span style="color:#cc2200;">followers</span></code><br/>
-<code><strong>43</strong> <span style="color:#cc2200;">articles</span></code><br/>
-<code><strong>8,150</strong> <span style="color:#cc2200;">readers (all time)</span></code>
-
-</td>
-<td width="25%" valign="top" style="font-family:monospace;">
-
-<code style="color:#cc2200;font-weight:bold;">BUILD STATUS</code><br/>
-<code>✓ LANimals</code><br/>
-<code>✓ Lune (92 tests)</code><br/>
-<code>✓ drift_orchestrator</code><br/>
-<code>✓ OpenSight (52 tests)</code><br/>
-<code>✓ chain · aliasOS · zer0</code>
-
-</td>
-<td width="25%" valign="top" style="font-family:monospace;">
-
-<code style="color:#cc2200;font-weight:bold;">CONTACT</code><br/>
-<code>preferred:</code><br/>
-<code style="color:#cc2200;"><a href="https://github.com/GnomeMan4201/GnomeMan4201/security/advisories">github advisories</a></code><br/>
-<code>writing:</code><br/>
-<code style="color:#cc2200;"><a href="https://dev.to/gnomeman4201">dev.to/gnomeman4201</a></code><br/>
-<code style="font-size:0.8em;">PGP: <kbd>324C 4301 54C2 3C8E 3956 1B10 0CFD 6761 AA75</kbd></code>
-
-</td>
-</tr></table>
-
----
-
-> *"Every system has an edge. Stand at the edge long enough and you realize the map was never the territory"*
-> — Korzybski
-
-
----
-
-<div align="center">
-<img src="profile_timeline.svg" width="100%" alt="Build Timeline"/>
 </div>
 
 ---
 
-### `TOOL DOSSIERS`
+## What this is
 
-<table width="100%"><tr>
+Independent research operation running three tracks:
 
-<td width="25%" valign="top" style="border-left:3px solid #f5c518;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/LANimals">LANimals</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">RECON / DECEPTION</code><br/>
-Host discovery, behavioral risk scoring, honeypot traps, force-directed graph UI.<br/>
-<code style="color:#f5c518;">★7</code> <code style="color:#cc2200;">drift: 0.52▲</code><br/>
-<code style="color:#00aa00;">CI PASS</code>
-</td>
+**Investigations** — Coordinated inauthentic behavior networks, malware distribution campaigns, browser extension abuse. Findings disclosed responsibly, documented publicly.
 
-<td width="25%" valign="top" style="border-left:3px solid #f5c518;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/Lune">Lune</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">ADVERSARY SIM</code><br/>
-64-module framework. Encrypted C2, LLM mutation engine, unified persona system.<br/>
-<code style="color:#f5c518;">★7</code> <code>92 tests</code><br/>
-<code style="color:#00aa00;">CI PASS</code>
-</td>
+**Tooling** — Open-source infrastructure for OSINT, detection engineering, and security research. Terminal-native. Built to compose.
 
-<td width="25%" valign="top" style="border-left:3px solid #cc2200;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/zer0DAYSlater">zer0DAYSlater</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">POST-EXPLOIT ⚠</code><br/>
-LLM-driven operator, session drift monitoring, mTLS mesh, ephemeral NaCl keypairs.<br/>
-<code style="color:#f5c518;">★3</code> <code style="color:#cc2200;">auth envs only</code><br/>
-<code style="color:#00aa00;">CI PASS</code>
-</td>
-
-<td width="25%" valign="top" style="border-left:3px solid #f5c518;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/drift_orchestrator">drift_orchestrator</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">CORE / CONTROL</code><br/>
-Runtime drift control for LLM sessions. SQLite flight recording, hysteresis policy engine.<br/>
-<code style="color:#f5c518;">★ core node</code><br/>
-<code style="color:#00aa00;">CI PASS</code>
-</td>
-
-</tr><tr>
-
-<td width="25%" valign="top" style="border-left:3px solid #aaaaaa;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/OpenSight">OpenSight</a></strong><br/>
-<code style="color:#888888;font-size:0.8em;">OSINT / INTEL</code><br/>
-Entity extraction, typed knowledge graph, investigation bundles. FBI corpus demo.<br/>
-<code>52 tests</code><br/>
-<code style="color:#00aa00;">CI PASS</code>
-</td>
-
-<td width="25%" valign="top" style="border-left:3px solid #f5c518;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/SHENRON">SHENRON</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">CORE / PIPELINE</code><br/>
-Synthetic adversarial telemetry. 49-layer mutation, Sigma rule eval, detection validation.<br/>
-<code style="color:#f5c518;">center of the graph</code>
-</td>
-
-<td width="25%" valign="top" style="border-left:3px solid #aaaaaa;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/PHANTOM">PHANTOM</a></strong><br/>
-<code style="color:#888888;font-size:0.8em;">DECEPTION / DETECT</code><br/>
-Honeypot fingerprinting. Identifies Cowrie, Kippo, OpenCanary, Thinkst +4.<br/>
-<code>fingerprint stack</code>
-</td>
-
-<td width="25%" valign="top" style="border-left:3px solid #cc2200;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/bad_BANANA">bad_BANANA</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">OFFENSE / MOBILE</code><br/>
-Field-ready, no-root offensive toolkit. Android (Termux) and Debian.<br/>
-<code style="color:#f5c518;">★4</code> <code style="color:#cc2200;">field-ready</code>
-</td>
-
-</tr><tr>
-
-<td valign="top" style="border-left:3px solid #cc2200;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/Blackglass">Blackglass</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">OFFENSE</code><br/>
-Offline AI payload mutation. Termux+Linux. No network.<br/>
-<code style="color:#cc2200;">offline · no net</code>
-</td>
-
-<td valign="top" style="border-left:3px solid #cc2200;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/LANIMORPH">LANIMORPH</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">OFFENSE</code><br/>
-LAN-aware morphing payload. Per-subnet XOR mutation.<br/>
-<code style="color:#cc2200;">XOR morph</code>
-</td>
-
-<td valign="top" style="border-left:3px solid #f5c518;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/reflexive-identity">reflexive-identity</a></strong><br/>
-<code style="color:#888888;font-size:0.8em;">ML / ZERO-TRUST</code><br/>
-Zero-trust AI agent. Self-auth, priv revocation.<br/>
-<code style="color:#f5c518;">autonomous agent</code>
-</td>
-
-<td valign="top" style="border-left:3px solid #cc2200;padding-left:8px;font-family:monospace;">
-<strong><a href="https://github.com/GnomeMan4201/OWN">OWN</a></strong> · <strong><a href="https://github.com/GnomeMan4201/aliasOS">aliasOS</a></strong><br/>
-<code style="color:#cc2200;font-size:0.8em;">OFFENSE · OPS</code><br/>
-Adaptive offensive fw. · Textual TUI, 296 aliases, v1.0.0.<br/>
-<code style="color:#00aa00;">CI PASS</code> (aliasOS)
-</td>
-
-</tr></table>
-
-<code style="color:#8b0000;">ALSO BUILT:</code> [`pwn`](https://github.com/GnomeMan4201/pwn) · [`chain`](https://github.com/GnomeMan4201/chain) · [`Decoy-Hunter`](https://github.com/GnomeMan4201/Decoy-Hunter) · [`devto-botnet-hunter`](https://github.com/GnomeMan4201/devto-botnet-hunter) · [`drift-artifact`](https://github.com/GnomeMan4201/drift-artifact)
+**Analysis** — Published writeups on threat actor methodology, internet culture, and tool teardowns.
 
 ---
 
+## Tools
+
+| Repo | Description | Status |
+|------|-------------|--------|
+| [r4b1t](https://github.com/GnomeMan4201/r4b1t) | StumbleUpon-style discovery engine — 53,869 verified OSINT/security URLs, BRANCH mode, PWA | `live` |
+| [inv-hub](https://github.com/GnomeMan4201/inv-hub) | Investigation management system — Rich TUI, disclosure tracking, correlation engine | `active` |
+| [SHENRON](https://github.com/GnomeMan4201/SHENRON) | Detection engineering framework — 390 tests, 53 simulation layers, 20 Sigma rules, MITRE ATT&CK drift checker | `active` |
+| [gnome_control](https://github.com/GnomeMan4201/GnomeMan4201) | Operator dashboard — live monitor, SVG correlation graph, Anthropic briefing generator | `active` |
+| [PRAXIS](https://github.com/GnomeMan4201/PRAXIS) | Research knowledge base CLI — SQLite/FTS5, BagIt archival, 14 templates, 13 commands | `active` |
+
+---
+
+## Investigations
+
+| ID | Subject | Outcome |
+|----|---------|---------|
+| INV-001 | [upvote.club / NSBoost](https://dev.to/gnomeman4201) — browser extension fake engagement network. Operator attributed: Alexey Ignatov, Codemarket OÜ (Tallinn) | `disclosed · published` |
+| INV-002 | GhostLoader/RemcosRAT — 32+ repo malware network, bot-inflated stars, 2,100+ victims. Delivery: cloudcraftshub.com, dropras.xyz | `disclosed to GitHub` |
+| INV-003 | IPASIS.com — IOC cross-reference across awesome-lists and threat intel repos | `active` |
+| INV-004 | myLittleAdmin — SQL admin panel exposure | `closed` |
+| INV-005 | hajigur69 CIB network — 26 accounts, 39 duplicate avatar hash groups, 6 deployment waves, carox.tech infra. Overlap with INV-001 confirmed | `disclosed` |
+
+---
+
+## Corpus
+
+Assembled via eight-script scraper pipeline (CDP, GitHub miner, onion harvester, dedup ranker):
+53,869  verified live URLs (security / OSINT / research)
+
+864  verified onion addresses
+
+   738  consensus security tools
+
+16,577  unique URLs indexed in hub.db (FTS5)
+---
+
+## Published
+
+- **[Reverse engineering a browser extension fake engagement loop](https://dev.to/gnomeman4201)** — NSBoost / INV-001
+- **[How I found a GitHub malware network with 2,100+ victims](https://dev.to/gnomeman4201)** — GhostLoader / INV-002
+
+---
+
+## Stack
+Pop!_OS · Python · SQLite/FTS5 · Bash · Playwright/CDP
+
+Vanilla JS · Cloudflare Workers · GitHub Actions · BagIt · Sigma · MITRE ATT&CK
+---
+
 <div align="center">
-<img src="profile_eof.svg" width="100%" alt="End of File"/>
+<sub>BANANA_TREE ecosystem · badBANANA Research Collective · GnomeMan4201</sub>
 </div>
-
----
-
-<details>
-<summary><code>◈ SWITCH TO BLUE TEAM // DEFENSE POSTURE MAP</code></summary>
-
-<br/>
-
-<div align="center">
-<img src="blue_main.svg" width="100%" alt="Blue Team — Defense Posture"/>
-</details>
