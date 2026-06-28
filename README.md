@@ -68,5 +68,5 @@ Passive. Public records only. Evidence confidence-graded.
 ```
 
 <div align="center">
-<img src="eof.png" width="340" alt="End of File — the bad_BANANA, while producing fruit, eventually withers" />
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/eof.png" width="340" alt="End of File — the bad_BANANA, while producing fruit, eventually withers" />
 </div>
