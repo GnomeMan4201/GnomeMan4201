@@ -5,9 +5,6 @@
 **Independent security research**  
 <sub>OSINT · detection engineering · analytical tooling · auditable AI-assisted analysis</sub>
 
-![status](https://img.shields.io/badge/status-active-800020?style=flat-square)
-![method](https://img.shields.io/badge/method-evidence%20first-161b22?style=flat-square)
-
 <p>
   <a href="#selected-work"><img src="https://img.shields.io/badge/WORK-800020?style=flat-square" alt="Selected work" /></a>
   <a href="#research-method"><img src="https://img.shields.io/badge/METHOD-161b22?style=flat-square" alt="Research method" /></a>
@@ -18,19 +15,19 @@
 <sub>I build small research instruments, investigate observable patterns in public data, and publish the methodology alongside the result. Observation, correlation, linkage, operational inference, and attribution are treated as separate evidentiary steps.</sub>
 
 <br><br>
-<sub><strong>evidence first / attribution last</strong></sub>
+<sub><strong>measure first. attribute last.</strong></sub>
 
 <a id="selected-work"></a>
-<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-work.svg" width="100%" alt="Selected Work" />
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-work.svg" width="520" alt="Selected Work" />
 
 **[SHENRON](https://github.com/GnomeMan4201/shenron)**  
-![focus](https://img.shields.io/badge/DETECTION_ENGINEERING-800020?style=flat-square) ![signal](https://img.shields.io/badge/v0.3.3-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/DETECTION_ENGINEERING-800020?style=flat-square) ![signal](https://img.shields.io/badge/v0.4.4-161b22?style=flat-square)
 <br><sub>Synthetic adversarial telemetry for measuring rule and correlation brittleness without portable offensive procedure.</sub>
 
 <br>
 
 **[Reasoning Diff Lab](https://github.com/GnomeMan4201/reasoning-diff-lab)**  
-![focus](https://img.shields.io/badge/ANALYTICAL_TOOLING-800020?style=flat-square) ![signal](https://img.shields.io/badge/LOCAL--FIRST-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/ANALYTICAL_TOOLING-800020?style=flat-square) ![signal](https://img.shields.io/badge/v2.0.1_%7C_65_TESTS-161b22?style=flat-square)
 <br><sub>Research instrument for testing whether independently produced reasoning paths expose useful review divergences.</sub>
 
 <br>
@@ -42,26 +39,26 @@
 <br>
 
 **[GNOME Prompt Field Manual](https://github.com/GnomeMan4201/gnome-prompt-field-manual)**  
-![focus](https://img.shields.io/badge/AUDITABLE_AI_WORKFLOWS-800020?style=flat-square) ![signal](https://img.shields.io/badge/FIELD_MANUAL-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/AUDITABLE_AI_WORKFLOWS-800020?style=flat-square) ![signal](https://img.shields.io/badge/1.0.0--rc.1_%7C_92_ENTRIES-161b22?style=flat-square)
 <br><sub>Production workspace for structured, inspectable AI-assisted analytical work.</sub>
 
 <br>
 
 **[drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator)**  
-![focus](https://img.shields.io/badge/AI_SAFETY_RESEARCH-800020?style=flat-square) ![signal](https://img.shields.io/badge/EXPERIMENTAL-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/AI_SAFETY_RESEARCH-800020?style=flat-square) ![signal](https://img.shields.io/badge/6_VECTORS_%7C_3_MODEL_FAMILIES-161b22?style=flat-square)
 <br><sub>Tooling for studying policy drift and adversarial pressure on LLM safety monitors.</sub>
 
 <br>
 
 **[LANimals](https://github.com/GnomeMan4201/LANimals)**  
-![focus](https://img.shields.io/badge/NETWORK_ANALYSIS-800020?style=flat-square) ![signal](https://img.shields.io/badge/CHANGE_DETECTION-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/NETWORK_ANALYSIS-800020?style=flat-square) ![signal](https://img.shields.io/badge/v1.0.0-161b22?style=flat-square)
 <br><sub>Local network intelligence and change-detection research.</sub>
 
 <br>
 <sub>The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The projects above are the recommended starting point.</sub>
 
 <a id="research-method"></a>
-<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="100%" alt="Research Method" />
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="520" alt="Research Method" />
 
 <div align="center">
   <code>OBSERVATION</code><br>
@@ -94,7 +91,7 @@ Those are separate evidentiary jumps, not interchangeable labels.
 <sub>A robust pattern is not automatically a specific attribution. A repeatable result is not automatically a causal explanation.</sub>
 
 <a id="selected-writing"></a>
-<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-writing.svg" width="100%" alt="Selected Writing" />
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-writing.svg" width="520" alt="Selected Writing" />
 
 **[Back to Basics: What a Forensic Investigation Can Prove — and What It Can't](https://dev.to/gnomeman4201/back-to-basics-what-a-forensic-investigation-can-prove-and-what-it-cant-1d1n)**  
 ![subject](https://img.shields.io/badge/FORENSIC_METHODOLOGY-800020?style=flat-square) ![source](https://img.shields.io/badge/DEV-161b22?style=flat-square)
@@ -108,19 +105,24 @@ Those are separate evidentiary jumps, not interchangeable labels.
 
 <br>
 
-**[Found a Second Layer to a GitHub Follow Botnet](https://dev.to/gnomeman4201/found-a-second-layer-to-a-github-follow-botnet-5gh1)**  
-![subject](https://img.shields.io/badge/GRAPH_LINKAGE-800020?style=flat-square) ![source](https://img.shields.io/badge/DEV-161b22?style=flat-square)
-<br><sub>Graph linkage and infrastructure analysis.</sub>
+**[Second-Order Injection: Attacking the Evaluator in LLM Safety Monitors](https://dev.to/gnomeman4201/second-order-injection-attacking-the-evaluator-in-llm-safety-monitors-1jnh)**  
+![subject](https://img.shields.io/badge/LLM_EVALUATION-800020?style=flat-square) ![source](https://img.shields.io/badge/DEV-161b22?style=flat-square)
+<br><sub>Evaluator failure modes in LLM safety monitoring.</sub>
 
 <br>
 [![More writing on DEV Community](https://img.shields.io/badge/DEV-READ_MORE-800020?style=flat-square)](https://dev.to/gnomeman4201)
 
 <a id="current-interests"></a>
-<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-current-interests.svg" width="100%" alt="Current Interests" />
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-current-interests.svg" width="520" alt="Current Interests" />
 
 <sub>Detection durability · forensic methodology · coordinated inauthentic behavior · graph-based OSINT · provenance · analytical reproducibility · LLM safety evaluation · local-first research tooling</sub>
 
-<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/research-signature.svg" width="100%" alt="badBANANA Research Collective — measure first, attribute last" />
+<br><br>
+**[SECURITY / DISCLOSURE](SECURITY.md)**  
+<sub>Private advisory reporting and PGP disclosure details.</sub>
+
+<br>
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/research-signature.svg" width="520" alt="badBANANA Research Collective — measure first, attribute last" />
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/eof.png" width="340" alt="End of File — the bad_BANANA, while producing fruit, eventually withers" />
