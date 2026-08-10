@@ -1,6 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="920" height="72" viewBox="0 0 920 72" role="img" aria-label="badBANANA Research Collective — measure first, attribute last">
-  <line x1="0" y1="8" x2="920" y2="8" stroke="#800020" stroke-width="1" opacity="0.65"/>
-  <text x="0" y="35" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace" font-size="14" font-weight="700" letter-spacing="1.2" fill="#800020">badBANANA RESEARCH COLLECTIVE</text>
-  <text x="920" y="35" text-anchor="end" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace" font-size="13" fill="#8b949e">GnomeMan4201</text>
-  <text x="0" y="60" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace" font-size="13" letter-spacing="0.7" fill="#8b949e">measure first. attribute last.</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="76" viewBox="0 0 520 76" role="img" aria-label="badBANANA Research Collective — measure first, attribute last">
+  <style>
+    .accent-fill { fill: #800020; }
+    .accent-stroke { stroke: #800020; }
+    .muted { fill: #7d8590; }
+    @media (prefers-color-scheme: dark) {
+      .accent-fill { fill: #C85C74; }
+      .accent-stroke { stroke: #C85C74; }
+      .muted { fill: #9da7b3; }
+    }
+  </style>
+  <line class="accent-stroke" x1="0" y1="8" x2="520" y2="8" stroke-width="1" opacity="0.72"/>
+  <text class="accent-fill" x="0" y="36" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace" font-size="15" font-weight="700" letter-spacing="1">badBANANA RESEARCH COLLECTIVE</text>
+  <text class="muted" x="520" y="36" text-anchor="end" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace" font-size="13">GnomeMan4201</text>
+  <text class="muted" x="0" y="62" font-family="ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace" font-size="14" letter-spacing="0.6">measure first. attribute last.</text>
 </svg>
