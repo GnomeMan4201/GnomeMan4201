@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="220" viewBox="0 0 1240 220" role="img" aria-labelledby="title desc">
+  <title id="title">badBANANA Research Collective</title>
+  <desc id="desc">Maroon ASCII-style badBANANA banner</desc>
+  <style>
+    .ascii { fill: #800020; font: 700 19px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: pre; }
+    .sub { fill: #7d8590; font: 600 15px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; letter-spacing: 5px; }
+    .rule { stroke: #800020; stroke-width: 2; opacity: .72; }
+  </style>
+  <line class="rule" x1="24" y1="18" x2="1216" y2="18" />
+  <text class="ascii" x="24" y="50"> ██████╗  █████╗ ██████╗ ██████╗  █████╗ ███╗   ██╗ █████╗ ███╗   ██╗ █████╗</text>
+  <text class="ascii" x="24" y="73"> ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗████╗  ██║██╔══██╗████╗  ██║██╔══██╗</text>
+  <text class="ascii" x="24" y="96"> ██████╦╝███████║██║  ██║██████╦╝███████║██╔██╗ ██║███████║██╔██╗ ██║███████║</text>
+  <text class="ascii" x="24" y="119"> ██╔══██╗██╔══██║██║  ██║██╔══██╗██╔══██║██║╚██╗██║██╔══██║██║╚██╗██║██╔══██║</text>
+  <text class="ascii" x="24" y="142"> ██████╔╝██║  ██║██████╔╝██████╔╝██║  ██║██║ ╚████║██║  ██║██║ ╚████║██║  ██║</text>
+  <text class="ascii" x="24" y="165"> ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝</text>
+  <text class="sub" x="620" y="196" text-anchor="middle">RESEARCH COLLECTIVE</text>
+  <line class="rule" x1="24" y1="210" x2="1216" y2="210" />
+</svg>
