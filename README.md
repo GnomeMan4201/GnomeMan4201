@@ -10,9 +10,7 @@ Independent security research, detection engineering, OSINT, and auditable AI-as
 
 I build small research instruments, investigate observable patterns in public data, and publish the methodology alongside the result. The recurring constraints are simple: separate observation from attribution, preserve provenance, make claims reproducible where possible, and allow hypotheses to fail without moving the threshold afterward.
 
----
-
-### SELECTED WORK
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-work.svg" width="100%" alt="Selected Work" />
 
 | project | focus | why it exists |
 |:---|:---|:---|
@@ -25,9 +23,7 @@ I build small research instruments, investigate observable patterns in public da
 
 The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The table above is the recommended starting point.
 
----
-
-### RESEARCH METHOD
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="100%" alt="Research Method" />
 
 ```text
 OBSERVATION -> CORRELATION -> LINKAGE -> OPERATIONAL INFERENCE -> ATTRIBUTION
@@ -47,9 +43,7 @@ My work generally favors:
 
 A robust pattern is not automatically a specific attribution. A repeatable result is not automatically a causal explanation.
 
----
-
-### SELECTED WRITING
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-writing.svg" width="100%" alt="Selected Writing" />
 
 | title | subject |
 |:---|:---|
@@ -60,22 +54,13 @@ A robust pattern is not automatically a specific attribution. A repeatable resul
 | [SHENRON v0.3.3: From Telemetry Generator to Blue-Team Reasoning Instrument](https://dev.to/gnomeman4201/shenron-v033-from-telemetry-generator-to-blue-team-reasoning-instrument-2k91) | detection engineering |
 | [Semantic Gradient Evasion: How Embedding-Based Drift Detectors Can Be Bypassed](https://dev.to/gnomeman4201/semantic-gradient-evasion-how-embedding-based-drift-detectors-can-be-bypassed-step-by-step-1kl0) | embedding and drift-monitor research |
 
-[More writing on DEV Community](https://dev.to/gnomeman4201)
+[![More writing on DEV Community](https://img.shields.io/badge/DEV-READ_MORE-800020?style=flat-square)](https://dev.to/gnomeman4201)
 
----
-
-### CURRENT INTERESTS
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-current-interests.svg" width="100%" alt="Current Interests" />
 
 Detection durability · forensic methodology · coordinated inauthentic behavior · graph-based OSINT · provenance · analytical reproducibility · LLM safety evaluation · local-first research tooling
 
----
-
-```text
-badBANANA Research Collective
-GnomeMan4201
-
-measure first. attribute last.
-```
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/research-signature.svg" width="100%" alt="badBANANA Research Collective — measure first, attribute last" />
 
 <div align="center">
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/eof.png" width="340" alt="End of File — the bad_BANANA, while producing fruit, eventually withers" />
