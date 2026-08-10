@@ -1,18 +1,12 @@
-```
- ██████╗  █████╗ ██████╗ ██████╗  █████╗ ███╗   ██╗ █████╗ ███╗   ██╗ █████╗
- ██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗████╗  ██║██╔══██╗████╗  ██║██╔══██╗
- ██████╦╝███████║██║  ██║██████╦╝███████║██╔██╗ ██║███████║██╔██╗ ██║███████║
- ██╔══██╗██╔══██║██║  ██║██╔══██╗██╔══██║██║╚██╗██║██╔══██║██║╚██╗██║██╔══██║
- ██████╔╝██║  ██║██████╔╝██████╔╝██║  ██║██║ ╚████║██║  ██║██║ ╚████║██║  ██║
- ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
-                         R E S E A R C H   C O L L E C T I V E
-```
+<div align="center">
+  <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/badbanana-banner.svg" width="100%" alt="badBANANA Research Collective" />
+</div>
 
 Independent security research, detection engineering, OSINT, and auditable AI-assisted analysis.
 
-![status](https://img.shields.io/badge/status-active-0a0a0a?style=flat-square)
-![focus](https://img.shields.io/badge/focus-security%20research-0a0a0a?style=flat-square)
-![method](https://img.shields.io/badge/method-evidence%20first-0a0a0a?style=flat-square)
+![status](https://img.shields.io/badge/status-active-800020?style=flat-square)
+![focus](https://img.shields.io/badge/focus-security%20research-161b22?style=flat-square)
+![method](https://img.shields.io/badge/method-evidence%20first-800020?style=flat-square)
 
 I build small research instruments, investigate observable patterns in public data, and publish the methodology alongside the result. The recurring constraints are simple: separate observation from attribution, preserve provenance, make claims reproducible where possible, and allow hypotheses to fail without moving the threshold afterward.
 
