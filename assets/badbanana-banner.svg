@@ -5,6 +5,11 @@
     .ascii { fill: #800020; font: 700 19px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; white-space: pre; }
     .sub { fill: #7d8590; font: 600 15px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; letter-spacing: 5px; }
     .rule { stroke: #800020; stroke-width: 2; opacity: .72; }
+    @media (prefers-color-scheme: dark) {
+      .ascii { fill: #C85C74; }
+      .sub { fill: #9da7b3; }
+      .rule { stroke: #C85C74; opacity: .82; }
+    }
   </style>
   <line class="rule" x1="24" y1="18" x2="1216" y2="18" />
   <text class="ascii" x="24" y="50"> ██████╗  █████╗ ██████╗ ██████╗  █████╗ ███╗   ██╗ █████╗ ███╗   ██╗ █████╗</text>
