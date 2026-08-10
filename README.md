@@ -110,7 +110,7 @@ Those are separate evidentiary jumps, not interchangeable labels.
 <br><sub>Evaluator failure modes in LLM safety monitoring.</sub>
 
 <br>
-[![More writing on DEV Community](https://img.shields.io/badge/DEV-READ_MORE-800020?style=flat-square)](https://dev.to/gnomeman4201)
+<a href="https://dev.to/gnomeman4201"><img src="https://img.shields.io/badge/DEV-READ_MORE-800020?style=flat-square" alt="More writing on DEV Community" /></a>
 
 <a id="current-interests"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-current-interests.svg" width="520" alt="Current Interests" />
