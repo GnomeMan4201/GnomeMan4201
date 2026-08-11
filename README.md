@@ -32,9 +32,9 @@
 
 <br>
 
-**[r4b1t](https://github.com/GnomeMan4201/r4b1t)**  
-![focus](https://img.shields.io/badge/OSINT_DISCOVERY-800020?style=flat-square) ![signal](https://img.shields.io/badge/53%2C869_VERIFIED_URLS-161b22?style=flat-square)
-<br><sub>Curated discovery engine for live security, OSINT, research, and reference sources.</sub>
+**[r4b1t](https://r4b1t-repo.abroooosh.chatgpt.site)** · [source](https://github.com/GnomeMan4201/r4b1t) · [launch](https://gnomeman4201.github.io/r4b1t/)  
+![focus](https://img.shields.io/badge/WEB_DISCOVERY-800020?style=flat-square) ![signal](https://img.shields.io/badge/50%2C109_URLS_%7C_12%2C396_HOSTS-161b22?style=flat-square)
+<br><sub>Not search. Not a feed. A door. Curated random exploration across security, OSINT, research, development, and the weird internet.</sub>
 
 <br>
 
