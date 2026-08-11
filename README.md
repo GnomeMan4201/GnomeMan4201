@@ -21,37 +21,37 @@
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-work.svg" width="520" alt="Selected Work" />
 
 **[SHENRON](https://github.com/GnomeMan4201/shenron)**  
-![focus](https://img.shields.io/badge/DETECTION_ENGINEERING-800020?style=flat-square) ![signal](https://img.shields.io/badge/v0.4.4-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/DETECTION_ENGINEERING-800020?style=flat-square) ![signal](https://img.shields.io/badge/BETA-161b22?style=flat-square)
 <br><sub>Synthetic adversarial telemetry for measuring rule and correlation brittleness without portable offensive procedure.</sub>
 
 <br>
 
 **[Reasoning Diff Lab](https://github.com/GnomeMan4201/reasoning-diff-lab)**  
-![focus](https://img.shields.io/badge/ANALYTICAL_TOOLING-800020?style=flat-square) ![signal](https://img.shields.io/badge/v2.0.1_%7C_65_TESTS-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/ANALYTICAL_TOOLING-800020?style=flat-square) ![signal](https://img.shields.io/badge/PILOT_INSTRUMENT-161b22?style=flat-square)
 <br><sub>Research instrument for testing whether independently produced reasoning paths expose useful review divergences.</sub>
 
 <br>
 
 **[r4b1t](https://r4b1t.badbananaresearch.com)** · [source](https://github.com/GnomeMan4201/r4b1t) · [launch](https://gnomeman4201.github.io/r4b1t/)  
-![focus](https://img.shields.io/badge/WEB_DISCOVERY-800020?style=flat-square) ![signal](https://img.shields.io/badge/50%2C109_URLS_%7C_12%2C396_HOSTS-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/WEB_DISCOVERY-800020?style=flat-square) ![signal](https://img.shields.io/badge/EVIDENCE_BOUND_CORPUS-161b22?style=flat-square)
 <br><sub>Not search. Not a feed. A door. Curated random exploration across security, OSINT, research, development, and the weird internet.</sub>
 
 <br>
 
 **[GNOME Prompt Field Manual](https://github.com/GnomeMan4201/gnome-prompt-field-manual)**  
-![focus](https://img.shields.io/badge/AUDITABLE_AI_WORKFLOWS-800020?style=flat-square) ![signal](https://img.shields.io/badge/1.0.0--rc.1_%7C_92_ENTRIES-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/AUDITABLE_AI_WORKFLOWS-800020?style=flat-square) ![signal](https://img.shields.io/badge/RELEASE_CANDIDATE-161b22?style=flat-square)
 <br><sub>Production workspace for structured, inspectable AI-assisted analytical work.</sub>
 
 <br>
 
 **[drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator)**  
-![focus](https://img.shields.io/badge/AI_SAFETY_RESEARCH-800020?style=flat-square) ![signal](https://img.shields.io/badge/6_VECTORS_%7C_3_MODEL_FAMILIES-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/AI_SAFETY_RESEARCH-800020?style=flat-square) ![signal](https://img.shields.io/badge/EVIDENCE_PACKAGE-161b22?style=flat-square)
 <br><sub>Tooling for studying policy drift and adversarial pressure on LLM safety monitors.</sub>
 
 <br>
 
 **[LANimals](https://github.com/GnomeMan4201/LANimals)**  
-![focus](https://img.shields.io/badge/NETWORK_ANALYSIS-800020?style=flat-square) ![signal](https://img.shields.io/badge/v1.0.0-161b22?style=flat-square)
+![focus](https://img.shields.io/badge/NETWORK_ANALYSIS-800020?style=flat-square) ![signal](https://img.shields.io/badge/LOCAL_FIRST-161b22?style=flat-square)
 <br><sub>Local network intelligence and change-detection research.</sub>
 
 <br>
