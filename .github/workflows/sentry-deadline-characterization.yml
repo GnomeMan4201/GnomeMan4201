@@ -1,0 +1,48 @@
+name: Sentry deadline characterization
+
+on:
+  push:
+    branches:
+      - evidence/sentry-deadline-harness
+    paths:
+      - "evidence/sentry-deadline/**"
+      - ".github/workflows/sentry-deadline-characterization.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  characterize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: evidence/sentry-deadline
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: evidence/sentry-deadline/package-lock.json
+
+      - name: Install exact dependency set
+        run: npm install --ignore-scripts --no-audit --no-fund
+
+      - name: Verify pinned Sentry version
+        run: node -e "const p=require('./node_modules/@sentry/browser/package.json'); if(p.version !== '10.67.0') { console.error('expected @sentry/browser 10.67.0, got '+p.version); process.exit(1) } console.log('@sentry/browser '+p.version)"
+
+      - name: Characterization run 1
+        run: npm test
+
+      - name: Characterization run 2 fresh process
+        run: npm test
+
+      - name: Dependency tree
+        if: always()
+        run: npm ls --all
