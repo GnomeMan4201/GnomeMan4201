@@ -1,727 +1,429 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHENRON Ecosystem — Runtime Control Plane</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-  :root{
-    --bg:#07060a;
-    --amber:#f5a623;
-    --amber-dim:#c47e10;
-    --amber-pale:#ffd27a;
-    --crimson:#e84040;
-    --violet:#9b59e8;
-    --cyan:#38c9c9;
-    --jade:#3dc87a;
-    --slate:#8892a4;
-    --panel-bg:rgba(10,8,14,0.96);
-    --border:rgba(245,166,35,0.2);
-    --text:#d4c5a0;
-  }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Public research map for GnomeMan4201 / badBANANA Research: security, OSINT, detection engineering, analytical tooling, provenance, and reproducibility.">
+  <meta name="color-scheme" content="dark light">
+  <title>badBANANA Research — Public Research Map</title>
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --surface: #141417;
+      --surface-2: #1a1a1f;
+      --text: #ece9e4;
+      --muted: #aaa3a0;
+      --faint: #6f6867;
+      --line: #302b2d;
+      --accent: #800020;
+      --accent-hi: #b3234b;
+      --paper: #d7d0c5;
+      --max: 1120px;
+    }
 
-  body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'IBM Plex Mono', monospace;
-    overflow:hidden;
-    height:100vh;
-    width:100vw;
-  }
+    * { box-sizing: border-box; }
 
-  canvas#stars{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    z-index:0;
-  }
+    html { scroll-behavior: smooth; }
 
-  #graph-container{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    z-index:1;
-  }
+    body {
+      margin: 0;
+      background:
+        linear-gradient(rgba(128,0,32,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(128,0,32,.035) 1px, transparent 1px),
+        var(--bg);
+      background-size: 42px 42px;
+      color: var(--text);
+      font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
 
-  svg{ width:100%; height:100%; }
+    a { color: inherit; }
 
-  .link{ fill:none; transition:stroke-opacity .2s, stroke-width .2s; }
-  .link.contains     { stroke:var(--amber);     stroke-width:2;   stroke-opacity:.55; }
-  .link.orchestrates { stroke:var(--crimson);   stroke-width:1.8; stroke-opacity:.55; }
-  .link.feeds        { stroke:var(--cyan);      stroke-width:1.2; stroke-opacity:.45; stroke-dasharray:6 3; }
-  .link.monitors     { stroke:var(--amber-dim); stroke-width:1;   stroke-opacity:.45; stroke-dasharray:2 4; }
-  .link.evolved      { stroke:var(--violet);    stroke-width:1.5; stroke-opacity:.5; }
-  .link.extends      { stroke:var(--jade);      stroke-width:1.2; stroke-opacity:.45; }
-  .link.recon        { stroke:var(--cyan);      stroke-width:.9;  stroke-opacity:.35; stroke-dasharray:2 5; }
-  .link.dimmed      { stroke-opacity:.04 !important; }
-  .link.highlighted { stroke-opacity:.95 !important; stroke-width:3 !important; }
+    .wrap {
+      width: min(var(--max), calc(100% - 36px));
+      margin: 0 auto;
+    }
 
-  .node{ cursor:pointer; }
-  .node polygon{ transition:filter .2s, stroke .2s, stroke-width .2s, fill-opacity .2s; }
-  .node:hover polygon{ filter:brightness(1.6); }
-  .node text{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px;
-    fill:#c4b08a;
-    pointer-events:none;
-    text-shadow:0 0 10px #000;
-  }
-  .node.core text{
-    font-family:'Cinzel', serif;
-    font-size:13px;
-    font-weight:700;
-    fill:var(--amber-pale);
-  }
-  .node.shenron_sub text{
-    fill:#b8e8cc;
-    font-size:9.5px;
-  }
-  .node.dimmed polygon{ opacity:.07; }
-  .node.dimmed text{ opacity:.07; }
+    header {
+      min-height: 64vh;
+      display: grid;
+      align-items: center;
+      padding: 72px 0 54px;
+      border-bottom: 1px solid var(--line);
+    }
 
-  #info-panel{
-    position:fixed;
-    top:24px;
-    right:24px;
-    width:290px;
-    background:var(--panel-bg);
-    border:1px solid var(--border);
-    border-top:2px solid var(--amber);
-    padding:18px 18px 16px;
-    display:none;
-    backdrop-filter:blur(12px);
-    box-shadow:0 0 40px rgba(245,166,35,.07), inset 0 0 20px rgba(0,0,0,.4);
-    z-index:20;
-  }
-  #info-panel::before{
-    content:'';
-    position:absolute;
-    top:0; left:0; right:0;
-    height:1px;
-    background:linear-gradient(90deg, transparent, var(--amber), transparent);
-  }
-  #info-panel .group-label{
-    font-size:9px;
-    letter-spacing:3px;
-    color:var(--amber-dim);
-    text-transform:uppercase;
-    margin-bottom:6px;
-  }
-  #info-panel h3{
-    font-family:'Cinzel', serif;
-    font-size:15px;
-    font-weight:700;
-    color:var(--amber-pale);
-    margin-bottom:10px;
-    line-height:1.3;
-  }
-  #info-panel #info-desc{
-    font-size:11px;
-    line-height:1.7;
-    color:#a89878;
-    border-left:2px solid rgba(245,166,35,.25);
-    padding-left:10px;
-  }
-  #info-panel .connections{
-    margin-top:12px;
-    font-size:10.5px;
-    color:#5a5040;
-    line-height:1.8;
-  }
-  #info-panel .connections span{ color:#c4a060; }
-  #info-panel .runtime{
-    margin-top:12px;
-    border-top:1px solid rgba(245,166,35,.12);
-    padding-top:10px;
-    font-size:10.5px;
-    line-height:1.8;
-    color:#7f725a;
-  }
-  #info-panel .runtime b{ color:var(--amber-pale); font-weight:600; }
+    .eyebrow {
+      color: var(--accent-hi);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
 
-  #legend{
-    position:fixed;
-    bottom:24px;
-    left:24px;
-    background:var(--panel-bg);
-    border:1px solid var(--border);
-    padding:14px 16px;
-    backdrop-filter:blur(12px);
-    min-width:210px;
-    z-index:20;
-  }
-  #legend h4{
-    font-family:'Cinzel', serif;
-    font-size:11px;
-    color:var(--amber);
-    letter-spacing:2px;
-    margin-bottom:10px;
-    text-transform:uppercase;
-  }
-  .legend-item{
-    display:flex;
-    align-items:center;
-    gap:9px;
-    margin-bottom:6px;
-    font-size:10px;
-    color:#7a6a50;
-  }
-  .legend-hex{ width:13px; height:13px; flex-shrink:0; }
-  .legend-line{ width:22px; height:2px; flex-shrink:0; }
-  #legend .sep{
-    border:none;
-    border-top:1px solid rgba(245,166,35,.1);
-    margin:8px 0;
-  }
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      font-size: clamp(44px, 8vw, 92px);
+      line-height: .94;
+      letter-spacing: -.045em;
+    }
 
-  #title{
-    position:fixed;
-    top:24px;
-    left:24px;
-    z-index:20;
-  }
-  #title h1{
-    font-family:'Cinzel', serif;
-    font-size:20px;
-    font-weight:900;
-    color:var(--amber);
-    letter-spacing:4px;
-    text-shadow:0 0 30px rgba(245,166,35,.4);
-  }
-  #title p{
-    font-size:9.5px;
-    color:#4a3a20;
-    letter-spacing:2px;
-    margin-top:4px;
-  }
+    .lede {
+      max-width: 760px;
+      margin: 30px 0 0;
+      color: var(--muted);
+      font-size: clamp(16px, 2vw, 20px);
+    }
 
-  #chipbar{
-    margin-top:14px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    max-width:760px;
-  }
-  .chip{
-    border:1px solid rgba(245,166,35,.18);
-    color:#e2c990;
-    background:rgba(10,8,14,.82);
-    padding:8px 11px;
-    font-size:11px;
-    letter-spacing:1.3px;
-    text-transform:uppercase;
-  }
+    .principle {
+      display: inline-block;
+      margin-top: 26px;
+      padding: 9px 12px;
+      border-left: 3px solid var(--accent);
+      color: var(--paper);
+      background: rgba(128,0,32,.08);
+    }
 
-  #metrics{
-    position:fixed;
-    top:24px;
-    right:330px;
-    width:320px;
-    background:rgba(10,8,14,.86);
-    border:1px solid var(--border);
-    padding:14px;
-    backdrop-filter:blur(12px);
-    z-index:20;
-  }
-  #metrics h4{
-    font-family:'Cinzel', serif;
-    font-size:11px;
-    color:var(--amber);
-    letter-spacing:2px;
-    margin-bottom:12px;
-    text-transform:uppercase;
-  }
-  .metric-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
-  .metric{
-    border:1px solid rgba(245,166,35,.14);
-    padding:10px;
-    min-height:62px;
-  }
-  .metric .k{
-    color:#6f5b34;
-    font-size:9px;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    margin-bottom:8px;
-  }
-  .metric .v{
-    color:#f0d39a;
-    font-size:11px;
-    line-height:1.45;
-  }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      margin-top: 38px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
 
-  #hint{
-    position:fixed;
-    bottom:24px;
-    right:24px;
-    font-size:9px;
-    color:#2a2010;
-    text-align:right;
-    line-height:2;
-    letter-spacing:1px;
-    z-index:20;
-  }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
 
-  @media (max-width: 1400px){
-    #metrics{ right:24px; top:auto; bottom:24px; width:300px; }
-    #info-panel{ top:24px; right:24px; }
-  }
-</style>
+    nav a:hover, nav a:focus-visible {
+      color: var(--text);
+      border-color: var(--accent-hi);
+    }
+
+    section {
+      padding: 72px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(260px, 520px);
+      gap: 30px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 500;
+      letter-spacing: -.025em;
+    }
+
+    .section-note {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 235px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(255,255,255,.018), transparent 55%), var(--surface);
+      text-decoration: none;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .card:hover, .card:focus-visible {
+      transform: translateY(-2px);
+      border-color: #65414a;
+      background: var(--surface-2);
+      outline: none;
+    }
+
+    .card::after {
+      content: "↗";
+      position: absolute;
+      right: 22px;
+      top: 20px;
+      color: var(--faint);
+    }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: 40px;
+      color: var(--accent-hi);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .boundary {
+      margin-top: 18px;
+      color: var(--faint);
+      font-size: 12px;
+    }
+
+    .method {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .step {
+      position: relative;
+      padding: 22px 16px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      text-align: center;
+      font-size: 12px;
+      letter-spacing: .04em;
+    }
+
+    .step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -13px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 2;
+      width: 18px;
+      color: var(--accent-hi);
+      background: var(--bg);
+    }
+
+    .support-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .support-item {
+      min-height: 150px;
+      padding: 20px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-decoration: none;
+      background: rgba(255,255,255,.012);
+    }
+
+    .support-item:hover, .support-item:focus-visible {
+      background: var(--surface);
+      outline: none;
+    }
+
+    .support-item strong { display: block; margin-bottom: 8px; }
+    .support-item span { color: var(--muted); font-size: 13px; }
+
+    .history {
+      display: grid;
+      gap: 10px;
+    }
+
+    .history-row {
+      display: grid;
+      grid-template-columns: 190px 1fr auto;
+      gap: 18px;
+      align-items: baseline;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .history-row:last-child { border-bottom: 0; }
+    .history-row span { color: var(--muted); }
+    .history-row a { color: var(--paper); }
+
+    footer {
+      padding: 42px 0 70px;
+      color: var(--faint);
+      font-size: 12px;
+    }
+
+    .banana {
+      float: right;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #b89a3e;
+      border-left-color: transparent;
+      border-top-color: transparent;
+      border-radius: 50%;
+      transform: rotate(25deg);
+      opacity: .7;
+    }
+
+    @media (max-width: 760px) {
+      header { min-height: auto; padding-top: 54px; }
+      .section-head { grid-template-columns: 1fr; }
+      .grid, .support-list { grid-template-columns: 1fr; }
+      .method { grid-template-columns: 1fr; }
+      .step:not(:last-child)::after {
+        content: "↓";
+        right: 50%;
+        top: auto;
+        bottom: -15px;
+        transform: translateX(50%);
+      }
+      .history-row { grid-template-columns: 1fr; gap: 4px; }
+      .card { min-height: 210px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { scroll-behavior: auto !important; transition: none !important; }
+    }
+  </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
+  <header>
+    <div class="wrap">
+      <div class="eyebrow">GnomeMan4201 / badBANANA Research</div>
+      <h1>Public research, mapped by what the evidence can support.</h1>
+      <p class="lede">Independent security research across detection engineering, OSINT, analytical tooling, reproducible AI-safety experiments, and local-first research instruments.</p>
+      <div class="principle">measure first. attribute last.</div>
+      <nav aria-label="Page sections">
+        <a href="#selected">Selected work</a>
+        <a href="#method">Method</a>
+        <a href="#supporting">Supporting work</a>
+        <a href="#history">Historical / reference</a>
+        <a href="https://github.com/GnomeMan4201">GitHub profile</a>
+      </nav>
+    </div>
+  </header>
 
-<div id="title">
-  <h1>GNOMEMAN4201</h1>
-  <p>ECOSYSTEM · INTEGRATION GRAPH · LIVE CONTROL PLANE</p>
-  <div id="chipbar">
-    <div class="chip" id="chipLive">LIVE DATA: LOADING</div>
-    <div class="chip" id="chipUpdate">LAST UPDATE: --</div>
-    <div class="chip" id="chipNodes">NODES TRACKED: --</div>
-    <div class="chip">SOURCE: docs/data/runtime_signals.json</div>
-  </div>
-</div>
+  <main>
+    <section id="selected">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Selected work</h2>
+          <p class="section-note">These are the recommended starting points. Each project has its own problem definition and visual identity; the shared standard is explicit provenance, reproducibility, and evidence boundaries.</p>
+        </div>
 
-<div id="graph-container"><svg id="graph"></svg></div>
+        <div class="grid">
+          <a class="card" href="https://github.com/GnomeMan4201/shenron">
+            <span class="tag">Detection engineering</span>
+            <h3>SHENRON</h3>
+            <p>Synthetic adversarial telemetry for measuring rule and correlation brittleness without portable offensive procedure.</p>
+            <div class="boundary">Synthetic behavior, explicit safety contract, test-backed verification surfaces.</div>
+          </a>
 
-<div id="metrics">
-  <h4>System Metrics</h4>
-  <div class="metric-grid">
-    <div class="metric"><div class="k">Total Nodes</div><div class="v" id="m_total">--</div></div>
-    <div class="metric"><div class="k">Warning Nodes</div><div class="v" id="m_warn">--</div></div>
-    <div class="metric"><div class="k">Locked Nodes</div><div class="v" id="m_locked">--</div></div>
-    <div class="metric"><div class="k">Cautious Nodes</div><div class="v" id="m_cautious">--</div></div>
-    <div class="metric"><div class="k">Routine Nodes</div><div class="v" id="m_routine">--</div></div>
-    <div class="metric"><div class="k">Avg Drift</div><div class="v" id="m_avgdrift">--</div></div>
-    <div class="metric"><div class="k">Highest Drift</div><div class="v" id="m_highest">--</div></div>
-    <div class="metric"><div class="k">Activity Health</div><div class="v" id="m_health">--</div></div>
-  </div>
-</div>
+          <a class="card" href="https://github.com/GnomeMan4201/reasoning-diff-lab">
+            <span class="tag">Analytical tooling</span>
+            <h3>Reasoning Diff Lab</h3>
+            <p>Local-first instrument for testing whether independently produced structured reasoning paths expose useful review divergences.</p>
+            <div class="boundary">Internally verified; human usefulness remains an empirical question.</div>
+          </a>
 
-<div id="info-panel">
-  <div class="group-label" id="info-group"></div>
-  <h3 id="info-name"></h3>
-  <div id="info-desc"></div>
-  <div class="connections" id="info-connections"></div>
-  <div class="runtime" id="info-runtime"></div>
-</div>
+          <a class="card" href="https://r4b1t.badbananaresearch.com">
+            <span class="tag">Web discovery</span>
+            <h3>r4b1t</h3>
+            <p>Curated random exploration across security, OSINT, research, development, and the weird internet.</p>
+            <div class="boundary">Not search. Not a feed. A door.</div>
+          </a>
 
-<div id="legend">
-  <h4>Legend</h4>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#f5a623" stroke-width="1.5"/></svg> Core / SHENRON</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#3dc87a" stroke-width="1.5"/></svg> SHENRON subsystem</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#e84040" stroke-width="1.5"/></svg> Offense</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#38c9c9" stroke-width="1.5"/></svg> Recon &amp; network</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#9b59e8" stroke-width="1.5"/></svg> ML research</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#c47e10" stroke-width="1" stroke-dasharray="2,2"/></svg> Monitoring / ops</div>
-  <div class="legend-item"><svg class="legend-hex" viewBox="0 0 13 13"><polygon points="6.5,1 12,4.25 12,8.75 6.5,12 1,8.75 1,4.25" fill="none" stroke="#8892a4" stroke-width="1.5"/></svg> Platform / utility</div>
-  <hr class="sep">
-  <div class="legend-item"><div class="legend-line" style="background:#f5a623"></div> contains</div>
-  <div class="legend-item"><div class="legend-line" style="background:#e84040"></div> orchestrates</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#38c9c9 0,#38c9c9 6px,transparent 6px,transparent 9px)"></div> feeds</div>
-  <div class="legend-item"><div class="legend-line" style="background:repeating-linear-gradient(90deg,#c47e10 0,#c47e10 2px,transparent 2px,transparent 6px)"></div> monitors</div>
-  <div class="legend-item"><div class="legend-line" style="background:#9b59e8"></div> evolved from</div>
-  <div class="legend-item"><div class="legend-line" style="background:#3dc87a"></div> extends</div>
-</div>
+          <a class="card" href="https://github.com/GnomeMan4201/gnome-prompt-field-manual">
+            <span class="tag">Auditable AI workflows</span>
+            <h3>GNOME Prompt Field Manual</h3>
+            <p>Operational reference for structured, inspectable AI-assisted analytical work, with editorial lineage preserved in public.</p>
+            <div class="boundary">Release-candidate state and unresolved editorial work are explicit.</div>
+          </a>
 
-<div id="hint">drag nodes · scroll to zoom<br>click node to inspect<br>click canvas to reset</div>
+          <a class="card" href="https://github.com/GnomeMan4201/drift_orchestrator">
+            <span class="tag">AI safety research</span>
+            <h3>drift_orchestrator</h3>
+            <p>Experimental tooling for studying policy drift and adversarial pressure on LLM safety-monitor architectures.</p>
+            <div class="boundary">Committed evidence plus a public Ollama gateway adapter for fresh reruns.</div>
+          </a>
 
-<script>
-(function(){
-  const c = document.getElementById('stars');
-  const ctx = c.getContext('2d');
-  function resize(){
-    c.width = window.innerWidth;
-    c.height = window.innerHeight;
-    draw();
-  }
-  function draw(){
-    ctx.clearRect(0,0,c.width,c.height);
-    for(let i=0;i<320;i++){
-      const x=Math.random()*c.width, y=Math.random()*c.height;
-      const r=Math.random()*0.9, a=Math.random()*0.35+0.05;
-      ctx.beginPath();
-      ctx.arc(x,y,r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(245,200,120,${a})`;
-      ctx.fill();
-    }
-  }
-  window.addEventListener('resize', resize);
-  resize();
-})();
+          <a class="card" href="https://github.com/GnomeMan4201/LANimals">
+            <span class="tag">Network analysis</span>
+            <h3>LANimals</h3>
+            <p>Local network intelligence and change detection with historical state, service context, and graph-based inspection.</p>
+            <div class="boundary">Heuristic triage labels are not behavioral attribution.</div>
+          </a>
+        </div>
+      </div>
+    </section>
 
-const nodes = [
-  {id:'SHENRON',group:'core',size:22,desc:'Apex autonomous agent — unified orchestration core integrating all subsystems, offense, recon, ML, and ops.', signalId:'SHENRON'},
-  {id:'AI Modules',group:'shenron_sub',size:14,desc:'Pluggable AI inference layers within SHENRON.'},
-  {id:'Autonomy &\nOrchestration',group:'shenron_sub',size:14,desc:'Decision loop and task scheduling engine.'},
-  {id:'Evasion &\nStealth',group:'shenron_sub',size:13,desc:'Anti-detection and obfuscation subsystem.'},
-  {id:'Mutation Engine',group:'shenron_sub',size:13,desc:'Polymorphic payload and behavior mutation layer.'},
-  {id:'C2',group:'shenron_sub',size:12,desc:'Command and control communication channel.'},
-  {id:'Persistence &\nPropagation',group:'shenron_sub',size:12,desc:'Survivability and lateral movement module.'},
-  {id:'Steganography\n& Utils',group:'shenron_sub',size:11,desc:'Hidden data channel and utility belt.'},
-  {id:'OWN',group:'core',size:17,desc:'Workflow autonomy orchestrator — high-level task runner interfacing SHENRON and platform tools.'},
-  {id:'Blackglass',group:'offense',size:12,desc:'Evasion-focused framework. Feeds Mutation Engine and Evasion subsystem.'},
-  {id:'LUNE',group:'offense',size:12,desc:'Simulation and deception engine. Interfaces with C2 and Persistence.', signalId:'LUNE'},
-  {id:'zer0DAYSlater',group:'offense',size:11,desc:'Adversarial simulation — vulnerability and exploit development pipeline.'},
-  {id:'PHANTOM',group:'offense',size:11,desc:'Stealth-focused — interfaces with C2 and steganography subsystems.', signalId:'PHANTOM'},
-  {id:'pwn',group:'offense',size:10,desc:'Penetration testing platform — entry-point tooling feeding LUNE simulation.'},
-  {id:'LANimals',group:'recon',size:14,desc:'Network reconnaissance platform. Primary recon data source for SHENRON.', signalId:'LANimals'},
-  {id:'LANIMORPH',group:'recon',size:11,desc:'Behavioral mutation layer extending LANimals.'},
-  {id:'OpenSight',group:'recon',size:10,desc:'Intelligence and observation platform. Upstream data feed into LANimals.', signalId:'OpenSight'},
-  {id:'drift_orchestrator',group:'platform',size:11,desc:'Policy engine and monitoring orchestrator. Interfaces with SHENRON autonomy layer.', signalId:'drift_orchestrator'},
-  {id:'chain',group:'platform',size:10,desc:'Chaining and sequencing primitive. Feeds OWN workflow orchestration.'},
-  {id:'aliasOS',group:'platform',size:9,desc:'Shell alias and identity management layer. Utility across the full stack.'},
-  {id:'BANANA_TREE',group:'monitor',size:13,desc:'Self-healing AI-Ops dashboard — monitors the full ecosystem.'},
-  {id:'HYDRA',group:'ml',size:13,desc:'Static analysis framework — VENOM Hunter, DepChain Hunter, RepoScan Hunter.'},
-  {id:'Pickle Hunter',group:'ml',size:10,desc:'Original ML deserialization scanner. Evolved into HYDRA.'},
-  {id:'bad_BANANA',group:'ml',size:11,desc:'Adversarial ML toolkit — attacks ML model pipelines. Feeds SHENRON AI module layer.'},
-  {id:'DevToReconSuite',group:'platform',size:9,desc:'Input validation vulnerability discovery tooling from DEV.to API recon.'},
-  {id:'repo_alias_forge',group:'platform',size:9,desc:'GitHub repo discovery, sync, and shell command generation. Recon utility.'}
-];
+    <section id="method">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Research method</h2>
+          <p class="section-note">The steps below are separate evidentiary jumps. Robustness does not imply specificity, and repeatability does not automatically establish cause.</p>
+        </div>
+        <div class="method" aria-label="Evidence progression">
+          <div class="step">OBSERVATION</div>
+          <div class="step">CORRELATION</div>
+          <div class="step">LINKAGE</div>
+          <div class="step">OPERATIONAL INFERENCE</div>
+          <div class="step">ATTRIBUTION</div>
+        </div>
+      </div>
+    </section>
 
-const links = [
-  {source:'SHENRON',target:'AI Modules',type:'contains'},
-  {source:'SHENRON',target:'Autonomy &\nOrchestration',type:'contains'},
-  {source:'SHENRON',target:'Evasion &\nStealth',type:'contains'},
-  {source:'SHENRON',target:'Mutation Engine',type:'contains'},
-  {source:'SHENRON',target:'C2',type:'contains'},
-  {source:'SHENRON',target:'Persistence &\nPropagation',type:'contains'},
-  {source:'SHENRON',target:'Steganography\n& Utils',type:'contains'},
-  {source:'OWN',target:'Autonomy &\nOrchestration',type:'orchestrates'},
-  {source:'Blackglass',target:'Evasion &\nStealth',type:'feeds'},
-  {source:'Blackglass',target:'Mutation Engine',type:'feeds'},
-  {source:'LUNE',target:'C2',type:'feeds'},
-  {source:'LUNE',target:'Persistence &\nPropagation',type:'feeds'},
-  {source:'PHANTOM',target:'C2',type:'feeds'},
-  {source:'PHANTOM',target:'Steganography\n& Utils',type:'feeds'},
-  {source:'drift_orchestrator',target:'Autonomy &\nOrchestration',type:'feeds'},
-  {source:'bad_BANANA',target:'AI Modules',type:'feeds'},
-  {source:'LANIMORPH',target:'Mutation Engine',type:'feeds'},
-  {source:'zer0DAYSlater',target:'SHENRON',type:'feeds'},
-  {source:'LANimals',target:'SHENRON',type:'feeds'},
-  {source:'OpenSight',target:'LANimals',type:'feeds'},
-  {source:'LANimals',target:'LANIMORPH',type:'extends'},
-  {source:'Pickle Hunter',target:'HYDRA',type:'evolved'},
-  {source:'HYDRA',target:'zer0DAYSlater',type:'feeds'},
-  {source:'HYDRA',target:'bad_BANANA',type:'feeds'},
-  {source:'chain',target:'OWN',type:'feeds'},
-  {source:'BANANA_TREE',target:'SHENRON',type:'monitors'},
-  {source:'BANANA_TREE',target:'OWN',type:'monitors'},
-  {source:'BANANA_TREE',target:'LANimals',type:'monitors'},
-  {source:'pwn',target:'LUNE',type:'feeds'},
-  {source:'repo_alias_forge',target:'LANimals',type:'recon'},
-  {source:'DevToReconSuite',target:'OWN',type:'feeds'}
-];
+    <section id="supporting">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Supporting work</h2>
+          <p class="section-note">Narrower tools and research artifacts that support the same evidence-first practice without being presented as equal-weight flagships.</p>
+        </div>
+        <div class="support-list">
+          <a class="support-item" href="https://github.com/GnomeMan4201/graph_anomaly_detector"><strong>Graph Anomaly Detector</strong><span>Deterministic synthetic experiments and inspectable graph-based anomaly scoring.</span></a>
+          <a class="support-item" href="https://github.com/GnomeMan4201/drift-artifact"><strong>Drift Artifact</strong><span>Static method artifact for preserving and examining authorship drift across iterative AI-assisted revision.</span></a>
+          <a class="support-item" href="https://github.com/GnomeMan4201/threatmap"><strong>THREATMAP</strong><span>Browser-based investigation graph for entities, evidence, and relationships.</span></a>
+          <a class="support-item" href="https://github.com/GnomeMan4201/devto-analytics-pro"><strong>DEV.to Analytics Pro</strong><span>Local CLI analytics for first-party publishing and audience research.</span></a>
+          <a class="support-item" href="https://github.com/GnomeMan4201/Blackglass_Suite"><strong>Blackglass Suite</strong><span>Adversarial research modules and inspectable generated artifacts with explicit provenance boundaries.</span></a>
+          <a class="support-item" href="https://github.com/GnomeMan4201/Decoy-Hunter"><strong>Decoy-Hunter</strong><span>Upstream-derived, protocol-aware service validation for deception-heavy network environments.</span></a>
+        </div>
+      </div>
+    </section>
 
-const groupColors = {
-  core:'#f5a623',
-  shenron_sub:'#3dc87a',
-  offense:'#e84040',
-  recon:'#38c9c9',
-  ml:'#9b59e8',
-  monitor:'#c47e10',
-  platform:'#8892a4'
-};
+    <section id="history">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Historical / reference</h2>
+          <p class="section-note">Public preservation is useful when lineage matters. These repositories are intentionally not presented as the current front door to the research portfolio.</p>
+        </div>
+        <div class="history">
+          <div class="history-row"><strong>zer0DAYSlater</strong><span>Historical adversarial-systems research retained for inspectable defensive study and remediation lineage.</span><a href="https://github.com/GnomeMan4201/zer0DAYSlater">repository</a></div>
+          <div class="history-row"><strong>OpenRedTeaming</strong><span>Upstream-derived literature/reference corpus with explicit authorship boundaries.</span><a href="https://github.com/GnomeMan4201/OpenRedTeaming">repository</a></div>
+          <div class="history-row"><strong>SubDomainizer</strong><span>Retained upstream-derived historical fork with legacy dependency context.</span><a href="https://github.com/GnomeMan4201/SubDomainizer">repository</a></div>
+          <div class="history-row"><strong>devto-bot-audit</strong><span>Superseded public lineage pointer; active successor work is not exposed here.</span><a href="https://github.com/GnomeMan4201/devto-bot-audit">repository</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-const groupNames = {
-  core:'CORE',
-  shenron_sub:'SHENRON SUBSYSTEM',
-  offense:'OFFENSE FRAMEWORK',
-  recon:'RECON & NETWORK',
-  ml:'ML RESEARCH',
-  monitor:'MONITORING / OPS',
-  platform:'PLATFORM / UTILITY'
-};
-
-let runtimeSignals = {};
-
-function postureColor(posture){
-  if (posture === 'LOCKED') return '#e84040';
-  if (posture === 'CAUTIOUS') return '#f5a623';
-  return '#3dc87a';
-}
-
-function glowIdForNode(d){
-  const sig = d.signalId ? runtimeSignals[d.signalId] : null;
-  if (!sig) return d.group === 'core' ? 'url(#glow-core)' : (d.group === 'shenron_sub' ? 'url(#glow-soft)' : null);
-  return sig.posture === 'LOCKED' ? 'url(#glow-red)' : sig.posture === 'CAUTIOUS' ? 'url(#glow-core)' : 'url(#glow-soft)';
-}
-
-function strokeForNode(d){
-  const sig = d.signalId ? runtimeSignals[d.signalId] : null;
-  return sig ? postureColor(sig.posture) : groupColors[d.group];
-}
-
-function fillForNode(d){
-  return groupColors[d.group] + (d.group === 'shenron_sub' ? '14' : '10');
-}
-
-function displayName(id){
-  return id.replace(/\n/g, ' ');
-}
-
-function fmtAgo(iso){
-  const then = new Date(iso).getTime();
-  if (!Number.isFinite(then)) return '--';
-  const sec = Math.max(0, Math.floor((Date.now() - then) / 1000));
-  if (sec < 60) return 'JUST NOW';
-  const min = Math.floor(sec / 60);
-  if (min < 60) return `${min}m ago`;
-  const hr = Math.floor(min / 60);
-  return `${hr}h ago`;
-}
-
-function applyMetrics(signals){
-  const entries = Object.entries(signals);
-  const total = entries.length;
-  const warnings = entries.filter(([,v]) => v.status === 'warning').length;
-  const locked = entries.filter(([,v]) => v.posture === 'LOCKED').length;
-  const cautious = entries.filter(([,v]) => v.posture === 'CAUTIOUS').length;
-  const routine = entries.filter(([,v]) => v.posture === 'ROUTINE').length;
-  const avgDrift = entries.length ? (entries.reduce((a,[,v]) => a + Number(v.drift_score || 0), 0) / entries.length).toFixed(2) : '0.00';
-  const avgActivity = entries.length ? Math.round(entries.reduce((a,[,v]) => a + Number(v.activity || 0), 0) / entries.length) : 0;
-
-  let highest = '--';
-  if (entries.length) {
-    const top = [...entries].sort((a,b)=>(b[1].drift_score||0)-(a[1].drift_score||0))[0];
-    highest = `${top[0]} (${top[1].drift_score})`;
-  }
-
-  document.getElementById('m_total').textContent = String(total);
-  document.getElementById('m_warn').textContent = String(warnings);
-  document.getElementById('m_locked').textContent = String(locked);
-  document.getElementById('m_cautious').textContent = String(cautious);
-  document.getElementById('m_routine').textContent = String(routine);
-  document.getElementById('m_avgdrift').textContent = String(avgDrift);
-  document.getElementById('m_highest').textContent = highest;
-  document.getElementById('m_health').textContent = avgActivity >= 75 ? 'high' : avgActivity >= 45 ? 'moderate' : 'low';
-
-  document.getElementById('chipLive').textContent = 'LIVE DATA: ACTIVE';
-  document.getElementById('chipNodes').textContent = `NODES TRACKED: ${total}`;
-
-  const newest = entries.map(([,v]) => v.updated_at).filter(Boolean).sort().reverse()[0];
-  document.getElementById('chipUpdate').textContent = `LAST UPDATE: ${newest ? fmtAgo(newest) : '--'}`;
-}
-
-function hexPoints(r){
-  return d3.range(6).map(i=>{
-    const a=(Math.PI/3)*i-Math.PI/6;
-    return [r*Math.cos(a), r*Math.sin(a)].join(',');
-  }).join(' ');
-}
-
-const w = window.innerWidth, h = window.innerHeight;
-const svg = d3.select('#graph').attr('viewBox', `0 0 ${w} ${h}`);
-const defs = svg.append('defs');
-
-function mkGlow(id, blur){
-  const f = defs.append('filter').attr('id', id).attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
-  f.append('feGaussianBlur').attr('in','SourceGraphic').attr('stdDeviation', blur).attr('result','blur');
-  const m = f.append('feMerge');
-  m.append('feMergeNode').attr('in','blur');
-  m.append('feMergeNode').attr('in','blur');
-  m.append('feMergeNode').attr('in','SourceGraphic');
-}
-mkGlow('glow-core', 6);
-mkGlow('glow-soft', 3);
-mkGlow('glow-red', 5);
-
-const linkColors = {
-  contains:'#f5a623',
-  orchestrates:'#e84040',
-  feeds:'#38c9c9',
-  monitors:'#c47e10',
-  evolved:'#9b59e8',
-  extends:'#3dc87a',
-  recon:'#38c9c9'
-};
-
-Object.entries(linkColors).forEach(([type,color])=>{
-  defs.append('marker')
-    .attr('id', `arrow-${type}`)
-    .attr('viewBox', '0 -4 8 8')
-    .attr('refX', 8)
-    .attr('refY', 0)
-    .attr('markerWidth', 5)
-    .attr('markerHeight', 5)
-    .attr('orient', 'auto')
-    .append('path')
-    .attr('d', 'M0,-4L8,0L0,4')
-    .attr('fill', color)
-    .attr('opacity', 0.7);
-});
-
-const gg = svg.append('g');
-svg.call(d3.zoom().scaleExtent([0.25,4]).on('zoom', e => gg.attr('transform', e.transform)));
-
-const simulation = d3.forceSimulation(nodes)
-  .force('link', d3.forceLink(links).id(d=>d.id).distance(d=>d.type==='contains'?95:d.type==='orchestrates'?150:195).strength(d=>d.type==='contains'?0.75:0.28))
-  .force('charge', d3.forceManyBody().strength(d=>d.group==='core'?-900:d.group==='shenron_sub'?-220:-380))
-  .force('center', d3.forceCenter(w/2,h/2))
-  .force('collision', d3.forceCollide(d=> {
-    const sig = d.signalId ? runtimeSignals[d.signalId] : null;
-    const boost = sig ? Math.max(0, Math.round((sig.activity || 0) / 20)) : 0;
-    return d.size + 20 + boost;
-  }));
-
-const link = gg.append('g').selectAll('path').data(links).join('path')
-  .attr('class', d => `link ${d.type}`)
-  .attr('marker-end', d => `url(#arrow-${d.type})`);
-
-const node = gg.append('g').selectAll('g').data(nodes).join('g')
-  .attr('class', d => `node ${d.group}`)
-  .call(d3.drag()
-    .on('start', (e,d)=>{ if(!e.active) simulation.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
-    .on('drag', (e,d)=>{ d.fx=e.x; d.fy=e.y; })
-    .on('end', (e,d)=>{ if(!e.active) simulation.alphaTarget(0); d.fx=null; d.fy=null; }));
-
-node.append('polygon')
-  .attr('points', d => hexPoints(d.size))
-  .attr('fill', d => fillForNode(d))
-  .attr('stroke', d => strokeForNode(d))
-  .attr('stroke-width', d => {
-    const sig = d.signalId ? runtimeSignals[d.signalId] : null;
-    if (sig) return sig.posture === 'LOCKED' ? 2.4 : sig.posture === 'CAUTIOUS' ? 2 : 1.6;
-    return d.group === 'core' ? 2.2 : 1.2;
-  })
-  .attr('filter', d => glowIdForNode(d));
-
-node.each(function(d){
-  const el = d3.select(this);
-  const lines = d.id.split('\n');
-  const offset = d.size + 7;
-  lines.forEach((line,i)=>{
-    el.append('text')
-      .attr('dy', offset + 10 + i*12)
-      .attr('text-anchor','middle')
-      .text(line);
-  });
-});
-
-let selected = null;
-
-function renderInfo(d){
-  document.getElementById('info-name').textContent = displayName(d.id);
-  document.getElementById('info-group').textContent = '◆ ' + groupNames[d.group];
-  document.getElementById('info-desc').textContent = d.desc;
-
-  const inL = links.filter(l => l.target.id === d.id);
-  const outL = links.filter(l => l.source.id === d.id);
-  let t = '';
-  if (outL.length) t += `feeds into → <span>${outL.map(l => displayName(l.target.id)).join(', ')}</span><br>`;
-  if (inL.length) t += `receives ← <span>${inL.map(l => displayName(l.source.id)).join(', ')}</span>`;
-  document.getElementById('info-connections').innerHTML = t;
-
-  const sig = d.signalId ? runtimeSignals[d.signalId] : null;
-  document.getElementById('info-runtime').innerHTML = sig ? `
-    <div><b>Status:</b> ${sig.status}</div>
-    <div><b>Posture:</b> ${sig.posture}</div>
-    <div><b>Drift:</b> ${sig.drift_score}</div>
-    <div><b>Activity:</b> ${sig.activity}</div>
-    <div><b>Last event:</b> ${sig.last_event}</div>
-    <div><b>Updated:</b> ${sig.updated_at}</div>
-  ` : `<div><b>Runtime:</b> no live signal mapped</div>`;
-
-  document.getElementById('info-panel').style.display = 'block';
-}
-
-function resetHL(){
-  node.classed('dimmed', false);
-  link.classed('dimmed', false).classed('highlighted', false);
-}
-
-node.on('click', function(e,d){
-  e.stopPropagation();
-  if (selected === d.id){
-    selected = null;
-    resetHL();
-    document.getElementById('info-panel').style.display = 'none';
-    return;
-  }
-  selected = d.id;
-  const con = new Set([d.id]);
-  links.forEach(l => {
-    if (l.source.id === d.id || l.target.id === d.id){
-      con.add(l.source.id);
-      con.add(l.target.id);
-    }
-  });
-  node.classed('dimmed', n => !con.has(n.id));
-  link.classed('dimmed', l => l.source.id !== d.id && l.target.id !== d.id);
-  link.classed('highlighted', l => l.source.id === d.id || l.target.id === d.id);
-  renderInfo(d);
-});
-
-svg.on('click', ()=>{
-  selected = null;
-  resetHL();
-  document.getElementById('info-panel').style.display = 'none';
-});
-
-simulation.on('tick', ()=>{
-  link.attr('d', d => {
-    const dx = d.target.x - d.source.x;
-    const dy = d.target.y - d.source.y;
-    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-    const curve = dist * 0.18;
-    const mx = (d.source.x + d.target.x)/2 - dy*curve/dist;
-    const my = (d.source.y + d.target.y)/2 + dx*curve/dist;
-    const tr = d.target.size + 9;
-    const ex = d.target.x - (dx/dist)*tr;
-    const ey = d.target.y - (dy/dist)*tr;
-    return `M${d.source.x},${d.source.y} Q${mx},${my} ${ex},${ey}`;
-  });
-  node.attr('transform', d => `translate(${d.x},${d.y})`);
-});
-
-const sn = node.filter(d => d.id === 'SHENRON');
-function pulse(){
-  sn.select('polygon')
-    .transition().duration(1400).attr('points', hexPoints(26))
-    .transition().duration(1400).attr('points', hexPoints(22))
-    .on('end', pulse);
-}
-pulse();
-
-async function refreshSignals(){
-  try{
-    const res = await fetch('./data/runtime_signals.json?ts=' + Date.now());
-    runtimeSignals = await res.json();
-    applyMetrics(runtimeSignals);
-
-    node.select('polygon')
-      .attr('stroke', d => strokeForNode(d))
-      .attr('stroke-width', d => {
-        const sig = d.signalId ? runtimeSignals[d.signalId] : null;
-        if (sig) return sig.posture === 'LOCKED' ? 2.4 : sig.posture === 'CAUTIOUS' ? 2 : 1.6;
-        return d.group === 'core' ? 2.2 : 1.2;
-      })
-      .attr('filter', d => glowIdForNode(d));
-
-    node.each(function(d){
-      const sig = d.signalId ? runtimeSignals[d.signalId] : null;
-      if (sig) d.size = Math.max(d.size, Math.min(26, 10 + Math.round(sig.activity / 6)));
-    });
-
-    if (selected){
-      const d = nodes.find(n => n.id === selected);
-      if (d) renderInfo(d);
-    }
-  } catch(err){
-    document.getElementById('chipLive').textContent = 'LIVE DATA: ERROR';
-    console.error(err);
-  }
-}
-
-refreshSignals();
-setInterval(refreshSignals, 5000);
-</script>
+  <footer>
+    <div class="wrap">
+      Public claims should remain traceable to the repository that owns the evidence.
+      <span class="banana" aria-hidden="true"></span>
+    </div>
+  </footer>
 </body>
 </html>
