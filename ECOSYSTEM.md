@@ -1,5 +1,7 @@
 # BANANA_TREE Ecosystem Map
 
+> **Historical snapshot — June 2026.** This document preserves a point-in-time ecosystem state and is **not** the authoritative list of currently public repositories, current project status, or current corpus counts. Some linked projects are now private or unavailable, and numeric corpus values below are intentionally preserved as historical evidence. For the current public starting set, use the repository's main [`README.md`](README.md).
+
 > badBANANA Research Collective · GnomeMan4201 · June 2026
 
 ---
