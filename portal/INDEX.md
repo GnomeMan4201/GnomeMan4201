@@ -1,5 +1,7 @@
 # badBANANA Research Collective
 
+> **Historical snapshot — June 2026.** This portal preserves a point-in-time research index. It is **not** the authoritative list of currently public repositories, current investigation status, or current corpus size. Some linked repositories are now private or unavailable. Counts and links below are preserved for provenance rather than silently rewritten. For the current public portfolio, start at the repository's main [`README.md`](../README.md).
+
 > Independent security research · OSINT tooling · CIB investigations
 
 **[→ r4b1t](https://gnomeman4201.github.io/r4b1t)** · **[→ dev.to](https://dev.to/gnomeman4201)** · **[→ GitHub](https://github.com/GnomeMan4201)**
