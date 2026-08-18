@@ -1,39 +1,42 @@
 # Cross-link footer templates
 
+> Current template. Do not hard-code changing corpus counts or link private/internal infrastructure from public project footers.
+
 ---
 
-## Tool repos (r4b1t, SHENRON, bpf-watch, etc.)
+## Public tool repos
 
 ```markdown
 ---
 
-## Part of the BANANA_TREE ecosystem
+## badBANANA research
 
 | | |
 |--|--|
-| **Ecosystem map** | [BANANA_TREE overview](https://github.com/GnomeMan4201/GnomeMan4201/blob/main/ECOSYSTEM.md) |
-| **Related tools** | [inv-hub](https://github.com/GnomeMan4201/inv-hub) · [PRAXIS](https://github.com/GnomeMan4201/PRAXIS) · [SHENRON](https://github.com/GnomeMan4201/SHENRON) |
-| **Published research** | [dev.to/gnomeman4201](https://dev.to/gnomeman4201) |
-| **Corpus** | [r4b1t](https://gnomeman4201.github.io/r4b1t) — 53,869 verified OSINT/security URLs |
+| **Current portfolio** | [GnomeMan4201](https://github.com/GnomeMan4201) |
+| **Selected writing** | [dev.to/gnomeman4201](https://dev.to/gnomeman4201) |
+| **Discovery project** | [r4b1t](https://github.com/GnomeMan4201/r4b1t) |
 
 *badBANANA Research Collective · GnomeMan4201*
 ```
 
 ---
 
-## Investigation documents
+## Historical investigation documents
+
+Use only when a document is intentionally being preserved as a point-in-time research artifact.
 
 ```markdown
 ---
 
-## Investigation context
+## Historical research context
+
+This document preserves a point-in-time research state. Repository visibility, investigation status, and linked infrastructure may have changed since publication.
 
 | | |
 |--|--|
-| **Full investigation index** | [Research portal](https://github.com/GnomeMan4201/GnomeMan4201/blob/main/portal/INDEX.md) |
-| **Disclosure archive** | [Disclosures](https://github.com/GnomeMan4201/GnomeMan4201/blob/main/portal/INDEX.md#disclosure-archive) |
-| **Related investigations** | [INV-XXX](link) · [INV-XXX](link) |
-| **Tools used** | [inv-hub](https://github.com/GnomeMan4201/inv-hub) · [PRAXIS](https://github.com/GnomeMan4201/PRAXIS) |
+| **Current public portfolio** | [GnomeMan4201](https://github.com/GnomeMan4201) |
+| **Published writing** | [dev.to/gnomeman4201](https://dev.to/gnomeman4201) |
 
 *badBANANA Research Collective · GnomeMan4201*
 ```
@@ -44,5 +47,5 @@
 
 ```markdown
 ---
-*Part of the [BANANA_TREE ecosystem](https://github.com/GnomeMan4201/GnomeMan4201/blob/main/ECOSYSTEM.md) · [badBANANA Research Collective](https://github.com/GnomeMan4201) · [dev.to](https://dev.to/gnomeman4201)*
+*badBANANA Research Collective · [GnomeMan4201](https://github.com/GnomeMan4201) · [DEV.to](https://dev.to/gnomeman4201)*
 ```
