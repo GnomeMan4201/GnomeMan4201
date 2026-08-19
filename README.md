@@ -34,7 +34,7 @@
 
 **[r4b1t](https://r4b1t.badbananaresearch.com)** · [source](https://github.com/GnomeMan4201/r4b1t) · [launch](https://gnomeman4201.github.io/r4b1t/)  
 ![focus](https://img.shields.io/badge/WEB_DISCOVERY-800020?style=flat-square) ![signal](https://img.shields.io/badge/EVIDENCE_BOUND_CORPUS-161b22?style=flat-square)
-<br><sub>Not search. Not a feed. A door. Curated random discovery through dedicated desktop and mobile shells sharing one corpus, session state, and discovery engine.</sub>
+<br><sub>Curated random discovery through dedicated desktop and mobile shells sharing one corpus, session state, and discovery engine.</sub>
 
 <br>
 
