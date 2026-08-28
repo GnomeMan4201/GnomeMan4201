@@ -3,7 +3,7 @@
 </div>
 
 **Independent security research**  
-<sub>OSINT · detection engineering · analytical tooling · auditable AI-assisted analysis</sub>
+<sub>OSINT · threat intelligence · detection engineering · evidence systems · auditable AI-assisted analysis</sub>
 
 <p>
   <a href="#selected-work"><img src="https://img.shields.io/badge/WORK-800020?style=flat-square" alt="Selected work" /></a>
@@ -12,7 +12,7 @@
   <a href="#current-interests"><img src="https://img.shields.io/badge/INTERESTS-161b22?style=flat-square" alt="Current interests" /></a>
 </p>
 
-<sub>I build small research instruments, investigate observable patterns in public data, and publish the methodology alongside the result. Observation, correlation, linkage, operational inference, and attribution are treated as separate evidentiary steps.</sub>
+<sub>I build research systems, investigate observable patterns in public data, and publish the methodology alongside the result. Observation, correlation, linkage, operational inference, and attribution are treated as separate evidentiary steps.</sub>
 
 <br><br>
 <sub><strong>measure first. attribute last.</strong></sub>
@@ -20,39 +20,39 @@
 <a id="selected-work"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-work.svg" width="520" alt="Selected Work" />
 
+**[badBANANA Threat Observatory](https://github.com/GnomeMan4201/badBANANA-threat-observatory)** · [live](https://badbanana-threat-observatory.badbanana6969.workers.dev)  
+![focus](https://img.shields.io/badge/THREAT_INTELLIGENCE-800020?style=flat-square) ![signal](https://img.shields.io/badge/v1.2.2-161b22?style=flat-square)
+<br><sub>Evidence-first threat observation with explicit source health, bounded coverage, material-change replay, and visible failure states.</sub>
+
+<br>
+
+**[LANimals](https://github.com/GnomeMan4201/LANimals)**  
+![focus](https://img.shields.io/badge/NETWORK_INTELLIGENCE-800020?style=flat-square) ![signal](https://img.shields.io/badge/LOCAL_FIRST_APPLIANCE-161b22?style=flat-square)
+<br><sub>Self-hosted network intelligence, durable host and service history, and operator-reviewed change detection inside approved LAN scope.</sub>
+
+<br>
+
 **[SHENRON](https://github.com/GnomeMan4201/shenron)**  
 ![focus](https://img.shields.io/badge/DETECTION_ENGINEERING-800020?style=flat-square) ![signal](https://img.shields.io/badge/BETA-161b22?style=flat-square)
 <br><sub>Synthetic adversarial telemetry for measuring rule and correlation brittleness without portable offensive procedure.</sub>
 
 <br>
 
-**[Reasoning Diff Lab](https://github.com/GnomeMan4201/reasoning-diff-lab)**  
-![focus](https://img.shields.io/badge/ANALYTICAL_TOOLING-800020?style=flat-square) ![signal](https://img.shields.io/badge/PILOT_INSTRUMENT-161b22?style=flat-square)
-<br><sub>Research instrument for testing whether independently produced reasoning paths expose useful review divergences.</sub>
-
-<br>
-
 **[r4b1t](https://r4b1t.badbananaresearch.com)** · [source](https://github.com/GnomeMan4201/r4b1t) · [launch](https://gnomeman4201.github.io/r4b1t/)  
 ![focus](https://img.shields.io/badge/WEB_DISCOVERY-800020?style=flat-square) ![signal](https://img.shields.io/badge/EVIDENCE_BOUND_CORPUS-161b22?style=flat-square)
-<br><sub>Curated random discovery through dedicated desktop and mobile shells sharing one corpus, session state, and discovery engine.</sub>
+<br><sub>Curated random discovery through dedicated desktop and mobile shells sharing one evolving corpus, session state, and discovery engine.</sub>
 
 <br>
 
-**[GNOME Prompt Field Manual](https://github.com/GnomeMan4201/gnome-prompt-field-manual)**  
-![focus](https://img.shields.io/badge/AUDITABLE_AI_WORKFLOWS-800020?style=flat-square) ![signal](https://img.shields.io/badge/RELEASE_CANDIDATE-161b22?style=flat-square)
-<br><sub>Production workspace for structured, inspectable AI-assisted analytical work.</sub>
+**[GNOME Prompt Field Manual](https://github.com/GnomeMan4201/gnome-prompt-field-manual)** · [read](https://gnomeman4201.github.io/gnome-prompt-field-manual/)  
+![focus](https://img.shields.io/badge/AUDITABLE_AI_WORKFLOWS-800020?style=flat-square) ![signal](https://img.shields.io/badge/RC.1_WORKSPACE-161b22?style=flat-square)
+<br><sub>Production workspace and practical reference for structured, inspectable, auditable AI-assisted work.</sub>
 
 <br>
 
-**[drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator)**  
-![focus](https://img.shields.io/badge/AI_SAFETY_RESEARCH-800020?style=flat-square) ![signal](https://img.shields.io/badge/EVIDENCE_PACKAGE-161b22?style=flat-square)
-<br><sub>Tooling for studying policy drift and adversarial pressure on LLM safety monitors.</sub>
-
-<br>
-
-**[LANimals](https://github.com/GnomeMan4201/LANimals)**  
-![focus](https://img.shields.io/badge/NETWORK_ANALYSIS-800020?style=flat-square) ![signal](https://img.shields.io/badge/LOCAL_FIRST-161b22?style=flat-square)
-<br><sub>Local network intelligence and change-detection research.</sub>
+**[drift_orchestrator](https://github.com/GnomeMan4201/drift_orchestrator)** · [research portal](https://gnomeman4201.github.io/drift_orchestrator/)  
+![focus](https://img.shields.io/badge/LLM_SECURITY_RESEARCH-800020?style=flat-square) ![signal](https://img.shields.io/badge/EVIDENCE_PACKAGE-161b22?style=flat-square)
+<br><sub>Reproducible research tooling for policy drift, semantic-gradient evasion, and second-order injection against LLM safety monitors.</sub>
 
 <br>
 <sub>The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The projects above are the recommended starting point.</sub>
@@ -93,6 +93,12 @@ Those are separate evidentiary jumps, not interchangeable labels.
 <a id="selected-writing"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-writing.svg" width="520" alt="Selected Writing" />
 
+**[I Pushed the badBANANA Threat Observatory Public](https://dev.to/gnomeman4201/i-pushed-the-badbanana-threat-observatory-public-49e8)**  
+![subject](https://img.shields.io/badge/THREAT_DATA_INTEGRITY-800020?style=flat-square) ![source](https://img.shields.io/badge/DEV-161b22?style=flat-square)
+<br><sub>Why source health, bounded API coverage, stale-state labeling, and material-change evidence matter in public threat visualization.</sub>
+
+<br>
+
 **[Back to Basics: What a Forensic Investigation Can Prove — and What It Can't](https://dev.to/gnomeman4201/back-to-basics-what-a-forensic-investigation-can-prove-and-what-it-cant-1d1n)**  
 ![subject](https://img.shields.io/badge/FORENSIC_METHODOLOGY-800020?style=flat-square) ![source](https://img.shields.io/badge/DEV-161b22?style=flat-square)
 <br><sub>Evidence boundaries, attribution discipline, and failed hypotheses.</sub>
@@ -115,7 +121,7 @@ Those are separate evidentiary jumps, not interchangeable labels.
 <a id="current-interests"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-current-interests.svg" width="520" alt="Current Interests" />
 
-<sub>Detection durability · forensic methodology · coordinated inauthentic behavior · graph-based OSINT · provenance · analytical reproducibility · LLM safety evaluation · local-first research tooling</sub>
+<sub>Threat-data integrity · detection durability · forensic methodology · coordinated inauthentic behavior · evidence ledgers · graph-based OSINT · provenance · analytical reproducibility · LLM safety evaluation · local-first research systems</sub>
 
 <br><br>
 **[SECURITY / DISCLOSURE](SECURITY.md)**  
