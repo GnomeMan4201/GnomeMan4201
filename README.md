@@ -55,10 +55,18 @@
 <br><sub>Reproducible research tooling for policy drift, semantic-gradient evasion, and second-order injection against LLM safety monitors.</sub>
 
 <br>
+
+**[GitHub Account Orchestration Study](https://github.com/GnomeMan4201/github-account-orchestration-study)**  
+![focus](https://img.shields.io/badge/OSINT-800020?style=flat-square) ![signal](https://img.shields.io/badge/REPRODUCIBLE_EVIDENCE-161b22?style=flat-square)
+<br><sub>Public-only longitudinal analysis of unusual GitHub follower-account patterns with a verification bundle, manifest, reproduction procedure, and explicit evidence-strength boundaries.</sub>
+
+<br>
 <sub>The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The projects above are the recommended starting point.</sub>
 
 <a id="research-method"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="520" alt="Research Method" />
+
+**[Research Method v1.0](RESEARCH_METHOD.md)** — versioned defaults for hypotheses, evidence classes, provenance, source independence, disconfirmation, promotion gates, corrections, and reproducibility.
 
 <div align="center">
   <code>OBSERVATION</code><br>
@@ -92,6 +100,12 @@ Those are separate evidentiary jumps, not interchangeable labels.
 
 <a id="selected-writing"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-writing.svg" width="520" alt="Selected Writing" />
+
+**[Kept Getting Strange GitHub Followers, So I Measured Them](https://dev.to/gnomeman4201/kept-getting-strange-github-followers-so-i-measured-them-3fac)**  
+![subject](https://img.shields.io/badge/COORDINATED_PATTERNS-800020?style=flat-square) ![source](https://img.shields.io/badge/DEV-161b22?style=flat-square)
+<br><sub>Longitudinal GitHub follower analysis using bounded observations, synchronized behavior, alternative explanations, disconfirmation, and a public reproduction package.</sub>
+
+<br>
 
 **[I Pushed the badBANANA Threat Observatory Public](https://dev.to/gnomeman4201/i-pushed-the-badbanana-threat-observatory-public-49e8)**  
 ![subject](https://img.shields.io/badge/THREAT_DATA_INTEGRITY-800020?style=flat-square) ![source](https://img.shields.io/badge/DEV-161b22?style=flat-square)
