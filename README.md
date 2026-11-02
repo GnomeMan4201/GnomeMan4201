@@ -1,5 +1,8 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/badbanana-banner.svg" width="100%" alt="badBANANA Research Collective" />
+  <picture>
+    <source media="(max-width: 620px)" srcset="assets/badbanana-banner-mobile.svg">
+    <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/badbanana-banner.svg" width="100%" alt="badBANANA Research Collective" />
+  </picture>
 </div>
 
 **Independent security research**  
@@ -19,6 +22,18 @@
 
 <a id="selected-work"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-work.svg" width="520" alt="Selected Work" />
+
+<sub><strong>RESEARCH SPOTLIGHT / PUBLIC VERIFICATION PACKAGE</strong></sub>
+
+**[GitHub Account Orchestration Study](https://github.com/GnomeMan4201/github-account-orchestration-study)**  
+![focus](https://img.shields.io/badge/OSINT-800020?style=flat-square) ![signal](https://img.shields.io/badge/REPRODUCIBLE_EVIDENCE-161b22?style=flat-square)
+<br><sub>Closed, bounded investigation of six GitHub accounts. Released measurements support shared technical orchestration, not identification of a human operator or proof of malicious intent.</sub>
+
+**Evidence navigation:** [Technical report](https://github.com/GnomeMan4201/github-account-orchestration-study/blob/main/REPORT.md) · [Evidence summary](https://github.com/GnomeMan4201/github-account-orchestration-study/blob/main/data/evidence_summary.json) · [Source ledger](https://github.com/GnomeMan4201/github-account-orchestration-study/blob/main/data/source_ledger.json) · [Verification guide](https://github.com/GnomeMan4201/github-account-orchestration-study/blob/main/REPRODUCING.md) · [Scope and limitations](https://github.com/GnomeMan4201/github-account-orchestration-study/blob/main/NOTICE.md)
+
+<sub>The public package supports checking released arithmetic, evidence lineage, and claim boundaries. It does not reproduce every omitted raw collection step. [Later observations](https://github.com/GnomeMan4201/github-account-orchestration-study/blob/main/LONGITUDINAL_UPDATE_2026-09-05.md) are a separate follow-on record.</sub>
+
+<br>
 
 **[badBANANA Threat Observatory](https://github.com/GnomeMan4201/badBANANA-threat-observatory)** · [live](https://badbanana-threat-observatory.badbanana6969.workers.dev)  
 ![focus](https://img.shields.io/badge/THREAT_INTELLIGENCE-800020?style=flat-square) ![signal](https://img.shields.io/badge/v1.2.2-161b22?style=flat-square)
@@ -55,10 +70,6 @@
 <br><sub>Reproducible research tooling for policy drift, semantic-gradient evasion, and second-order injection against LLM safety monitors.</sub>
 
 <br>
-
-**[GitHub Account Orchestration Study](https://github.com/GnomeMan4201/github-account-orchestration-study)**  
-![focus](https://img.shields.io/badge/OSINT-800020?style=flat-square) ![signal](https://img.shields.io/badge/REPRODUCIBLE_EVIDENCE-161b22?style=flat-square)
-<br><sub>Public-only longitudinal analysis of unusual GitHub follower-account patterns with a verification bundle, manifest, reproduction procedure, and explicit evidence-strength boundaries.</sub>
 
 <br>
 <sub>The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The projects above are the recommended starting point.</sub>
