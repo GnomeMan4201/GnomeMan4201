@@ -42,4 +42,4 @@ jobs:
           git -c user.name="github-actions[bot]" \
               -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
               commit -qm "Update skyline"
-          git push -qf "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" output
+          git push -qf "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git" skyline-output
