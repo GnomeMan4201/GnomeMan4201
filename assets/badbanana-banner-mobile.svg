@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="180" viewBox="0 0 640 180" role="img" aria-labelledby="title desc">
+  <title id="title">badBANANA Research Collective</title>
+  <desc id="desc">Compact monospaced badBANANA wordmark for narrow screens</desc>
+  <style>
+    .wordmark { fill: #800020; font: 700 66px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; letter-spacing: -1.5px; }
+    .sub { fill: #7d8590; font: 600 19px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; letter-spacing: 4px; }
+    .rule { stroke: #800020; stroke-width: 2; opacity: .72; }
+    @media (prefers-color-scheme: dark) {
+      .wordmark { fill: #C85C74; }
+      .sub { fill: #9da7b3; }
+      .rule { stroke: #C85C74; opacity: .82; }
+    }
+  </style>
+  <line class="rule" x1="20" y1="16" x2="620" y2="16"/>
+  <text class="wordmark" x="320" y="103" text-anchor="middle">badBANANA</text>
+  <text class="sub" x="320" y="141" text-anchor="middle">RESEARCH COLLECTIVE</text>
+  <line class="rule" x1="20" y1="166" x2="620" y2="166"/>
+</svg>
