@@ -138,6 +138,15 @@ Those are separate evidentiary jumps, not interchangeable labels.
 <sub>Threat-data integrity · detection durability · forensic methodology · coordinated inauthentic behavior · evidence ledgers · graph-based OSINT · provenance · analytical reproducibility · LLM safety evaluation · local-first research systems</sub>
 
 <br><br>
+<a id="contribution-skyline"></a>
+**Contribution skyline**  
+<div align="center">
+  <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/skyline-output/skyline.svg" width="100%" alt="Animated GitHub contribution skyline" />
+  <br>
+  <sub>Generated using <a href="https://github.com/pinkpixel-dev/skyline">skyline</a> by Pink Pixel.</sub>
+</div>
+
+<br><br>
 **[SECURITY / DISCLOSURE](SECURITY.md)**  
 <sub>Private advisory reporting and PGP disclosure details.</sub>
 
