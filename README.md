@@ -80,7 +80,15 @@
 <sub>The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The projects above are the recommended starting point.</sub>
 
 <a id="bug-museum"></a>
-<img src="assets/bug-museum-001.svg" width="660" alt="Bug Museum. The six project tabs, with the cursor on SHENRON." />
+<div align="center">
+<img src="assets/bug-museum-header.svg" width="660" alt="Bug Museum" /><br>
+<a href="https://r4b1t.badbananaresearch.com"><img src="assets/tab-r4b1t.svg" width="200" alt="Exhibit 01: R4B1T H0L3" /></a>
+<a href="https://github.com/GnomeMan4201/shenron"><img src="assets/tab-shenron.svg" width="200" alt="Exhibit 02: SHENRON, on view" /></a>
+<a href="https://github.com/GnomeMan4201/badBANANA-threat-observatory"><img src="assets/tab-observatory.svg" width="200" alt="Exhibit 03: Threat Observatory" /></a><br>
+<a href="https://github.com/GnomeMan4201/drift_orchestrator"><img src="assets/tab-drift.svg" width="200" alt="Exhibit 04: drift_orchestrator" /></a>
+<a href="https://github.com/GnomeMan4201/LANimals"><img src="assets/tab-lanimals.svg" width="200" alt="Exhibit 05: LANimals" /></a>
+<a href="https://github.com/GnomeMan4201/gnome-prompt-field-manual"><img src="assets/tab-pfm.svg" width="200" alt="Exhibit 06: Prompt Field Manual" /></a>
+</div>
 
 <sub>EXHIBIT 001 · JAVASCRIPT</sub>
 
