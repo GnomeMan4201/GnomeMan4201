@@ -83,6 +83,7 @@
 <div align="center">
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/evidence-status.svg" width="480" alt="Evidence snapshot from CISA KEV, refreshed every six hours" />
 </div>
+<br>
 
 <a id="research-method"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="520" alt="Research Method" />
