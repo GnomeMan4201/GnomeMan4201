@@ -20,6 +20,11 @@
 <br><br>
 <sub><strong>measure first. attribute last.</strong></sub>
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/terminal-dark.svg">
+  <img src="assets/terminal-light.svg" width="100%" alt="GnomeMan4201’s GitHub contributions over the past 90 days, with daily volume and a candlestick chart">
+</picture>
+
 <a id="selected-work"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-selected-work.svg" width="520" alt="Selected Work" />
 
