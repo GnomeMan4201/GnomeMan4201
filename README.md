@@ -79,6 +79,33 @@
 <br>
 <sub>The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The projects above are the recommended starting point.</sub>
 
+<a id="bug-museum"></a>
+<img src="assets/bug-museum-001.svg" width="660" alt="Bug Museum. The six project tabs, with the cursor on SHENRON." />
+
+<sub>EXHIBIT 001 · JAVASCRIPT</sub>
+
+### Six tabs. One broken click.
+
+Changing the detection rules in SHENRON was supposed to update the replay link. Instead, the console gave one clue.
+
+```text
+history.replaceState is not a function
+```
+
+<details>
+<summary><strong>Reveal the cause</strong></summary>
+
+R4B1T kept its recent draws in an array named `history`. Both projects shared an enclosing function, so SHENRON’s call to `history.replaceState` looked up that array. Declaring it with `var` made the name local throughout the function, even above the declaration.
+
+```diff
+- var current = 0, draws = 1, history = [];
++ var current = 0, draws = 1, drawHistory = [];
+```
+
+Renaming the array and its uses let SHENRON reach the browser’s History API again.
+
+</details>
+
 <a id="research-method"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="520" alt="Research Method" />
 
