@@ -79,41 +79,10 @@
 <br>
 <sub>The rest of my public repositories are supporting experiments, narrower tools, and earlier research artifacts. The projects above are the recommended starting point.</sub>
 
-<a id="bug-museum"></a>
+<a id="evidence-snapshot"></a>
 <div align="center">
-<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/bug-museum-header.svg" width="360" alt="Bug Museum" /><br>
-<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#r4b1t"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-r4b1t.svg" width="175" alt="Exhibit 01: R4B1T H0L3" /></a>
-<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#shenron"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-shenron.svg" width="175" alt="Exhibit 02: SHENRON, on view" /></a><br>
-<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#observatory"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-observatory.svg" width="175" alt="Exhibit 03: Threat Observatory" /></a>
-<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#drift"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-drift.svg" width="175" alt="Exhibit 04: drift_orchestrator" /></a><br>
-<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#lanimals"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-lanimals.svg" width="175" alt="Exhibit 05: LANimals" /></a>
-<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#pfm"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-pfm.svg" width="175" alt="Exhibit 06: Prompt Field Manual" /></a>
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/evidence-status.svg" width="480" alt="Evidence snapshot from CISA KEV, refreshed every six hours" />
 </div>
-<sub>Tap a tab to open the live exhibit.</sub>
-
-<sub>EXHIBIT 001 · JAVASCRIPT</sub>
-
-### Six tabs. One broken click.
-
-Changing the detection rules in SHENRON was supposed to update the replay link. Instead, the console gave one clue.
-
-```text
-history.replaceState is not a function
-```
-
-<details>
-<summary><strong>Reveal the cause</strong></summary>
-
-R4B1T kept its recent draws in an array named `history`. Both projects shared an enclosing function, so SHENRON’s call to `history.replaceState` looked up that array. Declaring it with `var` made the name local throughout the function, even above the declaration.
-
-```diff
-- var current = 0, draws = 1, history = [];
-+ var current = 0, draws = 1, drawHistory = [];
-```
-
-Renaming the array and its uses let SHENRON reach the browser’s History API again.
-
-</details>
 
 <a id="research-method"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="520" alt="Research Method" />
