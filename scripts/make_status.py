@@ -126,7 +126,7 @@ def validate_observatory(payload, now):
             if success_time > now:
                 raise ValueError("Future lastSuccess")
             success_date = success_time.strftime("%Y-%m-%d")
-            age_days = (now.date() - success_time.date()).days
+            age_days = (now - success_time).days
         failures = entry.get("consecutiveFailures")
         if failures is not None and (type(failures) is not int or failures < 0):
             raise ValueError("Malformed source failure count")
