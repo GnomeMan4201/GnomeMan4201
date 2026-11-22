@@ -1,0 +1,32 @@
+name: Update contribution terminal
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/terminal.yml']
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: contribution-terminal
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Render and publish contribution charts
+        uses: hanzlabaig-dev/gh-trading-terminal@fac4bd65b8b210ea5bc72af1756c58f452aaac12
+        with:
+          username: GnomeMan4201
+          days: '90'
+          theme: bloomberg
+          light-theme: light
+          output-dir: assets
