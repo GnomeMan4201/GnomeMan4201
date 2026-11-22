@@ -82,13 +82,14 @@
 <a id="bug-museum"></a>
 <div align="center">
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/bug-museum-header.svg" width="360" alt="Bug Museum" /><br>
-<a href="https://r4b1t.badbananaresearch.com"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-r4b1t.svg" width="175" alt="Exhibit 01: R4B1T H0L3" /></a>
-<a href="https://github.com/GnomeMan4201/shenron"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-shenron.svg" width="175" alt="Exhibit 02: SHENRON, on view" /></a><br>
-<a href="https://github.com/GnomeMan4201/badBANANA-threat-observatory"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-observatory.svg" width="175" alt="Exhibit 03: Threat Observatory" /></a>
-<a href="https://github.com/GnomeMan4201/drift_orchestrator"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-drift.svg" width="175" alt="Exhibit 04: drift_orchestrator" /></a><br>
-<a href="https://github.com/GnomeMan4201/LANimals"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-lanimals.svg" width="175" alt="Exhibit 05: LANimals" /></a>
-<a href="https://github.com/GnomeMan4201/gnome-prompt-field-manual"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-pfm.svg" width="175" alt="Exhibit 06: Prompt Field Manual" /></a>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#r4b1t"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-r4b1t.svg" width="175" alt="Exhibit 01: R4B1T H0L3" /></a>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#shenron"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-shenron.svg" width="175" alt="Exhibit 02: SHENRON, on view" /></a><br>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#observatory"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-observatory.svg" width="175" alt="Exhibit 03: Threat Observatory" /></a>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#drift"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-drift.svg" width="175" alt="Exhibit 04: drift_orchestrator" /></a><br>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#lanimals"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-lanimals.svg" width="175" alt="Exhibit 05: LANimals" /></a>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#pfm"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/tab-pfm.svg" width="175" alt="Exhibit 06: Prompt Field Manual" /></a>
 </div>
+<sub>Tap a tab to open the live exhibit.</sub>
 
 <sub>EXHIBIT 001 · JAVASCRIPT</sub>
 
