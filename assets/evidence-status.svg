@@ -12,14 +12,14 @@
 <text class="t" x="20" y="36">EVIDENCE SNAPSHOT</text>
 <text class="s" x="460" y="36" text-anchor="end">OK</text>
 <text class="k" x="20" y="74">source</text><text class="v" x="150" y="74">CISA KEV, catalog 2026.11.20</text><text class="k" x="20" y="98">entries</text><text class="v" x="150" y="98">1,790 valid, 0 rejected</text><text class="k" x="20" y="122">added in 7 days</text><text class="v" x="150" y="122">9</text><text class="k" x="20" y="146">latest</text><text class="v" x="150" y="146">CVE-2026-129448 (2026-11-20)</text>
-<text class="f" x="20" y="176">fetched 2026-11-22 15:18 UTC. measure first. attribute last.</text>
+<text class="f" x="20" y="176">fetched 2026-11-22 23:39 UTC. measure first. attribute last.</text>
 <path d="M20 195H460" stroke="#30363d" stroke-width="1"/>
 <text class="t" x="20" y="218">OBSERVATORY SNAPSHOT (STORED, NOT LIVE)</text>
 <text class="f" x="20" y="237">Older stored counts may differ from live CISA KEV.</text>
 <text class="k" x="20" y="257">source</text><text class="k" x="143" y="257">state</text><text class="k" x="277" y="257">last success</text><text class="k" x="419" y="257">count</text>
-<text class="v" x="20" y="282" style="font-size:11px">CISA KEV</text><text class="v" x="143" y="282" style="font-size:11px">STALE 27d</text><text class="v" x="277" y="282" style="font-size:11px">2026-10-26</text><text class="v" x="460" y="282" text-anchor="end" style="font-size:11px">1,755</text>
+<text class="v" x="20" y="282" style="font-size:11px">CISA KEV</text><text class="v" x="143" y="282" style="font-size:11px">STALE 0d</text><text class="v" x="277" y="282" style="font-size:11px">2026-11-22</text><text class="v" x="460" y="282" text-anchor="end" style="font-size:11px">1,789</text>
 <text class="v" x="20" y="306" style="font-size:11px">ThreatFox</text><text class="v" x="143" y="306" style="font-size:11px">STALE 32d</text><text class="v" x="277" y="306" style="font-size:11px">2026-10-21</text><text class="v" x="460" y="306" text-anchor="end" style="font-size:11px">2,013</text>
-<text class="v" x="20" y="330" style="font-size:11px">URLhaus</text><text class="v" x="143" y="330" style="font-size:11px">STALE 27d</text><text class="v" x="277" y="330" style="font-size:11px">2026-10-26</text><text class="v" x="460" y="330" text-anchor="end" style="font-size:11px">500</text>
-<text class="v" x="20" y="354" style="font-size:11px">MalwareBazaar</text><text class="v" x="143" y="354" style="font-size:11px">STALE 27d</text><text class="v" x="277" y="354" style="font-size:11px">2026-10-26</text><text class="v" x="460" y="354" text-anchor="end" style="font-size:11px">100</text>
+<text class="v" x="20" y="330" style="font-size:11px">URLhaus</text><text class="v" x="143" y="330" style="font-size:11px">STALE 0d</text><text class="v" x="277" y="330" style="font-size:11px">2026-11-22</text><text class="v" x="460" y="330" text-anchor="end" style="font-size:11px">500</text>
+<text class="v" x="20" y="354" style="font-size:11px">MalwareBazaar</text><text class="v" x="143" y="354" style="font-size:11px">STALE 0d</text><text class="v" x="277" y="354" style="font-size:11px">2026-11-22</text><text class="v" x="460" y="354" text-anchor="end" style="font-size:11px">100</text>
 <text class="f" x="20" y="396">ingestion: demand-driven  /  freshness: stale</text>
 </svg>
