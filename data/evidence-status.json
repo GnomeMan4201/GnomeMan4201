@@ -1,5 +1,5 @@
 {
-  "last_good_utc": "2026-11-22 14:45",
+  "last_good_utc": "2026-11-22 15:18",
   "summary": {
     "version": "2026.11.20",
     "entries": 1790,
@@ -7,5 +7,53 @@
     "week": 9,
     "latest_id": "CVE-2026-129448",
     "latest_date": "2026-11-20"
+  },
+  "observatory": {
+    "last_good_utc": "2026-11-22 15:18",
+    "generatedAt": "2026-11-22T15:18:55.017Z",
+    "ingestionMode": "demand-driven",
+    "freshnessState": "stale",
+    "sources": [
+      {
+        "id": "cisa-kev",
+        "name": "CISA KEV",
+        "status": "STALE",
+        "lastSuccess": "2026-10-26T16:19:15.251Z",
+        "lastSuccessDate": "2026-10-26",
+        "recordCount": 1755,
+        "consecutiveFailures": 0,
+        "ageDays": 27
+      },
+      {
+        "id": "threatfox",
+        "name": "ThreatFox",
+        "status": "STALE",
+        "lastSuccess": "2026-10-21T04:53:15.702Z",
+        "lastSuccessDate": "2026-10-21",
+        "recordCount": 2013,
+        "consecutiveFailures": 0,
+        "ageDays": 32
+      },
+      {
+        "id": "urlhaus",
+        "name": "URLhaus",
+        "status": "STALE",
+        "lastSuccess": "2026-10-26T16:19:15.352Z",
+        "lastSuccessDate": "2026-10-26",
+        "recordCount": 500,
+        "consecutiveFailures": 0,
+        "ageDays": 27
+      },
+      {
+        "id": "malwarebazaar",
+        "name": "MalwareBazaar",
+        "status": "STALE",
+        "lastSuccess": "2026-10-26T16:19:16.096Z",
+        "lastSuccessDate": "2026-10-26",
+        "recordCount": 100,
+        "consecutiveFailures": 0,
+        "ageDays": 27
+      }
+    ]
   }
 }
