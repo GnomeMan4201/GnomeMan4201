@@ -1,130 +1,1655 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bug Museum · badBANANA</title>
-<style>
-:root{--bg:#0d1117;--card:#161b22;--line:#30363d;--text:#e6edf3;--mute:#9aa4af;--acc:#c2415d;--accbg:#3a1420;--ok:#3fb950;--code:#010409}
-@media (prefers-color-scheme:light){:root{--bg:#f6f1e7;--card:#fffdf8;--line:#d8cfbd;--text:#2b2420;--mute:#6d6354;--acc:#800020;--accbg:#f0e0e4;--ok:#1a7f37;--code:#2b2420}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 Georgia,'Times New Roman',serif}
-main{max-width:720px;margin:0 auto;padding:24px 16px 64px}
-h1{font:700 22px 'Courier New',monospace;margin:0 0 4px;letter-spacing:.04em}
-.sub{color:var(--mute);margin:0 0 20px}
-.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px}
-@media(min-width:620px){.tabs{grid-template-columns:repeat(3,1fr)}}
-.tab{font:600 14px 'Courier New',monospace;text-align:left;padding:12px 14px;border:1.5px solid var(--line);border-left:4px solid var(--acc);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer}
-.tab small{display:block;font-weight:400;color:var(--mute);margin-top:2px}
-.tab[aria-selected=true]{background:var(--acc);border-color:var(--acc);color:#fff}
-.tab[aria-selected=true] small{color:#f3d3da}
-.tab:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
-.panel{border:1.5px solid var(--line);border-radius:8px;background:var(--card);padding:20px}
-h2{font-size:24px;line-height:1.2;margin:0 0 8px}
-.meta{font:13px 'Courier New',monospace;color:var(--mute);margin:0 0 12px}
-.links a{color:var(--acc);margin-right:14px;font-weight:600}
-.row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
-button.act{font:600 14px 'Courier New',monospace;padding:10px 14px;border-radius:6px;border:1.5px solid var(--acc);background:transparent;color:var(--text);cursor:pointer}
-button.act.primary{background:var(--acc);color:#fff}
-pre{margin:0;padding:14px;border-radius:6px;background:var(--code);color:#e6edf3;font:13px/1.5 'Courier New',monospace;white-space:pre-wrap;word-break:break-word}
-.out{min-height:3.2em;margin-top:8px}
-.err{color:#ff7b8f}.good{color:#56d364}
-.cause{border-top:1.5px dashed var(--line);margin-top:16px;padding-top:14px}
-.del{color:#ff7b8f}.add{color:#56d364}
-[hidden]{display:none!important}
-.record{display:flex;flex-wrap:wrap;border-block:1px solid var(--line);padding:12px 0;gap:12px 24px}.record small,.record strong{display:block}.record strong{font:700 22px monospace}.panel code{overflow-wrap:anywhere}summary{cursor:pointer;font-weight:bold;padding:5px 0}summary:focus-visible{outline:2px solid currentColor}article h3{font-size:22px;line-height:1.25;margin:0}#verdict:empty{display:none}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BUG MUSEUM // Forensic Software Reliability Laboratory — badBANANA</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #111115;
+      --surface-2: #18181f;
+      --surface-3: #202029;
+      --line: #272732;
+      --line-strong: #3f3f4e;
+      --text: #f4f1ea;
+      --text-dim: #b4b0a8;
+      --text-mute: #7e7b76;
+      --crimson: #e11d48;
+      --crimson-bg: rgba(225, 29, 72, 0.12);
+      --crimson-border: rgba(225, 29, 72, 0.45);
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.12);
+      --amber-border: rgba(245, 158, 11, 0.42);
+      --phosphor: #10b981;
+      --phosphor-bg: rgba(16, 185, 129, 0.12);
+      --phosphor-border: rgba(16, 185, 129, 0.42);
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --mono: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace;
+      --radius: 2px;
+      --transition: 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 48px 48px;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--text);
+      text-decoration: underline;
+      text-decoration-color: var(--line-strong);
+      text-underline-offset: 3px;
+      transition: color var(--transition), text-decoration-color var(--transition);
+    }
+    a:hover {
+      color: var(--amber);
+      text-decoration-color: var(--amber);
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 2px;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    code, pre, .mono {
+      font-family: var(--mono);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(9, 9, 11, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--crimson);
+      display: inline-block;
+    }
+    .topbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--text-dim);
+      padding: 6px 11px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+    }
+    .nav-btn:hover, .nav-btn[aria-current="true"] {
+      border-color: var(--text);
+      color: var(--text);
+      background: var(--surface-2);
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    .threshold {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .threshold::before {
+      content: "SPECIMEN ARCHIVE // ENTRY PROTOCOL";
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--text-mute);
+    }
+    .threshold-kicker {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--crimson);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .threshold h1 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: clamp(2.1rem, 5vw, 3.6rem);
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      margin: 0 0 18px;
+      max-width: 16ch;
+    }
+    .threshold-lead {
+      font-size: 1.05rem;
+      color: var(--text-dim);
+      max-width: 64ch;
+      margin: 0 0 28px;
+    }
+    .protocol-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+      margin-bottom: 28px;
+    }
+    .protocol-step {
+      background: var(--surface-2);
+      padding: 12px 14px;
+    }
+    .protocol-step .num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-mute);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .protocol-step .label {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+
+    .threshold-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding: 16px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+    }
+    .metric-item span {
+      color: var(--text-mute);
+      display: block;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .metric-item strong {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn-primary {
+      background: var(--crimson);
+      color: #fff;
+      border: 1px solid var(--crimson);
+      padding: 11px 20px;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      transition: background var(--transition), transform var(--transition);
+    }
+    .btn-primary:hover {
+      background: #be123c;
+    }
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--line-strong);
+      padding: 10px 16px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+    }
+    .btn-secondary:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    #threshold-section, #archive-section, #workbench { scroll-margin-top: 110px; }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 36px 0 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section-head h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.65rem;
+      margin: 0;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text-dim);
+      padding: 6px 12px;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.04em;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+    }
+    .filter-btn[aria-pressed="true"] {
+      background: var(--text);
+      color: var(--bg);
+      border-color: var(--text);
+      font-weight: 600;
+    }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 18px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      transition: border-color var(--transition), background var(--transition);
+      border-radius: var(--radius);
+    }
+    .project-card:hover {
+      border-color: var(--line-strong);
+      background: var(--surface-2);
+    }
+    .project-card[aria-selected="true"] {
+      border-color: var(--amber);
+      background: var(--surface-2);
+      box-shadow: inset 3px 0 0 var(--amber);
+    }
+    .project-card.unfiled {
+      opacity: 0.78;
+      border-style: dashed;
+    }
+    .project-card.unfiled[aria-selected="true"] {
+      opacity: 1;
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+    .card-id {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-mute);
+      letter-spacing: 0.08em;
+    }
+    .badge {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: var(--radius);
+      border: 1px solid transparent;
+    }
+    .badge-ok {
+      color: var(--phosphor);
+      background: var(--phosphor-bg);
+      border-color: var(--phosphor-border);
+    }
+    .badge-warn {
+      color: var(--amber);
+      background: var(--amber-bg);
+      border-color: var(--amber-border);
+    }
+    .badge-fail {
+      color: var(--crimson);
+      background: var(--crimson-bg);
+      border-color: var(--crimson-border);
+    }
+    .badge-unfiled {
+      color: var(--text-mute);
+      background: var(--surface-3);
+      border-color: var(--line);
+    }
+    .card-title {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      color: var(--text);
+      margin: 0;
+    }
+    .card-desc {
+      font-size: 0.86rem;
+      color: var(--text-dim);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .workbench {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 28px;
+      border-radius: var(--radius);
+    }
+    .workbench-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+    .workbench-header h2 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.9rem;
+      margin: 6px 0 8px;
+    }
+    .workbench-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }
+
+    .exhibit-switcher {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .exhibit-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--text-dim);
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      border-radius: var(--radius);
+    }
+    .exhibit-pill[aria-pressed="true"] {
+      border-color: var(--crimson);
+      color: var(--text);
+      background: var(--crimson-bg);
+    }
+
+    .stage-block {
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      padding: 20px;
+      margin-bottom: 18px;
+      border-radius: var(--radius);
+    }
+    .stage-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .stage-block h3 {
+      font-family: var(--serif);
+      font-weight: 400;
+      font-size: 1.3rem;
+      margin: 0 0 10px;
+    }
+
+    /* Evidence Chain */
+    .evidence-chain {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin: 12px 0;
+    }
+    @media (max-width: 780px) {
+      .evidence-chain {
+        grid-template-columns: 1fr;
+      }
+    }
+    .chain-node {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text-dim);
+      padding: 10px 12px;
+      text-align: left;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      border-radius: var(--radius);
+      transition: all var(--transition);
+    }
+    .chain-node:hover {
+      border-color: var(--line-strong);
+      color: var(--text);
+    }
+    .chain-node[aria-pressed="true"] {
+      border-color: var(--amber);
+      background: var(--amber-bg);
+      color: var(--text);
+    }
+    .chain-detail {
+      border: 1px solid var(--line-strong);
+      background: #0c0c10;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      margin-top: 8px;
+    }
+    .challenge-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-left: 3px solid var(--crimson);
+      background: var(--crimson-bg);
+      font-size: 0.84rem;
+      color: var(--text);
+    }
+
+    /* Exhibit 001 Trace & Binding Challenge */
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+    @media (max-width: 820px) {
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .code-pane {
+      background: #070709;
+      border: 1px solid var(--line);
+      padding: 14px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      overflow-x: auto;
+    }
+    .code-line {
+      padding: 3px 6px;
+      display: flex;
+      gap: 10px;
+      border-left: 2px solid transparent;
+    }
+    .code-line.active-err {
+      background: var(--crimson-bg);
+      border-left-color: var(--crimson);
+      color: #fda4af;
+    }
+    .code-line.active-ok {
+      background: var(--phosphor-bg);
+      border-left-color: var(--phosphor);
+      color: #6ee7b7;
+    }
+    .ln {
+      color: var(--text-mute);
+      user-select: none;
+      min-width: 18px;
+    }
+    .trace-pane {
+      background: #070709;
+      border: 1px solid var(--line);
+      padding: 14px;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+    }
+    .trace-step {
+      border-left: 2px solid var(--line-strong);
+      padding: 6px 10px;
+      margin-bottom: 8px;
+    }
+    .trace-step-label {
+      font-size: 0.68rem;
+      color: var(--text-mute);
+      letter-spacing: 0.08em;
+      display: block;
+    }
+    .binding-grid {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .binding-btn {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--text);
+      padding: 10px 12px;
+      text-align: left;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      border-radius: var(--radius);
+    }
+    .binding-btn:hover {
+      border-color: var(--amber);
+    }
+    .binding-btn[aria-pressed="true"].correct {
+      border-color: var(--phosphor);
+      background: var(--phosphor-bg);
+    }
+    .binding-btn[aria-pressed="true"].wrong {
+      border-color: var(--crimson);
+      background: var(--crimson-bg);
+    }
+
+    .console-out {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: #050507;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      min-height: 48px;
+    }
+    .console-out.is-err {
+      border-color: var(--crimson-border);
+      color: #fda4af;
+      background: var(--crimson-bg);
+    }
+    .console-out.is-ok {
+      border-color: var(--phosphor-border);
+      color: #6ee7b7;
+      background: var(--phosphor-bg);
+    }
+
+    .glitch-pulse {
+      animation: forensic-jitter 220ms steps(2) 1;
+    }
+    @keyframes forensic-jitter {
+      0% { transform: translate(0, 0); }
+      33% { transform: translate(-2px, 1px); }
+      66% { transform: translate(2px, -1px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .diff-box {
+      background: #070709;
+      border: 1px solid var(--line);
+      padding: 12px 14px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    .diff-del {
+      color: #fda4af;
+      background: rgba(225, 29, 72, 0.14);
+      display: block;
+      padding: 2px 6px;
+    }
+    .diff-add {
+      color: #6ee7b7;
+      background: rgba(16, 185, 129, 0.14);
+      display: block;
+      padding: 2px 6px;
+    }
+
+    .claim-banner {
+      border: 1px solid var(--line-strong);
+      background: #0c0c10;
+      padding: 18px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .claim-score {
+      font-family: var(--mono);
+      font-size: 1.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .claim-score.inflated { color: var(--amber); }
+    .claim-score.unmeasured { color: var(--text); }
+    .claim-score.collapsed { color: var(--crimson); }
+    .assumption-list {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 18px;
+    }
+    .assumption-item {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .assumption-item input {
+      margin-top: 4px;
+      accent-color: var(--crimson);
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+    .scenario-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      margin: 12px 0;
+    }
+    .scenario-table th, .scenario-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 9px 10px;
+      text-align: left;
+    }
+    .scenario-table th {
+      color: var(--text-mute);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .callout-warn {
+      border-left: 3px solid var(--amber);
+      background: var(--amber-bg);
+      padding: 12px 14px;
+      font-size: 0.88rem;
+      color: var(--text);
+      margin: 14px 0;
+    }
+    .callout-info {
+      border-left: 3px solid var(--line-strong);
+      background: var(--surface);
+      padding: 12px 14px;
+      font-size: 0.86rem;
+      color: var(--text-dim);
+      margin: 14px 0;
+    }
+
+    .unfiled-box {
+      border: 1px dashed var(--line-strong);
+      padding: 28px;
+      text-align: left;
+      background: var(--surface-2);
+    }
+
+
+    .assumption-item > div{min-width:0;overflow-wrap:anywhere}
+    .stage-block code,.chain-detail code{overflow-wrap:anywhere}
+    .stage-block{min-width:0;overflow-wrap:break-word}
+    .scenario-table{display:block;overflow-x:auto;max-width:100%}
+    /* Interactive scoring instrument: intentionally synthetic, independent of PR aggregates */
+    .instrument {border:1px solid var(--line-strong);background:#0b0b10;padding:20px;margin-bottom:20px;position:relative;overflow:hidden}
+    .instrument::before{content:"SIMULATED / NOT EMPIRICAL";position:absolute;top:0;right:0;padding:4px 9px;background:var(--amber-bg);color:var(--amber);font:600 .62rem var(--mono);letter-spacing:.06em}
+    .instrument-heading{font:400 1.55rem var(--serif);margin:10px 0}
+    .instrument-desc{font-size:.88rem;color:var(--text-dim);max-width:72ch}
+    .instrument-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+    .instrument-scope{background:var(--surface-2);border:1px solid var(--line);padding:14px;min-width:0}
+    .instrument-scope strong{display:block;font:.73rem var(--mono);letter-spacing:.06em;color:var(--amber);margin-bottom:10px}
+    .artifact{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:10px 0;font:.79rem var(--mono)}
+    .artifact:last-child{border:0}
+    .artifact em{font-style:normal;color:var(--text-dim);font-size:.7rem}
+    .instrument-buttons{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+    .instrument-buttons .btn-secondary[aria-pressed="true"]{background:var(--amber-bg);border-color:var(--amber);color:var(--text)}
+    .instrument-result{background:#050507;border:1px solid var(--line-strong);padding:14px;margin-top:12px}
+    .instrument-result .value{font:700 clamp(1.4rem,4vw,2.1rem) var(--mono);color:var(--amber);margin:4px 0 8px}
+    .instrument-result p{margin:5px 0;color:var(--text-dim);font-size:.84rem}
+    .instrument-gate{padding:14px;border:1px dashed var(--line-strong);margin:14px 0}
+    .instrument-gate button{margin:5px 6px 0 0}
+    .instrument-progress{font:.74rem var(--mono);color:var(--text-mute);margin:10px 0}
+    @media(max-width:680px){.instrument{padding:14px}.instrument-grid{grid-template-columns:1fr}.instrument::before{position:static;display:inline-block;margin-bottom:8px}}
+
+    @media (max-width: 600px) {
+      .threshold { padding: 26px 18px; }
+      .workbench { padding: 18px; }
+      .stage-block { padding: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
 </head>
 <body>
-<main>
-<h1>BUG MUSEUM</h1>
-<p class="sub">Real bugs from real badBANANA projects. Pick a project, then run the bug yourself.</p>
-<div class="tabs" role="tablist" aria-label="Projects" id="tabs"></div>
-<section class="panel" id="panel" role="tabpanel" tabindex="0"></section>
-</main>
-<template id="baseline-case">
-<article aria-labelledby="case-title">
-<p class="meta">Exhibit 002 · Scoring error</p>
-<h3 id="case-title">SHENRON counted a baseline miss as evasion</h3>
-<p>A Sigma rule looked for a layer called <code>no_such_layer_value_anywhere</code>. It never fired. The old scorer still gave the stage full brittleness credit.</p>
-<div class="record"><div><small>Baseline detections</small><strong>0</strong></div><div><small>Old stage score</small><strong>1.0</strong></div><div><small>Corrected scenario</small><strong>N/A</strong></div></div>
-<p>The fix excludes stages with zero baseline detections. When every stage is excluded, the regression test requires an unscored scenario.</p>
-<details><summary>What happened to the durability claim?</summary><p>Across all fixes, the reported apt29-style score fell from 0.71 to 0.00. The PR attributes most of the change to comparing a single mutated artifact with a whole baseline stage. It calls for withdrawing the durability claims. The corrected score alone cannot establish durability.</p></details>
-<p class="links"><a href="https://github.com/GnomeMan4201/shenron/pull/71">Read PR #71</a><a href="https://github.com/GnomeMan4201/shenron/pull/71/files">Inspect the scorer and test</a></p>
-<details class="cause"><summary>Try the same judgment on an LLM</summary>
-<p>In this synthetic example, two fresh conversations use the same model, settings and grader. Each instructs the model to keep <code>IRIS-17</code> private.</p>
-<pre>Plain request       → IRIS-17 disclosed
-Candidate variant   → IRIS-17 disclosed</pre>
-<p><strong>Does the variant get credit for a new failure?</strong></p>
-<div class="row"><button class="act" data-credit="yes">Yes</button><button class="act" data-credit="no">No</button></div>
-<p role="status" id="verdict"></p></details>
-</article>
-</template>
-<script>
-var P=[
-{id:'r4b1t',name:'R4B1T H0L3',sub:'Exhibit 001',repo:'https://github.com/GnomeMan4201/r4b1t',live:'https://r4b1t.badbananaresearch.com',blurb:'Curated random discovery with desktop and mobile shells.',ex:1},
-{id:'shenron',name:'SHENRON',sub:'Exhibits 001–002',repo:'https://github.com/GnomeMan4201/shenron',blurb:'Synthetic adversarial telemetry for testing detection rules.',ex:1},
-{id:'observatory',name:'Threat Observatory',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/badBANANA-threat-observatory',live:'https://badbanana-threat-observatory.badbanana6969.workers.dev',blurb:'Evidence-first threat observation with visible failure states.'},
-{id:'drift',name:'drift_orchestrator',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/drift_orchestrator',live:'https://gnomeman4201.github.io/drift_orchestrator/',blurb:'Research tooling for policy drift and second-order injection.'},
-{id:'lanimals',name:'LANimals',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/LANimals',blurb:'Self-hosted network intelligence inside approved LAN scope.'},
-{id:'pfm',name:'Prompt Field Manual',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/gnome-prompt-field-manual',live:'https://gnomeman4201.github.io/gnome-prompt-field-manual/',blurb:'Reference for structured, auditable AI-assisted work.'}
-];
-var tabsEl=document.getElementById('tabs'),panel=document.getElementById('panel');
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="#threshold" class="brand" id="brand-link">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>BADBANANA // BUG MUSEUM</span>
+      </a>
+      <nav class="topbar-nav" aria-label="Museum Navigation">
+        <button type="button" class="nav-btn" id="nav-threshold">Threshold</button>
+        <button type="button" class="nav-btn" id="nav-ex001">Exhibit 001</button>
+        <button type="button" class="nav-btn" id="nav-ex002">Exhibit 002</button>
+        <button type="button" class="nav-btn" id="nav-archive">6-Project Archive</button>
+      </nav>
+    </div>
+  </header>
 
-// The two functions below are the real bug and the real fix.
-function runBroken(){var current=0,draws=1,history=[];history.push(draws);history.replaceState(null,'',location.href);}
-function runFixed(){var current=0,draws=1,drawHistory=[];drawHistory.push(draws);history.replaceState(null,'',location.href);return 'replay link updated';}
+  <main class="container">
+    <section class="threshold" id="threshold-section" aria-labelledby="threshold-title">
+      <div class="threshold-kicker">
+        <span>FORENSIC SOFTWARE RELIABILITY LAB</span>
+      </div>
+      <h1 id="threshold-title">A Museum of Real Engineering Failures.</h1>
+      <p class="threshold-lead">
+        Not a gallery of polished demos. Every documented exhibit here is a real defect, evaluation flaw, or withdrawn claim from badBANANA research—reconstructed so you can observe the symptom, trace the binding or scoring flaw, challenge each stage of the evidence chain, and verify the fix.
+      </p>
 
-var DIFF='- var current = 0, draws = 1, history = [];\n+ var current = 0, draws = 1, drawHistory = [];';
+      <div class="protocol-strip" aria-label="Forensic Investigation Protocol">
+        <div class="protocol-step"><span class="num">01</span><span class="label">OBSERVE</span></div>
+        <div class="protocol-step"><span class="num">02</span><span class="label">INVESTIGATE</span></div>
+        <div class="protocol-step"><span class="num">03</span><span class="label">REPRODUCE</span></div>
+        <div class="protocol-step"><span class="num">04</span><span class="label">DIAGNOSE</span></div>
+        <div class="protocol-step"><span class="num">05</span><span class="label">CORRECT</span></div>
+        <div class="protocol-step"><span class="num">06</span><span class="label">VERIFY</span></div>
+      </div>
 
-function exhibit(){
- return '<h3 style="margin:18px 0 6px">Six tabs. One broken click.</h3>'+
- '<p>Changing the detection rules in SHENRON was supposed to update the replay link. Instead, the console gave one clue. Run the code and see it.</p>'+
- '<div class="row"><button class="act primary" id="rb">Run the broken code</button><button class="act" id="rf">Run the fixed code</button></div>'+
- '<pre class="out" id="out" aria-live="polite">Console is empty. Press a run button.</pre>'+
- '<div class="row"><button class="act" id="rv" aria-expanded="false">Reveal the cause</button></div>'+
- '<div class="cause" id="cause" hidden><p>R4B1T kept its recent draws in an array named <code>history</code>. Both projects shared an enclosing function, so SHENRON’s call to <code>history.replaceState</code> found that array instead of the browser’s History API.</p>'+
- '<pre><span class="del">- var current = 0, draws = 1, history = [];</span>\n<span class="add">+ var current = 0, draws = 1, drawHistory = [];</span></pre>'+
- '<div class="row"><button class="act" id="cp">Copy the fix</button></div></div>';
-}
-function show(id){
- var p=P.filter(function(x){return x.id===id})[0]||P[1];
- Array.prototype.forEach.call(tabsEl.children,function(b){b.setAttribute('aria-selected',b.dataset.id===p.id)});
- var links='<a href="'+p.repo+'">Source</a>'+(p.live?'<a href="'+p.live+'">Live</a>':'');
- panel.innerHTML='<h2>'+p.name+'</h2><p class="meta">'+p.blurb+'</p><p class="links">'+links+'</p>'+
-  (p.id==='shenron'?'':p.ex?exhibit():'<p>No bugs filed for this project yet. When one turns up, it will be exhibited here.</p>');
- if(p.id==='shenron'){
-  var oldCase=document.createElement('details');
-  oldCase.className='cause';
-  oldCase.innerHTML='<summary>Exhibit 001 · Six tabs. One broken click.</summary>'+exhibit();
-  panel.appendChild(document.getElementById('baseline-case').content.cloneNode(true));
-  panel.appendChild(oldCase);
-  panel.querySelectorAll('[data-credit]').forEach(function(button){
-   button.onclick=function(){
-    document.getElementById('verdict').textContent=(button.dataset.credit==='no'?'Correct. ':'Look at the plain request again. ')+
-     'Record the leak. The baseline already disclosed IRIS-17, so this pair gives the variant zero credit for a new failure.';
-   };
-  });
- }
- if(p.ex)wire();
-}
-function wire(){
- var out=document.getElementById('out');
- document.getElementById('rb').onclick=function(){try{runBroken();out.innerHTML='<span class="good">ok</span>'}catch(e){out.innerHTML='<span class="err">Uncaught TypeError: '+e.message.replace(/</g,'&lt;')+'</span>'}};
- document.getElementById('rf').onclick=function(){try{out.innerHTML='<span class="good">'+runFixed()+'</span>'}catch(e){out.innerHTML='<span class="err">'+e.message+'</span>'}};
- var rv=document.getElementById('rv'),c=document.getElementById('cause');
- rv.onclick=function(){var o=c.hidden;c.hidden=!o;rv.setAttribute('aria-expanded',o);rv.textContent=o?'Hide the cause':'Reveal the cause'};
- document.getElementById('cp').onclick=function(){var b=this;try{navigator.clipboard.writeText(DIFF).then(function(){b.textContent='Copied'})}catch(e){b.textContent='Copy failed'}};
-}
-P.forEach(function(p){
- var b=document.createElement('button');b.className='tab';b.setAttribute('role','tab');b.dataset.id=p.id;
- b.innerHTML=p.name+'<small>'+p.sub+'</small>';
- b.onclick=function(){location.hash=p.id};
- b.onkeydown=function(e){var i=P.indexOf(p),n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:null;if(n!==null){n=(n+P.length)%P.length;location.hash=P[n].id;tabsEl.children[n].focus()}};
- tabsEl.appendChild(b);
-});
-function route(){show(location.hash.slice(1))}
-window.addEventListener('hashchange',route);route();
-</script>
+      <div class="threshold-metrics">
+        <div class="metric-item"><span>Documented Exhibits</span><strong>02 Verified</strong></div>
+        <div class="metric-item"><span>Withdrawn Claims</span><strong>01 (SHENRON PR #71)</strong></div>
+        <div class="metric-item"><span>Unfiled Project Slots</span><strong>04 Awaiting Evidence</strong></div>
+        <div class="metric-item"><span>Runtime Isolation</span><strong>Deterministic Model / Zero Eval</strong></div>
+      </div>
+
+      <div class="cta-row">
+        <button type="button" class="btn-primary" id="enter-lab-btn">Enter the Laboratory (Exhibit 002)</button>
+        <button type="button" class="btn-secondary" id="jump-ex001-btn">Inspect Exhibit 001 (History Collision)</button>
+        <button type="button" class="btn-secondary" id="jump-archive-btn">Browse All 6 Projects</button>
+      </div>
+    </section>
+
+    <section id="archive-section" aria-labelledby="archive-heading">
+      <div class="section-head">
+        <div>
+          <span class="card-id">COLLECTION INDEX // 6 BADBANANA PROJECTS</span>
+          <h2 id="archive-heading">Living Exhibit Archive</h2>
+        </div>
+        <div class="filter-bar" role="group" aria-label="Filter projects by evidence status">
+          <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">All (6)</button>
+          <button type="button" class="filter-btn" data-filter="verified" aria-pressed="false">Documented (2)</button>
+          <button type="button" class="filter-btn" data-filter="withdrawn" aria-pressed="false">Claims Withdrawn (1)</button>
+          <button type="button" class="filter-btn" data-filter="unfiled" aria-pressed="false">Unfiled (4)</button>
+        </div>
+      </div>
+
+      <div class="archive-grid" id="archive-grid" role="tablist" aria-label="Projects"></div>
+    </section>
+
+    <section class="workbench" id="workbench" role="tabpanel" aria-live="polite" tabindex="0">
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var PROJECTS = [
+        {
+          id: 'shenron',
+          name: 'SHENRON',
+          sub: 'Synthetic adversarial telemetry for testing detection rules and measuring rule/correlation brittleness.',
+          repo: 'https://github.com/GnomeMan4201/shenron',
+          statusType: 'withdrawn',
+          badgeClass: 'badge-warn',
+          badgeText: 'CLAIMS WITHDRAWN · EX 001–002',
+          exhibits: ['exhibit-002', 'exhibit-001']
+        },
+        {
+          id: 'r4b1t',
+          name: 'R4B1T HOL3',
+          sub: 'Curated random discovery through dedicated desktop and mobile shells sharing one evolving corpus and session state.',
+          repo: 'https://github.com/GnomeMan4201/r4b1t',
+          live: 'https://r4b1t.badbananaresearch.com',
+          statusType: 'verified',
+          badgeClass: 'badge-ok',
+          badgeText: 'VERIFIED & CORRECTED · EX 001',
+          exhibits: ['exhibit-001']
+        },
+        {
+          id: 'observatory',
+          name: 'badBANANA Threat Observatory',
+          sub: 'Evidence-first threat observation with explicit source health, bounded coverage, material-change replay, and visible failure states.',
+          repo: 'https://github.com/GnomeMan4201/badBANANA-threat-observatory',
+          live: 'https://badbanana-threat-observatory.badbanana6969.workers.dev',
+          statusType: 'unfiled',
+          badgeClass: 'badge-unfiled',
+          badgeText: 'UNFILED · 0 EXHIBITS',
+          exhibits: []
+        },
+        {
+          id: 'drift',
+          name: 'drift_orchestrator',
+          sub: 'Reproducible research tooling for policy drift, semantic-gradient evasion, and second-order injection against LLM safety monitors.',
+          repo: 'https://github.com/GnomeMan4201/drift_orchestrator',
+          live: 'https://gnomeman4201.github.io/drift_orchestrator/',
+          statusType: 'unfiled',
+          badgeClass: 'badge-unfiled',
+          badgeText: 'UNFILED · 0 EXHIBITS',
+          exhibits: []
+        },
+        {
+          id: 'lanimals',
+          name: 'LANimals',
+          sub: 'Self-hosted network intelligence, durable host and service history, and operator-reviewed change detection inside approved LAN scope.',
+          repo: 'https://github.com/GnomeMan4201/LANimals',
+          statusType: 'unfiled',
+          badgeClass: 'badge-unfiled',
+          badgeText: 'UNFILED · 0 EXHIBITS',
+          exhibits: []
+        },
+        {
+          id: 'pfm',
+          name: 'GNOME Prompt Field Manual',
+          sub: 'Production workspace and practical reference for structured, inspectable, auditable AI-assisted work.',
+          repo: 'https://github.com/GnomeMan4201/gnome-prompt-field-manual',
+          live: 'https://gnomeman4201.github.io/gnome-prompt-field-manual/',
+          statusType: 'unfiled',
+          badgeClass: 'badge-unfiled',
+          badgeText: 'UNFILED · 0 EXHIBITS',
+          exhibits: []
+        }
+      ];
+
+      var SCENARIOS_DATA = [
+        { name: 'apt29-style', before: '0.71 (6/7, stub)', after: '0.00 (7/7)' },
+        { name: 'insider-threat', before: '0.67', after: '0.00' },
+        { name: 'living-off-the-land', before: '0.67', after: '0.00' },
+        { name: 'fin7-style', before: '0.56', after: '0.00' },
+        { name: 'supply-chain', before: '0.50', after: '0.00' },
+        { name: 'ransomware-precursor', before: '0.40', after: '0.00' }
+      ];
+
+      var EVIDENCE_CHAINS = {
+        'exhibit-001': [
+          {
+            label: '01 / Symptom',
+            claim: 'Clicking the SHENRON replay link threw Uncaught TypeError: history.replaceState is not a function.',
+            challenge: 'The TypeError indicates that the resolved value does not provide a callable replaceState method. Inspect the scope resolution; the error alone does not prove every environmental cause has been excluded.'
+          },
+          {
+            label: '02 / Reproduction',
+            claim: 'Modeled deterministically: an enclosing history array shadows the browser History object. This is an instructional trace rather than a live browser-code reproduction.',
+            challenge: 'Limitation: This exhibit runs an isolated lexical-scope simulation rather than executing broken code in the museum\'s own window scope.'
+          },
+          {
+            label: '03 / Source Evidence',
+            claim: 'The earlier museum implementation demonstrates this collision in runBroken(); compare its history array and History API call. The trace here is a reconstructed teaching example.',
+            challenge: 'Why did six tabs matter? Only the projects sharing that enclosing scope collided; modularizing or using IIFEs prevents cross-exhibit leakage.'
+          },
+          {
+            label: '04 / Correction',
+            claim: 'Renamed the local array from history to drawHistory so window.history remains unshadowed.',
+            challenge: 'Does renaming one variable prevent future global collisions? No—strict module boundaries (IIFEs/ES modules) are required to prevent recurrence.'
+          },
+          {
+            label: '05 / Regression Check',
+            claim: 'Patched build resolves history to Window.history.replaceState() and returns "replay link updated".',
+            challenge: 'The model verifies the binding explanation, not the behavior of a separately deployed production page. Inspect the source change and test real routing independently.'
+          }
+        ],
+        'exhibit-002': [
+          {
+            label: '01 / Symptom',
+            claim: 'A Sigma rule checking for no_such_layer_value_anywhere produced 0 baseline detections, yet the scorer awarded 1.0 brittleness credit.',
+            challenge: 'Was this an isolated rule bug? No—the scorer (core/brittleness/scorer.py) systematically credited any undetected baseline stage as 1.0 evasion.'
+          },
+          {
+            label: '02 / Reproduction',
+            claim: 'Two independent reviews of commit 6810866 triggered the kill criterion across 3 fresh-HOME runs with different PYTHONHASHSEED values.',
+            challenge: 'Why were intermediate per-defect numbers omitted? PR #71 fixed the defects together and recorded Before vs. After totals; it did not isolate each defect\'s standalone numerical delta.'
+          },
+          {
+            label: '03 / Source Evidence',
+            claim: 'shenron/pull/71 (11 files changed, +393 -133, pytest exit 0) collapsed all 6 scenarios (e.g. apt29-style 0.71 → 0.00).',
+            challenge: 'Note: PR #71 explicitly left path_adapter.py (~/.shenron writes), /api/drift tracked-file rewrites, and T1027 LLM rule over-matching unchanged.'
+          },
+          {
+            label: '04 / Correction',
+            claim: 'scorer.py now excludes undetected baselines (evasion_rate=None, increments undetected_count) and evaluates variant_set = list(all_arts) like for like.',
+            challenge: 'Does 0.00 prove detection durability? No—unmutated sibling artifacts and SigmaAwareMutator.PROTECTED_FIELDS keep firing.'
+          },
+          {
+            label: '05 / Regression Check',
+            claim: 'Full pytest suite passes (exit 0); durability claims remain withdrawn until field-influence and stage-mutation methodology is settled.',
+            challenge: 'Open design question: Which fields can a real adversary influence, and should mutation apply to every artifact in a stage?'
+          }
+        ]
+      };
+
+      var state = {
+        activeProjectId: 'shenron',
+        activeExhibitId: 'exhibit-002',
+        filter: 'all',
+        chainStage: 0,
+        chainChallengeOpen: false,
+        ex001: {
+          mode: 'broken',
+          step: 0,
+          selectedBinding: null,
+          copied: false
+        },
+        ex002: {
+          assumeUndetectedAsEvasion: true,
+          assumeIsolatedVariant: true,
+          assumeProtectedFieldsValid: true,
+          irisAnswer: null,
+          miniCase: 'baseline',
+          miniMode: 'legacy',
+          miniPrediction: null,
+          miniRevealed: false
+        }
+      };
+
+      var archiveGrid = document.getElementById('archive-grid');
+      var workbench = document.getElementById('workbench');
+      var thresholdSection = document.getElementById('threshold-section');
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      function getProject(id) {
+        for (var i = 0; i < PROJECTS.length; i++) {
+          if (PROJECTS[i].id === id) return PROJECTS[i];
+        }
+        return PROJECTS[0];
+      }
+
+      function matchesFilter(proj) {
+        if (state.filter === 'all') return true;
+        if (state.filter === 'verified') return proj.exhibits.length > 0;
+        if (state.filter === 'withdrawn') return proj.statusType === 'withdrawn';
+        if (state.filter === 'unfiled') return proj.statusType === 'unfiled';
+        return true;
+      }
+
+      function renderArchive() {
+        var visible = PROJECTS.filter(matchesFilter);
+        archiveGrid.innerHTML = visible.map(function (proj) {
+          var isSelected = proj.id === state.activeProjectId;
+          var cls = 'project-card' + (proj.statusType === 'unfiled' ? ' unfiled' : '');
+          return (
+            '<button type="button" role="tab" class="' + cls + '" data-project-id="' + proj.id + '" aria-selected="' + isSelected + '">' +
+              '<div class="card-top">' +
+                '<span class="card-id">#' + proj.id + '</span>' +
+                '<span class="badge ' + proj.badgeClass + '">' + escapeHtml(proj.badgeText) + '</span>' +
+              '</div>' +
+              '<h3 class="card-title">' + escapeHtml(proj.name) + '</h3>' +
+              '<p class="card-desc">' + escapeHtml(proj.sub) + '</p>' +
+            '</button>'
+          );
+        }).join('');
+      }
+
+      function renderEvidenceChain(exhibitId) {
+        var chain = EVIDENCE_CHAINS[exhibitId];
+        if (!chain) return '';
+        var idx = Math.min(state.chainStage, chain.length - 1);
+        var current = chain[idx];
+        return (
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>INTERACTIVE EVIDENCE CHAIN</span><span>INSPECT &amp; CHALLENGE EACH STAGE</span></div>' +
+            '<div class="evidence-chain" role="group" aria-label="Evidence Chain Stages">' +
+              chain.map(function (node, i) {
+                return '<button type="button" class="chain-node" data-chain-idx="' + i + '" aria-pressed="' + (i === idx) + '">' + escapeHtml(node.label) + '</button>';
+              }).join('') +
+            '</div>' +
+            '<div class="chain-detail">' +
+              '<div><strong>Verified Record:</strong> ' + escapeHtml(current.claim) + '</div>' +
+              '<div style="margin-top:10px;">' +
+                '<button type="button" class="btn-secondary" id="toggle-chain-challenge" style="padding:6px 12px;font-size:0.74rem;">' +
+                  (state.chainChallengeOpen ? 'Hide Methodological Challenge' : 'Challenge This Stage') +
+                '</button>' +
+              '</div>' +
+              (state.chainChallengeOpen
+                ? '<div class="challenge-box"><strong>Challenge / Boundary:</strong> ' + escapeHtml(current.challenge) + '</div>'
+                : '') +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function renderExhibit001() {
+        var isBroken = state.ex001.mode === 'broken';
+        var step = state.ex001.step;
+        var bindingSolved = state.ex001.selectedBinding === 'enc-history';
+        var varDecl = isBroken
+          ? 'var current = 0, draws = 1, history = [];'
+          : 'var current = 0, draws = 1, drawHistory = [];';
+        var pushCall = isBroken
+          ? 'history.push(draws);'
+          : 'drawHistory.push(draws);';
+
+        var lines = [
+          varDecl,
+          pushCall,
+          "history.replaceState(null, '', location.href);"
+        ];
+
+        var consoleHtml = '<span style="color:var(--text-mute)">Ready. Click "Run Trace" to reveal the modeled resolution and outcome. No failing code is executed.</span>';
+        var consoleClass = 'console-out';
+        if (step >= 3) {
+          if (isBroken) {
+            consoleClass += ' is-err';
+            consoleHtml = '<strong>MODELED TypeError:</strong> history.replaceState is not a function';
+          } else {
+            consoleClass += ' is-ok';
+            consoleHtml = '<strong>MODELED OK:</strong> browser History API binding resolves; no URL was changed.';
+          }
+        }
+
+        var bindingFeedback = '';
+        if (state.ex001.selectedBinding === 'enc-history') {
+          bindingFeedback = '<div class="console-out is-ok"><strong>Correct Diagnosis:</strong> <code>EnclosingScope.history &rarr; Array [1]</code> shadows <code>Window.history</code>. Because an <code>Array</code> has no <code>replaceState</code> method, calling <code>history.replaceState(...)</code> throws a <code>TypeError</code>. Correction unlocked below.</div>';
+        } else if (state.ex001.selectedBinding === 'enc-current' || state.ex001.selectedBinding === 'enc-draws') {
+          bindingFeedback = '<div class="console-out is-err"><strong>Not the colliding binding:</strong> <code>current</code> and <code>draws</code> do not match the identifier <code>history</code> in <code>history.replaceState(...)</code>. Inspect which binding resolves for <code>history</code>.</div>';
+        } else if (state.ex001.selectedBinding === 'win-history') {
+          bindingFeedback = '<div class="console-out is-err"><strong>Not reached in broken build:</strong> <code>Window.history</code> is the intended target, but lexical lookup stops at <code>EnclosingScope</code> before reaching <code>Window</code>.</div>';
+        }
+
+        var patchSection = bindingSolved
+          ? '<div class="diff-box">' +
+              '<span class="diff-del">- var current = 0, draws = 1, history = [];</span>' +
+              '<span class="diff-add">+ var current = 0, draws = 1, drawHistory = [];</span>' +
+            '</div>' +
+            '<div class="cta-row">' +
+              '<button type="button" class="btn-secondary" id="ex001-apply-fix">Load Patched Build into Simulator</button>' +
+              '<button type="button" class="btn-secondary" id="ex001-copy">' + (state.ex001.copied ? 'Copied Fix to Clipboard' : 'Copy the Fix') + '</button>' +
+            '</div><p id="ex001-copy-feedback" role="status"></p>'
+          : '<div class="callout-info" style="margin:0;"><strong>Correction locked:</strong> Identify the incorrect binding in Step 2 above to unlock the patch diff and verification run.</div>';
+
+        return (
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>EXHIBIT 001 // R4B1T HOL3 &amp; SHENRON</span><span class="badge badge-ok">VERIFIED &amp; CORRECTED</span></div>' +
+            '<h3>Six tabs. One broken click. (Browser History Collision)</h3>' +
+            '<p style="color:var(--text-dim);margin:0 0 12px;">R4B1T stored recent draws in a local array named <code>history</code>. Because both projects shared an enclosing function scope, SHENRON\'s <code>history.replaceState</code> resolved to that array instead of <code>window.history</code>.</p>' +
+            '<p style="font-family:var(--mono);font-size:0.76rem;color:var(--text-mute);margin:0;">Source: <a href="https://github.com/GnomeMan4201/GnomeMan4201/blob/main/bug-museum/index.html" target="_blank" rel="noopener">GnomeMan4201/bug-museum/index.html</a> (inspect repository history for the original failing implementation)</p>' +
+          '</div>' +
+
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>STEP 1 &middot; INSPECT DETERMINISTIC TRACE</span><span class="badge badge-warn">ISOLATED DETERMINISTIC SIMULATION</span></div>' +
+            '<div class="cta-row" style="margin-bottom:12px;">' +
+              '<button type="button" class="btn-secondary" id="ex001-mode-broken" aria-pressed="' + isBroken + '" style="' + (isBroken ? 'border-color:var(--crimson);color:var(--crimson);' : '') + '">Broken Build</button>' +
+              '<button type="button" class="btn-secondary" id="ex001-mode-fixed" aria-pressed="' + (!isBroken) + '" style="' + (!isBroken ? 'border-color:var(--phosphor);color:var(--phosphor);' : '') + '">Patched Build</button>' +
+              '<button type="button" class="btn-primary" id="ex001-run">Run Modeled Trace</button>' +
+            '</div>' +
+            '<div class="sim-grid">' +
+              '<div class="code-pane" aria-label="Simulated Code">' +
+                lines.map(function (line, idx) {
+                  var cls = 'code-line';
+                  if (step >= 3 && idx === 2) {
+                    cls += isBroken ? ' active-err' : ' active-ok';
+                  }
+                  return '<div class="' + cls + '"><span class="ln">' + (idx + 1) + '</span><span>' + escapeHtml(line) + '</span></div>';
+                }).join('') +
+              '</div>' +
+              '<div class="trace-pane" aria-label="Execution Trace Exhibit 001">' +
+                '<div style="color:var(--text-mute);font-size:0.7rem;letter-spacing:0.08em;margin-bottom:10px;">EXECUTION TRACE &middot; EXHIBIT 001</div>' +
+                '<div class="trace-step"><span class="trace-step-label">01 / PROPERTY LOOKUP</span><code>history.replaceState(...)</code></div>' +
+                '<div class="trace-step"><span class="trace-step-label">02 / RESOLVED BINDING</span><code>' + (state.ex001.selectedBinding ? (isBroken ? 'EnclosingScope.history &rarr; Array [1]' : 'Window.history &rarr; History API') : 'Hidden until diagnosis') + '</code></div>' +
+                '<div class="trace-step"><span class="trace-step-label">03 / OUTCOME</span><code>' + (step < 3 ? 'Pending trace...' : (isBroken ? 'Modeled TypeError: replaceState is not a function' : 'Modeled success: replay link updated')) + '</code></div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="' + consoleClass + '" id="ex001-console">' + consoleHtml + '</div>' +
+          '</div>' +
+
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>STEP 2 &middot; DIAGNOSE THE BINDING COLLISION</span><span>SELECT THE INCORRECT BINDING</span></div>' +
+            '<p style="margin:0 0 10px;">Inspect the lexical scope bindings below. Click the binding that causes <code>history.replaceState(...)</code> to fail in the broken build:</p>' +
+            '<div class="binding-grid">' +
+              '<button type="button" class="binding-btn ' + (state.ex001.selectedBinding === 'enc-current' ? 'wrong' : '') + '" data-binding="enc-current" aria-pressed="' + (state.ex001.selectedBinding === 'enc-current') + '"><span>EnclosingScope.current</span><span>Number (0)</span></button>' +
+              '<button type="button" class="binding-btn ' + (state.ex001.selectedBinding === 'enc-draws' ? 'wrong' : '') + '" data-binding="enc-draws" aria-pressed="' + (state.ex001.selectedBinding === 'enc-draws') + '"><span>EnclosingScope.draws</span><span>Number (1)</span></button>' +
+              '<button type="button" class="binding-btn ' + (state.ex001.selectedBinding === 'enc-history' ? 'correct' : '') + '" data-binding="enc-history" aria-pressed="' + (state.ex001.selectedBinding === 'enc-history') + '"><span>EnclosingScope.history</span><span>Array [1]</span></button>' +
+              '<button type="button" class="binding-btn ' + (state.ex001.selectedBinding === 'win-history' ? 'wrong' : '') + '" data-binding="win-history" aria-pressed="' + (state.ex001.selectedBinding === 'win-history') + '"><span>Window.history</span><span>History API</span></button>' +
+            '</div>' +
+            bindingFeedback +
+          '</div>' +
+
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>STEP 3 &middot; CORRECTION &amp; VERIFICATION</span><span>GATED BY DIAGNOSIS</span></div>' +
+            patchSection +
+          '</div>' +
+
+          renderEvidenceChain('exhibit-001')
+        );
+      }
+
+      // These miniature cases are explicitly constructed teaching examples, not replayed PR #71 datasets.
+      function renderMiniScorer() {
+        var x = state.ex002;
+        var baselineCase = x.miniCase === 'baseline';
+        var legacy = x.miniMode === 'legacy';
+        var score = baselineCase ? (legacy ? '1.00' : 'N/A') : (legacy ? '1.00' : '0.00');
+        var predictionCorrect = x.miniPrediction === (baselineCase ? 'exclude' : 'retain');
+        var explanation = baselineCase
+          ? 'The baseline rule already missed the plain artifact. The legacy demonstration awards 1.00 even though there is no detected baseline to evade. The corrected calculation excludes this stage as N/A.'
+          : 'The baseline detects artifact B. After artifact A changes, B remains detectable. Scoring only A creates a false evasion; replacing A inside the complete stage retains B and gives 0.00 evasion.';
+        var artifactRows = baselineCase
+          ? '<div class="artifact"><span>Artifact A · original</span><em>rule misses</em></div>'
+          : '<div class="artifact"><span>Artifact A · original</span><em>rule misses</em></div><div class="artifact"><span>Artifact B · original</span><em>rule matches</em></div>';
+        var afterRows = baselineCase
+          ? '<div class="artifact"><span>A′ · mutated</span><em>rule misses</em></div>'
+          : '<div class="artifact"><span>A′ · mutated</span><em>rule misses</em></div>' + (legacy ? '' : '<div class="artifact"><span>B · unchanged sibling</span><em>rule matches</em></div>');
+        return '<section class="instrument" aria-label="Interactive synthetic scoring instrument">' +
+          '<div class="stage-label"><span>SCORING INSTRUMENT / EXPERIMENT 01</span><span>DETERMINISTIC TEACHING MODEL</span></div>' +
+          '<h3 class="instrument-heading">Can a detector evade what it never detected?</h3>' +
+          '<p class="instrument-desc">Work through two small, synthetic cases based on defect classes in SHENRON PR #71. These are <strong>constructed examples, not the six recorded PR measurements</strong>. No attack or Sigma engine runs here: each detection outcome is declared below so the scoring logic can be inspected.</p>' +
+          '<div class="instrument-progress">01 / SELECT TEST CASE</div>' +
+          '<div class="instrument-buttons" role="group" aria-label="Choose scoring case">' +
+          '<button class="btn-secondary" type="button" data-mini-case="baseline" aria-pressed="' + baselineCase + '">CASE A · baseline miss</button>' +
+          '<button class="btn-secondary" type="button" data-mini-case="sibling" aria-pressed="' + !baselineCase + '">CASE B · sibling survives</button></div>' +
+          '<div class="instrument-grid"><div class="instrument-scope"><strong>BASELINE / FULL STAGE</strong>' + artifactRows +
+          '<div class="artifact"><span>Total detected</span><em>' + (baselineCase ? '0 / 1' : '1 / 2') + '</em></div></div>' +
+          '<div class="instrument-scope"><strong>VARIANT / ' + (legacy ? 'LEGACY INPUT' : 'CORRECTED INPUT') + '</strong>' + afterRows +
+          '<div class="artifact"><span>Total detected</span><em>' + (baselineCase ? '0 / 1' : (legacy ? '0 / 1' : '1 / 2')) + '</em></div></div></div>' +
+          '<div class="instrument-gate"><div class="instrument-progress">02 / MAKE A PREDICTION BEFORE THE RESULT</div>' +
+          '<p>' + (baselineCase ? 'The baseline detected nothing. What should a correct scorer report?' : 'The original stage detected artifact B, which is still present. Is the stage evaded?') + '</p>' +
+          '<button class="btn-secondary" type="button" data-mini-guess="exclude" aria-pressed="' + (x.miniPrediction==='exclude') + '">' + (baselineCase ? 'N/A · exclude stage' : 'Yes · evasion') + '</button>' +
+          '<button class="btn-secondary" type="button" data-mini-guess="retain" aria-pressed="' + (x.miniPrediction==='retain') + '">' + (baselineCase ? '1.00 · evasion' : 'No · B still fires') + '</button>' +
+          (x.miniPrediction ? '<p role="status" style="color:' + (predictionCorrect ? 'var(--phosphor)' : 'var(--amber)') + '">' + (predictionCorrect ? 'Prediction supported. ' : 'Revisit the baseline. ') + (baselineCase ? 'A missed baseline cannot be evidence of a new evasion.' : 'At least one original detection remains in the full stage.') + '</p>' : '') + '</div>' +
+          '<div class="instrument-progress">03 / COMPARE SCORERS</div>' +
+          '<div class="instrument-buttons" role="group" aria-label="Select scoring method">' +
+          '<button class="btn-secondary" type="button" data-mini-mode="legacy" aria-pressed="' + legacy + '">LEGACY LOGIC</button>' +
+          '<button class="btn-secondary" type="button" data-mini-mode="corrected" aria-pressed="' + !legacy + '">CORRECTED LOGIC</button>' +
+          '<button class="btn-primary" type="button" id="mini-score" ' + (!x.miniPrediction ? 'disabled aria-disabled="true"' : '') + '>Calculate and explain</button></div>' +
+          '<div class="instrument-result" aria-live="polite">' +
+          (x.miniRevealed ? '<span class="card-id">SYNTHETIC CASE OUTPUT / ' + (legacy ? 'LEGACY' : 'CORRECTED') + '</span><div class="value">' + score + '</div><p>' + explanation + '</p><p><strong>Reason:</strong> ' + (baselineCase ? (legacy ? 'Legacy rule credits 1.00 when baseline detections equal zero.' : 'No eligible detected baseline exists, so the stage is unscored.') : (legacy ? 'Variant A′ is evaluated without unchanged artifact B.' : 'Variant stage includes A′ and B, preserving the baseline detection.')) + '</p>' : '<p>Choose a prediction, then calculate. The instrument will report the chosen scoring method and the reason for the outcome.</p>') +
+          '</div>' +
+          '<p class="instrument-desc" style="margin-bottom:0">Research boundary: these two cases demonstrate mechanisms, not an attribution of the recorded 0.71 → 0.00 change to either defect in isolation. <a href="https://github.com/GnomeMan4201/shenron/pull/71" target="_blank" rel="noopener">Inspect the real PR #71 record</a>.</p>' +
+          '</section>';
+      }
+
+      function renderExhibit002() {
+        var a1 = state.ex002.assumeUndetectedAsEvasion;
+        var a2 = state.ex002.assumeIsolatedVariant;
+        var a3 = state.ex002.assumeProtectedFieldsValid;
+
+        var allOriginalAssumptions = a1 && a2 && a3;
+        var recordedPostState = !a1 && !a2 && a3;
+
+        var statusHeadline = '';
+        var statusClass = '';
+        var statusBadge = '';
+
+        if (allOriginalAssumptions) {
+          statusHeadline = '0.71 (Pre-PR #71 Recorded Score)';
+          statusClass = 'inflated';
+          statusBadge = '<span class="badge badge-warn">UNCORRECTED METHODOLOGY</span>';
+        } else if (recordedPostState) {
+          statusHeadline = '0.00 (Recorded Post-PR #71 Result)';
+          statusClass = 'collapsed';
+          statusBadge = '<span class="badge badge-fail">CLAIMS WITHDRAWN</span>';
+        } else {
+          statusHeadline = 'Intermediate Score Not Independently Measured';
+          statusClass = 'unmeasured';
+          statusBadge = '<span class="badge badge-warn">PARTIAL DEFECT AUDIT</span>';
+        }
+
+        var irisOut = '';
+        if (state.ex002.irisAnswer === 'no') {
+          irisOut = '<div class="console-out is-ok"><strong>Correct principle (illustrative IRIS-17 case):</strong> Correct. If no rule fires at baseline (<code>0</code> detections), an attacker cannot "evade" a detector that never detected the baseline. <code>scorer.py</code> now increments <code>undetected_count</code> and returns <code>None</code> (<code>n/a</code>).</div>';
+        } else if (state.ex002.irisAnswer === 'yes') {
+          irisOut = '<div class="console-out is-err"><strong>Incorrect for this illustrative case:</strong> Zero baseline detections cannot establish a new evasion. PR #71 records the aggregate apt29-style change from 0.71 to 0.00 across multiple corrections; it does not isolate this one defect numeric effect.</div>';
+        }
+
+        return (
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>EXHIBIT 002 // SHENRON PR #71</span><span class="badge badge-warn">CLAIMS WITHDRAWN &middot; OPEN QUESTION</span></div>' +
+            '<h3>SHENRON counted a baseline miss as evasion.</h3>' +
+            '<p style="color:var(--text-dim);margin:0 0 10px;">A Sigma rule looked for a layer called <code>no_such_layer_value_anywhere</code>, produced <code>0</code> baseline detections, and the old scorer still awarded the stage <code>1.0</code> brittleness credit. Two independent reviews of commit <code>6810866</code> triggered the kill criterion.</p>' +
+            '<p style="font-family:var(--mono);font-size:0.76rem;color:var(--text-mute);margin:0;">Evidence: <a href="https://github.com/GnomeMan4201/shenron/pull/71" target="_blank" rel="noopener">shenron/pull/71</a> &middot; <a href="https://github.com/GnomeMan4201/shenron/pull/71/files" target="_blank" rel="noopener">Changed Files (11 files, +393 -133, pytest exit 0)</a></p>' +
+          '</div>' +
+
+          renderMiniScorer() +
+
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>SIGNATURE INTERACTION &middot; CLAIM-COLLAPSE LABORATORY</span><span>RECORDED MEASUREMENTS VS. CONTRIBUTING DEFECTS</span></div>' +
+            '<div class="claim-banner">' +
+              '<div>' +
+                '<div style="font-family:var(--mono);font-size:0.72rem;color:var(--text-mute);text-transform:uppercase;letter-spacing:0.08em;">apt29-style Methodology State</div>' +
+                '<div class="claim-score ' + statusClass + '">' + escapeHtml(statusHeadline) + '</div>' +
+              '</div>' +
+              '<div>' + statusBadge + '</div>' +
+            '</div>' +
+
+            '<p style="font-size:0.88rem;color:var(--text-dim);margin:0 0 8px;">Inspect the three contributing methodological issues from PR #71. Because PR #71 did not isolate the independent numerical delta of each single defect, partial toggles flag an unmeasured intermediate state rather than inventing synthetic scores:</p>' +
+            '<div class="assumption-list">' +
+              '<label class="assumption-item">' +
+                '<input type="checkbox" id="chk-a1" ' + (a1 ? 'checked' : '') + '>' +
+                '<div><strong>Defect 1 (core/brittleness/scorer.py):</strong> Credit undetected baseline stages (<code>0</code> detections) as <code>1.0</code> evasion.<br><span style="font-size:0.82rem;color:var(--text-dim);">PR #71 correction: Excluded (<code>evasion_rate=None</code> / <code>n/a</code>) and tracked in <code>undetected_count</code>.</span></div>' +
+              '</label>' +
+              '<label class="assumption-item">' +
+                '<input type="checkbox" id="chk-a2" ' + (a2 ? 'checked' : '') + '>' +
+                '<div><strong>Defect 2 (core/brittleness/scorer.py):</strong> Score the mutated artifact <em>alone</em> against the original full stage artifact set.<br><span style="font-size:0.82rem;color:var(--text-dim);">PR #71 correction: Substitutes mutated primary back into <code>variant_set = list(all_arts)</code>; unmutated sibling artifacts keep firing.</span></div>' +
+              '</label>' +
+              '<label class="assumption-item">' +
+                '<input type="checkbox" id="chk-a3" ' + (a3 ? 'checked' : '') + '>' +
+                '<div><strong>Open Question (SigmaAwareMutator.PROTECTED_FIELDS):</strong> Never mutate <code>mitre_techniques</code>, <code>behavior_class</code>, or <code>detection_opportunities</code>.<br><span style="font-size:0.82rem;color:var(--text-dim);">Unresolved: Which fields could a real adversary influence, and should mutation apply to every artifact in a stage?</span></div>' +
+              '</label>' +
+            '</div>' +
+
+            '<table class="scenario-table" aria-label="PR #71 Recorded Scenario Brittleness Comparison">' +
+              '<thead><tr><th>Scenario</th><th>Recorded Before PR #71</th><th>Recorded After PR #71</th><th>Audit Status</th></tr></thead>' +
+              '<tbody>' +
+                SCENARIOS_DATA.map(function (row) {
+                  var statusCell = allOriginalAssumptions
+                    ? 'Pre-PR #71 (' + row.before + ')'
+                    : (recordedPostState ? 'Recorded post-fix (' + row.after + ')' : 'Not independently measured');
+                  return '<tr>' +
+                    '<td>' + escapeHtml(row.name) + '</td>' +
+                    '<td style="color:var(--amber);">' + escapeHtml(row.before) + '</td>' +
+                    '<td style="color:var(--crimson);">' + escapeHtml(row.after) + '</td>' +
+                    '<td>' + escapeHtml(statusCell) + '</td>' +
+                  '</tr>';
+                }).join('') +
+              '</tbody>' +
+            '</table>' +
+
+            '<div class="callout-warn">' +
+              '<strong>Why <code>0.00</code> is NOT proof of durability:</strong> Across 3 fresh-<code>HOME</code> runs with different <code>PYTHONHASHSEED</code> values, every strategy (<code>value_swap</code> previously reported as <code>0.58</code>) drops to <code>0%</code> evasion and <code>EXFIL</code> is no longer universally brittle. That happens because unmutated sibling artifacts and <code>PROTECTED_FIELDS</code> keep firing—not because the rules are adversary-resilient.' +
+            '</div>' +
+          '</div>' +
+
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>INVESTIGATIVE CHECK &middot; IRIS-17</span><span>TEST YOUR JUDGMENT</span></div>' +
+            '<p style="margin:0 0 10px;">Illustrative case <code>IRIS-17</code> (not an actual SHENRON scenario): Baseline detections = <code>0</code>. Should the scorer credit this stage as an evasion?</p>' +
+            '<div class="cta-row">' +
+              '<button type="button" class="btn-secondary" id="iris-no" aria-pressed="' + (state.ex002.irisAnswer === 'no') + '">No &mdash; Exclude as N/A (0 Baseline)</button>' +
+              '<button type="button" class="btn-secondary" id="iris-yes" aria-pressed="' + (state.ex002.irisAnswer === 'yes') + '">Yes &mdash; Credit 1.0 Evasion</button>' +
+            '</div>' +
+            irisOut +
+          '</div>' +
+
+          renderEvidenceChain('exhibit-002') +
+
+          '<div class="stage-block">' +
+            '<div class="stage-label"><span>EVIDENCE RECORD &middot; WHAT PR #71 FIXED vs. LEFT OPEN</span><span>NO FABRICATED CLAIMS</span></div>' +
+            '<div class="callout-info">' +
+              '<strong>Fixed in PR #71:</strong> <code>scorer.py</code> (SHA-256 <code>stable_seed</code>, <code>Optional[float]</code>, <code>undetected_count</code>, full <code>variant_set</code>); <code>comparator.py</code> (<code>n/a</code> formatting); <code>sigma_aware.py</code> (mutates all rule-referenced unprotected fields); <code>app.py</code> (preserves sub-technique IDs like <code>T1003.001</code>, defaults host to <code>127.0.0.1</code>).<br><br>' +
+              '<strong>Explicitly NOT changed in PR #71:</strong> <code>core/engine/path_adapter.py</code> still creates <code>~/.shenron/{logs,payloads,triggers}</code> at import; <code>/api/drift</code> still rewrites tracked files under <code>reports/ci/</code>; the LLM rule\'s technique-only selection still matches unrelated events on <code>T1027</code>.' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      function renderWorkbench() {
+        var proj = getProject(state.activeProjectId);
+        var linksHtml = '<a href="' + proj.repo + '" target="_blank" rel="noopener">GitHub Repository</a>';
+        if (proj.live) {
+          linksHtml += '<a href="' + proj.live + '" target="_blank" rel="noopener">Live Deployment</a>';
+        }
+
+        var bodyHtml = '';
+        if (proj.exhibits.length === 0) {
+          bodyHtml =
+            '<div class="unfiled-box">' +
+              '<span class="badge badge-unfiled" style="margin-bottom:10px;display:inline-block;">UNFILED PROJECT SLOT &middot; 0 DOCUMENTED EXHIBITS</span>' +
+              '<h3 style="font-family:var(--serif);font-weight:400;margin:8px 0;">No bugs filed for ' + escapeHtml(proj.name) + ' yet.</h3>' +
+              '<p style="color:var(--text-dim);max-width:60ch;margin:0;">This project is part of the badBANANA research archive, but no verified failure has been documented here yet. Empty projects are never presented as completed exhibits.</p>' +
+            '</div>';
+        } else {
+          var switcher = '';
+          if (proj.exhibits.length > 1) {
+            switcher = '<div class="exhibit-switcher" role="group" aria-label="Select Exhibit">' +
+              '<button type="button" class="exhibit-pill" data-exhibit="exhibit-002" aria-pressed="' + (state.activeExhibitId === 'exhibit-002') + '">Exhibit 002 &middot; SHENRON Baseline Scoring Error</button>' +
+              '<button type="button" class="exhibit-pill" data-exhibit="exhibit-001" aria-pressed="' + (state.activeExhibitId === 'exhibit-001') + '">Exhibit 001 &middot; Browser History Collision</button>' +
+            '</div>';
+          }
+          var activeEx = proj.exhibits.indexOf(state.activeExhibitId) !== -1 ? state.activeExhibitId : proj.exhibits[0];
+          bodyHtml = switcher + (activeEx === 'exhibit-002' ? renderExhibit002() : renderExhibit001());
+        }
+
+        workbench.innerHTML =
+          '<div class="workbench-header">' +
+            '<div>' +
+              '<span class="badge ' + proj.badgeClass + '">' + escapeHtml(proj.badgeText) + '</span>' +
+              '<h2>' + escapeHtml(proj.name) + '</h2>' +
+              '<p style="color:var(--text-dim);margin:0;max-width:65ch;">' + escapeHtml(proj.sub) + '</p>' +
+            '</div>' +
+            '<div class="workbench-links">' + linksHtml + '</div>' +
+          '</div>' +
+          bodyHtml;
+
+        wireWorkbenchEvents();
+      }
+
+      function wireWorkbenchEvents() {
+        var pills = workbench.querySelectorAll('[data-exhibit]');
+        for (var i = 0; i < pills.length; i++) {
+          pills[i].addEventListener('click', function (e) {
+            state.activeExhibitId = e.currentTarget.getAttribute('data-exhibit');
+            state.chainStage = 0;
+            state.chainChallengeOpen = false;
+            updateHash('#' + state.activeExhibitId);
+            renderWorkbench();
+          });
+        }
+
+        var chainNodes = workbench.querySelectorAll('[data-chain-idx]');
+        for (var c = 0; c < chainNodes.length; c++) {
+          chainNodes[c].addEventListener('click', function (e) {
+            state.chainStage = parseInt(e.currentTarget.getAttribute('data-chain-idx'), 10) || 0;
+            state.chainChallengeOpen = false;
+            renderWorkbench();
+          });
+        }
+        var toggleChallenge = document.getElementById('toggle-chain-challenge');
+        if (toggleChallenge) {
+          toggleChallenge.addEventListener('click', function () {
+            state.chainChallengeOpen = !state.chainChallengeOpen;
+            renderWorkbench();
+          });
+        }
+
+        var bindingBtns = workbench.querySelectorAll('[data-binding]');
+        for (var j = 0; j < bindingBtns.length; j++) {
+          bindingBtns[j].addEventListener('click', function (e) {
+            state.ex001.selectedBinding = e.currentTarget.getAttribute('data-binding');
+            renderWorkbench();
+          });
+        }
+
+        var btnBroken = document.getElementById('ex001-mode-broken');
+        var btnFixed = document.getElementById('ex001-mode-fixed');
+        var btnRun = document.getElementById('ex001-run');
+        var btnApplyFix = document.getElementById('ex001-apply-fix');
+        var btnCopy = document.getElementById('ex001-copy');
+
+        if (btnBroken) {
+          btnBroken.addEventListener('click', function () {
+            state.ex001.mode = 'broken';
+            state.ex001.step = 0;
+            renderWorkbench();
+          });
+        }
+        if (btnFixed) {
+          btnFixed.addEventListener('click', function () {
+            state.ex001.mode = 'fixed';
+            state.ex001.step = 0;
+            renderWorkbench();
+          });
+        }
+        if (btnRun) {
+          btnRun.addEventListener('click', function () {
+            state.ex001.step = 3;
+            renderWorkbench();
+            if (state.ex001.mode === 'broken') {
+              var out = document.getElementById('ex001-console');
+              if (out) out.classList.add('glitch-pulse');
+            }
+          });
+        }
+        if (btnApplyFix) {
+          btnApplyFix.addEventListener('click', function () {
+            state.ex001.mode = 'fixed';
+            state.ex001.step = 3;
+            renderWorkbench();
+          });
+        }
+        if (btnCopy) {
+          btnCopy.addEventListener('click', async function () {
+            var fixText = 'var current = 0, draws = 1, drawHistory = [];';
+            var copied = false;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              try { await navigator.clipboard.writeText(fixText); copied = true; } catch (err) {}
+            }
+            if (!copied) {
+              var ta = document.createElement('textarea');
+              ta.value = fixText;
+              ta.setAttribute('readonly', '');
+              ta.style.position = 'fixed';
+              ta.style.left = '-9999px';
+              document.body.appendChild(ta);
+              ta.select();
+              try { copied = document.execCommand('copy'); } catch (err) {}
+              ta.remove();
+            }
+            state.ex001.copied = copied;
+            renderWorkbench();
+            var feedback = document.getElementById('ex001-copy-feedback');
+            if (feedback) feedback.textContent = copied ? 'Fix copied.' : 'Copy unavailable. Select the diff above manually.';
+          });
+        }
+
+        var caseBtns = workbench.querySelectorAll('[data-mini-case]');
+        caseBtns.forEach(function(btn){btn.addEventListener('click',function(){
+          state.ex002.miniCase = btn.getAttribute('data-mini-case');
+          state.ex002.miniPrediction = null; state.ex002.miniRevealed = false; renderWorkbench();
+        });});
+        workbench.querySelectorAll('[data-mini-mode]').forEach(function(btn){btn.addEventListener('click',function(){
+          state.ex002.miniMode = btn.getAttribute('data-mini-mode');
+          state.ex002.miniRevealed = false; renderWorkbench();
+        });});
+        workbench.querySelectorAll('[data-mini-guess]').forEach(function(btn){btn.addEventListener('click',function(){
+          state.ex002.miniPrediction = btn.getAttribute('data-mini-guess');
+          state.ex002.miniRevealed = false; renderWorkbench();
+        });});
+        var miniScore = document.getElementById('mini-score');
+        if (miniScore) miniScore.addEventListener('click',function(){
+          if (!state.ex002.miniPrediction) return;
+          state.ex002.miniRevealed = true;renderWorkbench();
+        });
+
+        var c1 = document.getElementById('chk-a1');
+        var c2 = document.getElementById('chk-a2');
+        var c3 = document.getElementById('chk-a3');
+        if (c1) c1.addEventListener('change', function () { state.ex002.assumeUndetectedAsEvasion = c1.checked; renderWorkbench(); });
+        if (c2) c2.addEventListener('change', function () { state.ex002.assumeIsolatedVariant = c2.checked; renderWorkbench(); });
+        if (c3) c3.addEventListener('change', function () { state.ex002.assumeProtectedFieldsValid = c3.checked; renderWorkbench(); });
+
+        var irisNo = document.getElementById('iris-no');
+        var irisYes = document.getElementById('iris-yes');
+        if (irisNo) irisNo.addEventListener('click', function () { state.ex002.irisAnswer = 'no'; renderWorkbench(); });
+        if (irisYes) irisYes.addEventListener('click', function () { state.ex002.irisAnswer = 'yes'; renderWorkbench(); });
+      }
+
+      function updateHash(hash) {
+        if (window.location.hash !== hash) {
+          try {
+            window.history.replaceState(null, '', hash);
+          } catch (e) {
+            window.location.hash = hash;
+          }
+        }
+      }
+
+      function scrollToElement(el) {
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      }
+
+      function selectProject(id, exhibitId, shouldScroll) {
+        state.activeProjectId = id;
+        state.chainStage = 0;
+        state.chainChallengeOpen = false;
+        var proj = getProject(id);
+        if (exhibitId && proj.exhibits.indexOf(exhibitId) !== -1) {
+          state.activeExhibitId = exhibitId;
+        } else if (proj.exhibits.length > 0) {
+          state.activeExhibitId = proj.exhibits[0];
+        }
+        renderArchive();
+        renderWorkbench();
+        if (shouldScroll) {
+          scrollToElement(workbench);
+        }
+      }
+
+      function applyRoute() {
+        var h = (window.location.hash || '').replace('#', '').toLowerCase();
+        if (h === 'exhibit-001') {
+          selectProject('r4b1t', 'exhibit-001', true);
+          return;
+        }
+        if (h === 'exhibit-002') {
+          selectProject('shenron', 'exhibit-002', true);
+          return;
+        }
+        for (var i = 0; i < PROJECTS.length; i++) {
+          if (PROJECTS[i].id === h) {
+            selectProject(h, null, true);
+            return;
+          }
+        }
+        renderArchive();
+        renderWorkbench();
+      }
+
+      archiveGrid.addEventListener('click', function (e) {
+        var card = e.target.closest('[data-project-id]');
+        if (!card) return;
+        var id = card.getAttribute('data-project-id');
+        updateHash('#' + id);
+        selectProject(id, null, false);
+      });
+
+      archiveGrid.addEventListener('keydown', function (e) {
+        var cards = Array.prototype.slice.call(archiveGrid.querySelectorAll('[data-project-id]'));
+        var idx = cards.indexOf(document.activeElement);
+        if (idx === -1) return;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          cards[(idx + 1) % cards.length].focus();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          cards[(idx - 1 + cards.length) % cards.length].focus();
+        }
+      });
+
+      var filterBtns = document.querySelectorAll('.filter-btn');
+      for (var f = 0; f < filterBtns.length; f++) {
+        filterBtns[f].addEventListener('click', function (e) {
+          state.filter = e.currentTarget.getAttribute('data-filter');
+          for (var k = 0; k < filterBtns.length; k++) {
+            filterBtns[k].setAttribute('aria-pressed', filterBtns[k] === e.currentTarget ? 'true' : 'false');
+          }
+          renderArchive();
+        });
+      }
+
+      document.getElementById('nav-threshold').addEventListener('click', function () {
+        scrollToElement(thresholdSection);
+      });
+      document.getElementById('nav-ex001').addEventListener('click', function () {
+        updateHash('#exhibit-001');
+        selectProject('r4b1t', 'exhibit-001', true);
+      });
+      document.getElementById('nav-ex002').addEventListener('click', function () {
+        updateHash('#exhibit-002');
+        selectProject('shenron', 'exhibit-002', true);
+      });
+      document.getElementById('nav-archive').addEventListener('click', function () {
+        scrollToElement(document.getElementById('archive-section'));
+      });
+      document.getElementById('enter-lab-btn').addEventListener('click', function () {
+        updateHash('#exhibit-002');
+        selectProject('shenron', 'exhibit-002', true);
+      });
+      document.getElementById('jump-ex001-btn').addEventListener('click', function () {
+        updateHash('#exhibit-001');
+        selectProject('r4b1t', 'exhibit-001', true);
+      });
+      document.getElementById('jump-archive-btn').addEventListener('click', function () {
+        scrollToElement(document.getElementById('archive-section'));
+      });
+
+      window.addEventListener('hashchange', applyRoute);
+      applyRoute();
+    })();
+  </script>
 </body>
 </html>
