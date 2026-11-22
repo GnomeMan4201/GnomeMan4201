@@ -85,6 +85,17 @@
 </div>
 <br>
 
+<a id="bug-museum"></a>
+<div align="center">
+<img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/ead6cae6fe357ad583bfd0a6a6ff7c612fdea357/assets/bug-museum-header.svg" width="360" alt="Bug Museum" /><br>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#r4b1t"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/ead6cae6fe357ad583bfd0a6a6ff7c612fdea357/assets/tab-r4b1t.svg" width="175" alt="Exhibit 01: R4B1T H0L3" /></a>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#shenron"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/ead6cae6fe357ad583bfd0a6a6ff7c612fdea357/assets/tab-shenron.svg" width="175" alt="Exhibit 02: SHENRON, on view" /></a><br>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#observatory"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/ead6cae6fe357ad583bfd0a6a6ff7c612fdea357/assets/tab-observatory.svg" width="175" alt="Exhibit 03: Threat Observatory" /></a>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#drift"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/ead6cae6fe357ad583bfd0a6a6ff7c612fdea357/assets/tab-drift.svg" width="175" alt="Exhibit 04: drift_orchestrator" /></a><br>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#lanimals"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/ead6cae6fe357ad583bfd0a6a6ff7c612fdea357/assets/tab-lanimals.svg" width="175" alt="Exhibit 05: LANimals" /></a>
+<a href="https://gnomeman4201.github.io/GnomeMan4201/bug-museum/#pfm"><img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/ead6cae6fe357ad583bfd0a6a6ff7c612fdea357/assets/tab-pfm.svg" width="175" alt="Exhibit 06: Prompt Field Manual" /></a>
+</div>
+
 <a id="research-method"></a>
 <img src="https://raw.githubusercontent.com/GnomeMan4201/GnomeMan4201/main/assets/section-research-method.svg" width="520" alt="Research Method" />
 
