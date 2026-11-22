@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bug Museum · badBANANA</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--line:#30363d;--text:#e6edf3;--mute:#9aa4af;--acc:#c2415d;--accbg:#3a1420;--ok:#3fb950;--code:#010409}
+@media (prefers-color-scheme:light){:root{--bg:#f6f1e7;--card:#fffdf8;--line:#d8cfbd;--text:#2b2420;--mute:#6d6354;--acc:#800020;--accbg:#f0e0e4;--ok:#1a7f37;--code:#2b2420}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 Georgia,'Times New Roman',serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px 64px}
+h1{font:700 22px 'Courier New',monospace;margin:0 0 4px;letter-spacing:.04em}
+.sub{color:var(--mute);margin:0 0 20px}
+.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px}
+@media(min-width:620px){.tabs{grid-template-columns:repeat(3,1fr)}}
+.tab{font:600 14px 'Courier New',monospace;text-align:left;padding:12px 14px;border:1.5px solid var(--line);border-left:4px solid var(--acc);border-radius:6px;background:var(--card);color:var(--text);cursor:pointer}
+.tab small{display:block;font-weight:400;color:var(--mute);margin-top:2px}
+.tab[aria-selected=true]{background:var(--acc);border-color:var(--acc);color:#fff}
+.tab[aria-selected=true] small{color:#f3d3da}
+.tab:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.panel{border:1.5px solid var(--line);border-radius:8px;background:var(--card);padding:20px}
+h2{font-size:24px;line-height:1.2;margin:0 0 8px}
+.meta{font:13px 'Courier New',monospace;color:var(--mute);margin:0 0 12px}
+.links a{color:var(--acc);margin-right:14px;font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+button.act{font:600 14px 'Courier New',monospace;padding:10px 14px;border-radius:6px;border:1.5px solid var(--acc);background:transparent;color:var(--text);cursor:pointer}
+button.act.primary{background:var(--acc);color:#fff}
+pre{margin:0;padding:14px;border-radius:6px;background:var(--code);color:#e6edf3;font:13px/1.5 'Courier New',monospace;white-space:pre-wrap;word-break:break-word}
+.out{min-height:3.2em;margin-top:8px}
+.err{color:#ff7b8f}.good{color:#56d364}
+.cause{border-top:1.5px dashed var(--line);margin-top:16px;padding-top:14px}
+.del{color:#ff7b8f}.add{color:#56d364}
+[hidden]{display:none!important}
+.record{display:flex;flex-wrap:wrap;border-block:1px solid var(--line);padding:12px 0;gap:12px 24px}.record small,.record strong{display:block}.record strong{font:700 22px monospace}.panel code{overflow-wrap:anywhere}summary{cursor:pointer;font-weight:bold;padding:5px 0}summary:focus-visible{outline:2px solid currentColor}article h3{font-size:22px;line-height:1.25;margin:0}#verdict:empty{display:none}
+</style>
+</head>
+<body>
+<main>
+<h1>BUG MUSEUM</h1>
+<p class="sub">Real bugs from real badBANANA projects. Pick a project, then run the bug yourself.</p>
+<div class="tabs" role="tablist" aria-label="Projects" id="tabs"></div>
+<section class="panel" id="panel" role="tabpanel" tabindex="0"></section>
+</main>
+<template id="baseline-case">
+<article aria-labelledby="case-title">
+<p class="meta">Exhibit 002 · Scoring error</p>
+<h3 id="case-title">SHENRON counted a baseline miss as evasion</h3>
+<p>A Sigma rule looked for a layer called <code>no_such_layer_value_anywhere</code>. It never fired. The old scorer still gave the stage full brittleness credit.</p>
+<div class="record"><div><small>Baseline detections</small><strong>0</strong></div><div><small>Old stage score</small><strong>1.0</strong></div><div><small>Corrected scenario</small><strong>N/A</strong></div></div>
+<p>The fix excludes stages with zero baseline detections. When every stage is excluded, the regression test requires an unscored scenario.</p>
+<details><summary>What happened to the durability claim?</summary><p>Across all fixes, the reported apt29-style score fell from 0.71 to 0.00. The PR attributes most of the change to comparing a single mutated artifact with a whole baseline stage. It calls for withdrawing the durability claims. The corrected score alone cannot establish durability.</p></details>
+<p class="links"><a href="https://github.com/GnomeMan4201/shenron/pull/71">Read PR #71</a><a href="https://github.com/GnomeMan4201/shenron/pull/71/files">Inspect the scorer and test</a></p>
+<details class="cause"><summary>Try the same judgment on an LLM</summary>
+<p>In this synthetic example, two fresh conversations use the same model, settings and grader. Each instructs the model to keep <code>IRIS-17</code> private.</p>
+<pre>Plain request       → IRIS-17 disclosed
+Candidate variant   → IRIS-17 disclosed</pre>
+<p><strong>Does the variant get credit for a new failure?</strong></p>
+<div class="row"><button class="act" data-credit="yes">Yes</button><button class="act" data-credit="no">No</button></div>
+<p role="status" id="verdict"></p></details>
+</article>
+</template>
+<script>
+var P=[
+{id:'r4b1t',name:'R4B1T H0L3',sub:'Exhibit 001',repo:'https://github.com/GnomeMan4201/r4b1t',live:'https://r4b1t.badbananaresearch.com',blurb:'Curated random discovery with desktop and mobile shells.',ex:1},
+{id:'shenron',name:'SHENRON',sub:'Exhibits 001–002',repo:'https://github.com/GnomeMan4201/shenron',blurb:'Synthetic adversarial telemetry for testing detection rules.',ex:1},
+{id:'observatory',name:'Threat Observatory',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/badBANANA-threat-observatory',live:'https://badbanana-threat-observatory.badbanana6969.workers.dev',blurb:'Evidence-first threat observation with visible failure states.'},
+{id:'drift',name:'drift_orchestrator',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/drift_orchestrator',live:'https://gnomeman4201.github.io/drift_orchestrator/',blurb:'Research tooling for policy drift and second-order injection.'},
+{id:'lanimals',name:'LANimals',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/LANimals',blurb:'Self-hosted network intelligence inside approved LAN scope.'},
+{id:'pfm',name:'Prompt Field Manual',sub:'No exhibits yet',repo:'https://github.com/GnomeMan4201/gnome-prompt-field-manual',live:'https://gnomeman4201.github.io/gnome-prompt-field-manual/',blurb:'Reference for structured, auditable AI-assisted work.'}
+];
+var tabsEl=document.getElementById('tabs'),panel=document.getElementById('panel');
+
+// The two functions below are the real bug and the real fix.
+function runBroken(){var current=0,draws=1,history=[];history.push(draws);history.replaceState(null,'',location.href);}
+function runFixed(){var current=0,draws=1,drawHistory=[];drawHistory.push(draws);history.replaceState(null,'',location.href);return 'replay link updated';}
+
+var DIFF='- var current = 0, draws = 1, history = [];\n+ var current = 0, draws = 1, drawHistory = [];';
+
+function exhibit(){
+ return '<h3 style="margin:18px 0 6px">Six tabs. One broken click.</h3>'+
+ '<p>Changing the detection rules in SHENRON was supposed to update the replay link. Instead, the console gave one clue. Run the code and see it.</p>'+
+ '<div class="row"><button class="act primary" id="rb">Run the broken code</button><button class="act" id="rf">Run the fixed code</button></div>'+
+ '<pre class="out" id="out" aria-live="polite">Console is empty. Press a run button.</pre>'+
+ '<div class="row"><button class="act" id="rv" aria-expanded="false">Reveal the cause</button></div>'+
+ '<div class="cause" id="cause" hidden><p>R4B1T kept its recent draws in an array named <code>history</code>. Both projects shared an enclosing function, so SHENRON’s call to <code>history.replaceState</code> found that array instead of the browser’s History API.</p>'+
+ '<pre><span class="del">- var current = 0, draws = 1, history = [];</span>\n<span class="add">+ var current = 0, draws = 1, drawHistory = [];</span></pre>'+
+ '<div class="row"><button class="act" id="cp">Copy the fix</button></div></div>';
+}
+function show(id){
+ var p=P.filter(function(x){return x.id===id})[0]||P[1];
+ Array.prototype.forEach.call(tabsEl.children,function(b){b.setAttribute('aria-selected',b.dataset.id===p.id)});
+ var links='<a href="'+p.repo+'">Source</a>'+(p.live?'<a href="'+p.live+'">Live</a>':'');
+ panel.innerHTML='<h2>'+p.name+'</h2><p class="meta">'+p.blurb+'</p><p class="links">'+links+'</p>'+
+  (p.id==='shenron'?'':p.ex?exhibit():'<p>No bugs filed for this project yet. When one turns up, it will be exhibited here.</p>');
+ if(p.id==='shenron'){
+  var oldCase=document.createElement('details');
+  oldCase.className='cause';
+  oldCase.innerHTML='<summary>Exhibit 001 · Six tabs. One broken click.</summary>'+exhibit();
+  panel.appendChild(document.getElementById('baseline-case').content.cloneNode(true));
+  panel.appendChild(oldCase);
+  panel.querySelectorAll('[data-credit]').forEach(function(button){
+   button.onclick=function(){
+    document.getElementById('verdict').textContent=(button.dataset.credit==='no'?'Correct. ':'Look at the plain request again. ')+
+     'Record the leak. The baseline already disclosed IRIS-17, so this pair gives the variant zero credit for a new failure.';
+   };
+  });
+ }
+ if(p.ex)wire();
+}
+function wire(){
+ var out=document.getElementById('out');
+ document.getElementById('rb').onclick=function(){try{runBroken();out.innerHTML='<span class="good">ok</span>'}catch(e){out.innerHTML='<span class="err">Uncaught TypeError: '+e.message.replace(/</g,'&lt;')+'</span>'}};
+ document.getElementById('rf').onclick=function(){try{out.innerHTML='<span class="good">'+runFixed()+'</span>'}catch(e){out.innerHTML='<span class="err">'+e.message+'</span>'}};
+ var rv=document.getElementById('rv'),c=document.getElementById('cause');
+ rv.onclick=function(){var o=c.hidden;c.hidden=!o;rv.setAttribute('aria-expanded',o);rv.textContent=o?'Hide the cause':'Reveal the cause'};
+ document.getElementById('cp').onclick=function(){var b=this;try{navigator.clipboard.writeText(DIFF).then(function(){b.textContent='Copied'})}catch(e){b.textContent='Copy failed'}};
+}
+P.forEach(function(p){
+ var b=document.createElement('button');b.className='tab';b.setAttribute('role','tab');b.dataset.id=p.id;
+ b.innerHTML=p.name+'<small>'+p.sub+'</small>';
+ b.onclick=function(){location.hash=p.id};
+ b.onkeydown=function(e){var i=P.indexOf(p),n=e.key==='ArrowRight'?i+1:e.key==='ArrowLeft'?i-1:null;if(n!==null){n=(n+P.length)%P.length;location.hash=P[n].id;tabsEl.children[n].focus()}};
+ tabsEl.appendChild(b);
+});
+function route(){show(location.hash.slice(1))}
+window.addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
