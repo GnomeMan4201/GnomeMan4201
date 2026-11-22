@@ -1,0 +1,11 @@
+{
+  "last_good_utc": "2026-11-22 14:45",
+  "summary": {
+    "version": "2026.11.20",
+    "entries": 1790,
+    "rejected": 0,
+    "week": 9,
+    "latest_id": "CVE-2026-129448",
+    "latest_date": "2026-11-20"
+  }
+}

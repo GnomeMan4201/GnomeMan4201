@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="190" viewBox="0 0 480 190" role="img" aria-label="Evidence snapshot: OK">
+<style>
+.bg{fill:#161b22;stroke:#30363d;stroke-width:1.5}.bar{fill:#c2415d}
+.t{fill:#e6edf3;font:bold 13px 'Courier New',monospace;letter-spacing:3px}
+.k{fill:#8b949e;font:12px 'Courier New',monospace}.v{fill:#e6edf3;font:12px 'Courier New',monospace}
+.s{font:bold 12px 'Courier New',monospace;fill:#56d364}
+.f{fill:#8b949e;font:11px 'Courier New',monospace}
+@media (prefers-color-scheme: light){.bg{fill:#f6f1e7;stroke:#d8cfbd}.bar{fill:#800020}.t,.v{fill:#2b2420}.k,.f{fill:#6d6354}.s{fill:#1a7f37}}
+</style>
+<rect class="bg" x="1" y="1" width="478" height="188" rx="8"/>
+<rect class="bar" x="1" y="14" width="5" height="34" rx="2"/>
+<text class="t" x="20" y="36">EVIDENCE SNAPSHOT</text>
+<text class="s" x="460" y="36" text-anchor="end">OK</text>
+<text class="k" x="20" y="74">source</text><text class="v" x="150" y="74">CISA KEV, catalog 2026.11.20</text><text class="k" x="20" y="98">entries</text><text class="v" x="150" y="98">1,790 valid, 0 rejected</text><text class="k" x="20" y="122">added in 7 days</text><text class="v" x="150" y="122">9</text><text class="k" x="20" y="146">latest</text><text class="v" x="150" y="146">CVE-2026-129448 (2026-11-20)</text>
+<text class="f" x="20" y="176">fetched 2026-11-22 14:45 UTC. measure first. attribute last.</text>
+</svg>
