@@ -1,5 +1,5 @@
 {
-  "last_good_utc": "2026-11-24 00:00",
+  "last_good_utc": "2026-11-24 10:02",
   "summary": {
     "version": "2026.11.23",
     "entries": 1792,
@@ -9,8 +9,8 @@
     "latest_date": "2026-11-23"
   },
   "observatory": {
-    "last_good_utc": "2026-11-24 00:00",
-    "generatedAt": "2026-11-24T00:00:11.977Z",
+    "last_good_utc": "2026-11-24 10:02",
+    "generatedAt": "2026-11-24T10:02:44.278Z",
     "ingestionMode": "demand-driven",
     "freshnessState": "stale",
     "sources": [
@@ -32,7 +32,7 @@
         "lastSuccessDate": "2026-10-21",
         "recordCount": 2013,
         "consecutiveFailures": 1,
-        "ageDays": 33
+        "ageDays": 34
       },
       {
         "id": "urlhaus",
