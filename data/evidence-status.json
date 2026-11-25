@@ -1,16 +1,16 @@
 {
-  "last_good_utc": "2026-11-24 22:34",
+  "last_good_utc": "2026-11-25 08:46",
   "summary": {
     "version": "2026.11.24",
     "entries": 1795,
     "rejected": 0,
-    "week": 14,
+    "week": 13,
     "latest_id": "CVE-2026-132224",
     "latest_date": "2026-11-24"
   },
   "observatory": {
-    "last_good_utc": "2026-11-24 22:34",
-    "generatedAt": "2026-11-24T22:34:03.418Z",
+    "last_good_utc": "2026-11-25 08:46",
+    "generatedAt": "2026-11-25T08:46:50.385Z",
     "ingestionMode": "demand-driven",
     "freshnessState": "stale",
     "sources": [
@@ -32,7 +32,7 @@
         "lastSuccessDate": "2026-10-21",
         "recordCount": 2013,
         "consecutiveFailures": 1,
-        "ageDays": 34
+        "ageDays": 35
       },
       {
         "id": "urlhaus",
