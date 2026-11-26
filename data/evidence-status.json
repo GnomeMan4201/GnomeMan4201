@@ -1,5 +1,5 @@
 {
-  "last_good_utc": "2026-11-26 08:32",
+  "last_good_utc": "2026-11-26 21:41",
   "summary": {
     "version": "2026.11.25",
     "entries": 1805,
@@ -9,8 +9,8 @@
     "latest_date": "2026-11-25"
   },
   "observatory": {
-    "last_good_utc": "2026-11-26 08:32",
-    "generatedAt": "2026-11-26T08:32:57.559Z",
+    "last_good_utc": "2026-11-26 21:41",
+    "generatedAt": "2026-11-26T21:41:32.521Z",
     "ingestionMode": "demand-driven",
     "freshnessState": "stale",
     "sources": [
@@ -22,7 +22,7 @@
         "lastSuccessDate": "2026-11-22",
         "recordCount": 1789,
         "consecutiveFailures": 0,
-        "ageDays": 3
+        "ageDays": 4
       },
       {
         "id": "threatfox",
@@ -42,7 +42,7 @@
         "lastSuccessDate": "2026-11-22",
         "recordCount": 500,
         "consecutiveFailures": 0,
-        "ageDays": 3
+        "ageDays": 4
       },
       {
         "id": "malwarebazaar",
@@ -52,7 +52,7 @@
         "lastSuccessDate": "2026-11-22",
         "recordCount": 100,
         "consecutiveFailures": 0,
-        "ageDays": 3
+        "ageDays": 4
       }
     ]
   }
