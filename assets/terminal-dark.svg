@@ -13,7 +13,7 @@
 <circle cx="893" cy="23" r="3.5" fill="#00d26a"><animate attributeName="opacity" values="1;.2;1" dur="1.8s" repeatCount="indefinite"/></circle><text x="946" y="27" font-size="10" fill="#00d26a" text-anchor="end" font-weight="700" letter-spacing="1">LIVE</text>
 <line x1="12" y1="46" x2="948" y2="46" stroke="#2e2410"/>
 <text x="14" y="59" font-size="9" fill="#a07010">1D  2026-08-29 &gt; 2026-11-26  90 SESSIONS  SRC GITHUB GRAPHQL</text>
-<text x="946" y="59" font-size="9" fill="#a07010" text-anchor="end">UPDATED 2026-11-26 08:21Z</text>
+<text x="946" y="59" font-size="9" fill="#a07010" text-anchor="end">UPDATED 2026-11-26 21:34Z</text>
 <rect x="12" y="68" width="628" height="420" rx="4" fill="#0c0a06" stroke="#2e2410"/>
 <line x1="12" y1="392" x2="588" y2="392" stroke="#2e2410" stroke-dasharray="2 4"/><text x="594" y="395.5" font-size="9" fill="#a07010">0</text>
 <line x1="12" y1="332" x2="588" y2="332" stroke="#2e2410" stroke-dasharray="2 4"/><text x="594" y="335.5" font-size="9" fill="#a07010">50</text>
