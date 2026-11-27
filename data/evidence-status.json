@@ -1,16 +1,16 @@
 {
-  "last_good_utc": "2026-11-27 08:45",
+  "last_good_utc": "2026-11-27 21:26",
   "summary": {
-    "version": "2026.11.25",
-    "entries": 1805,
+    "version": "2026.11.27",
+    "entries": 1808,
     "rejected": 0,
-    "week": 19,
-    "latest_id": "CVE-2026-103406",
-    "latest_date": "2026-11-25"
+    "week": 22,
+    "latest_id": "CVE-2026-120705",
+    "latest_date": "2026-11-27"
   },
   "observatory": {
-    "last_good_utc": "2026-11-27 08:45",
-    "generatedAt": "2026-11-27T08:45:07.993Z",
+    "last_good_utc": "2026-11-27 21:26",
+    "generatedAt": "2026-11-27T21:26:10.104Z",
     "ingestionMode": "demand-driven",
     "freshnessState": "stale",
     "sources": [
@@ -22,7 +22,7 @@
         "lastSuccessDate": "2026-11-22",
         "recordCount": 1789,
         "consecutiveFailures": 0,
-        "ageDays": 4
+        "ageDays": 5
       },
       {
         "id": "threatfox",
@@ -42,7 +42,7 @@
         "lastSuccessDate": "2026-11-22",
         "recordCount": 500,
         "consecutiveFailures": 0,
-        "ageDays": 4
+        "ageDays": 5
       },
       {
         "id": "malwarebazaar",
@@ -52,7 +52,7 @@
         "lastSuccessDate": "2026-11-22",
         "recordCount": 100,
         "consecutiveFailures": 0,
-        "ageDays": 4
+        "ageDays": 5
       }
     ]
   }
